@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ActivityMaps.Views.LoginPage"
+             BindingContext="{Binding Main,Source={StaticResource Locator}}"
+             Title="Login">
+    <ContentPage.Content>
+
+        <ScrollView
+            BindingContext="{Binding Login}">
+            <StackLayout Padding="10,20,10,5">
+                <Label 
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="ActivityMaps">
+                </Label>
+                <Image
+                Source="Logo"
+                WidthRequest="200">
+                </Image>
+                <Grid Margin="0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="E-Mail"
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Keyboard="Email"
+                        Text="{Binding Email, Mode=TwoWay}"
+                        Placeholder="Enter your email...">
+                    </Entry>
+                    <Label 
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text="Password"
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        IsPassword="True"
+                        Text="{Binding Password, Mode=TwoWay}"
+                        Placeholder="Enter your password...">
+                    </Entry>
+                </Grid>
+
+                <StackLayout 
+                    Margin="10,0"
+                    Orientation="Horizontal"
+                    VerticalOptions="CenterAndExpand">
+                    <Label
+                        HorizontalOptions="StartAndExpand"
+                        VerticalOptions="Center"
+                        Text="Remember me on this device">
+                    </Label>
+
+                    <Switch 
+                        HorizontalOptions="End"
+                        IsToggled="{Binding IsRemembered, Mode=TwoWay}">
+                    </Switch>
+
+                </StackLayout>
+
+
+
+                <Label 
+                    HorizontalOptions="Center"
+                    Text="Forgot your password?"
+                    TextColor="Blue"
+                    VerticalOptions="CenterAndExpand">
+
+                </Label>
+
+                <ActivityIndicator 
+                    IsRunning="{Binding IsRunning, Mode=TwoWay}"
+                    VerticalOptions="CenterAndExpand">
+                </ActivityIndicator>
+
+                <StackLayout 
+                    Margin="40,0"
+                    TranslationY="-30"
+                    HorizontalOptions="Center"
+                    Orientation="Horizontal">
+
+                    <Button
+                        BackgroundColor="Navy"
+                        BorderRadius="23"
+                        HeightRequest="46"
+                        IsEnabled="{Binding isEnabled, Mode=TwoWay}"
+                        Command="{Binding LoginCommand}"
+                        Text="Login"
+                        TextColor="White">
+                    </Button>
+
+                    <Button
+                         BackgroundColor="Purple"
+                         BorderRadius="23"
+                         HeightRequest="46"
+                         HorizontalOptions="FillAndExpand"
+                         IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                         Text="Register"
+                         TextColor="White">
+                    </Button>
+
+                </StackLayout>
+
+
+            </StackLayout>
+
+        </ScrollView>
+
+    </ContentPage.Content>
+</ContentPage>
