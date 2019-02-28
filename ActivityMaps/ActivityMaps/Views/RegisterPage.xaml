@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=netstandard"
+             x:Class="ActivityMaps.Views.RegisterPage"
+             BindingContext="{Binding Main,Source={StaticResource Locator}}"
+             Title="Register">
+    <ContentPage.Content>
+        <ScrollView
+            BindingContext="{Binding Register}">
+            <StackLayout Padding="10,20,10,5">
+                <Label 
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="Register">
+                </Label>
+                <Grid Margin="0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="Name"
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Keyboard="Text"
+                        Text="{Binding Name, Mode=TwoWay}"
+                        Placeholder="Enter your name...">
+                    </Entry>
+                    <Label 
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text="Last Name"
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Keyboard="Text"
+                        Text="{Binding Last_Name, Mode=TwoWay}"
+                        Placeholder="Enter your last name...">
+                    </Entry>
+                    <Label 
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Text="Nickname"
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Keyboard="Text"
+                        Text="{Binding Nickname, Mode=TwoWay}"
+                        Placeholder="Enter your Nickname...">
+                    </Entry>
+                    <Label 
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Text="Gender"
+                        VerticalOptions="Center">
+                    </Label>
+                    <Picker
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Title="Select Gender"
+                        BindingContext="{Binding Gender, Mode=TwoWay}">
+                        <Picker.Items>
+                            <x:String>Male</x:String>
+                            <x:String>Female</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    <Label 
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Text="Birthdate"
+                        VerticalOptions="Center">
+                    </Label>
+                    <DatePicker 
+                        
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        MinimumDate="01/01/1919"
+                        MaximumDate="{x:Static sys:DateTime.Now}">
+
+                    </DatePicker>
+
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -82,7 +82,23 @@ namespace ActivityMaps.ViewModels
 			}
 		}
 
+		public ICommand RegisterCommand
+		{
+			get
+			{
+				return new RelayCommand(Register);
+			}
+		}
 
+		private async void Register()
+		{
+			await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
+			this.IsRunning = false;
+			this.IsEnabled = true;
+
+			this.Email = string.Empty;
+			this.Password = string.Empty;
+		}
 
 		private async void Login()
 		{
@@ -124,9 +140,9 @@ namespace ActivityMaps.ViewModels
 			this.Email = string.Empty;
 			this.Password = string.Empty;
 
-			//MainViewModel.GetInstance().Lands = new LandsViewModel();
+			//MainViewModel.GetInstance().Register = new RegisterViewModel();
 
-			//await Application.Current.MainPage.Navigation.PushAsync(new LandsPage());
+			//await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
 
 		}
 
