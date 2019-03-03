@@ -92,6 +92,7 @@ namespace ActivityMaps.ViewModels
 
 		private async void Register()
 		{
+			MainViewModel.GetInstance().Register = new RegisterViewModel();
 			await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
 			this.IsRunning = false;
 			this.IsEnabled = true;
@@ -140,9 +141,9 @@ namespace ActivityMaps.ViewModels
 			this.Email = string.Empty;
 			this.Password = string.Empty;
 
-			//MainViewModel.GetInstance().Register = new RegisterViewModel();
+			//MainViewModel.GetInstance().Activity = new ActivityViewModel();
 
-			//await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
+			await Application.Current.MainPage.Navigation.PushAsync(new ActivityPage());
 
 		}
 

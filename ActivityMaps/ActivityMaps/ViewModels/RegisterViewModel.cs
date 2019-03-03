@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using ActivityMaps.Models;
+using ActivityMaps.Views;
 
 namespace ActivityMaps.ViewModels
 {
@@ -219,9 +220,9 @@ namespace ActivityMaps.ViewModels
 					"Accept");
 				return;
 			}
-			
 
 
+			await Application.Current.MainPage.Navigation.PushAsync(new EndRegisterPage());
 
 
 		}
