@@ -69,11 +69,9 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Title="Select Gender"
-                        SelectedItem="{Binding Gender, Mode=TwoWay}">
-                        <Picker.Items>
-                            <x:String>Male</x:String>
-                            <x:String>Female</x:String>
-                        </Picker.Items>
+                        ItemsSource="{Binding Genders}" 
+                        ItemDisplayBinding="{Binding Name}" 
+                        SelectedItem="{Binding SelectedGender}">
                     </Picker>
                     <Label 
                         Grid.Row="4"
@@ -86,6 +84,7 @@
                         Grid.Column="1"
                         MinimumDate="01/01/1919"
                         MaximumDate="{x:Static sys:DateTime.Now}"
+                        Date="{Binding Birthdate, Mode=TwoWay}"
                         >
                     </DatePicker>
                     <Label 
@@ -165,11 +164,10 @@
                         HorizontalOptions="Center"
                         WidthRequest="110"
                         TranslationX="-25"
-                        SelectedItem="{Binding Country, Mode=TwoWay}"
+                        ItemsSource="{Binding Countries}" 
+                        ItemDisplayBinding="{Binding Name}" 
+                        SelectedItem="{Binding SelectedCountry}"
                         Title="Country...">
-                        <Picker.Items>
-                            <x:String>Puerto Rico</x:String>
-                        </Picker.Items>
                     </Picker>
                     <Label
                         Text="ZipCode"
@@ -197,7 +195,7 @@
                         HeightRequest="46"
                         AnchorX="50"
                         IsEnabled="{Binding isEnabled, Mode=TwoWay}"
-                        Command="{Binding LoginCommand}"
+                        Command="{Binding NextCommand}"
                         Text="Next"
                         TextColor="White">
                     </Button>

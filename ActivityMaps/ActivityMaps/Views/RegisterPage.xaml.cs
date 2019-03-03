@@ -15,6 +15,7 @@ namespace ActivityMaps.Views
 		public RegisterPage ()
 		{
 			InitializeComponent ();
+
 		}
 	}
 }
