@@ -2,12 +2,18 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ActivityMaps.Views.EndRegisterPage"
+             BindingContext="{Binding Main,Source={StaticResource Locator}}"
              Title="Register">
     <ContentPage.Content>
         <ScrollView 
-            BindingContext="{Binding Register}">
-
+            BindingContext="{Binding EndRegister}">
+   
             <StackLayout Padding="10,20,10,5">
+                <Label 
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="Account"/>
                 <Grid Margin="0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -53,10 +59,11 @@
                             Placeholder="Enter password again...">
                     </Entry>
                 </Grid>
-                     <Label 
-                            Text="Take or choose a face picture, for security purpose."
-                            VerticalOptions="Center">
-                    </Label>
+                <Label 
+                Text="Take or choose a face picture, for security purpose."
+                VerticalOptions="Center">
+                    
+                </Label>
                
                 <StackLayout 
                         Margin="40,15"
@@ -66,14 +73,14 @@
                     <Button
                             BackgroundColor="Magenta"
                             HeightRequest="46"
-                            AnchorX="50"
+                            WidthRequest="120"
                             Text="Take Picture"
                             TextColor="White">
                         </Button>
                         <Button
                             BackgroundColor="MidnightBlue"
                             HeightRequest="46"
-                            AnchorX="50"
+                            WidthRequest="120"
                             Text="Choose Picture"
                             TextColor="White">
                         </Button>
