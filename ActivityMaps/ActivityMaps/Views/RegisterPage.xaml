@@ -193,7 +193,7 @@
                         BackgroundColor="Navy"
                         BorderRadius="23"
                         HeightRequest="46"
-                        AnchorX="50"
+                        WidthRequest="140"
                         IsEnabled="{Binding isEnabled, Mode=TwoWay}"
                         Command="{Binding NextCommand}"
                         Text="Next"

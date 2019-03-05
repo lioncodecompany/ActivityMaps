@@ -66,21 +66,21 @@
                 </Label>
                
                 <StackLayout 
-                        Margin="40,15"
+                        Margin="30,15"
                         HorizontalOptions="Center"
                         Orientation="Horizontal">
                     
                     <Button
                             BackgroundColor="Magenta"
                             HeightRequest="46"
-                            WidthRequest="120"
+                            WidthRequest="140"
                             Text="Take Picture"
                             TextColor="White">
                         </Button>
                         <Button
                             BackgroundColor="MidnightBlue"
                             HeightRequest="46"
-                            WidthRequest="120"
+                            WidthRequest="140"
                             Text="Choose Picture"
                             TextColor="White">
                         </Button>
@@ -95,6 +95,7 @@
                             BackgroundColor="Navy"
                             BorderRadius="23"
                             HeightRequest="46"
+                            WidthRequest="140"
                             AnchorX="50"
                             IsEnabled="{Binding isEnabled, Mode=TwoWay}"
                             Command="{Binding Finish}"

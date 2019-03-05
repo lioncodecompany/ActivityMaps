@@ -24,8 +24,20 @@ namespace ActivityMaps.Views
                 "Item 2",
                 "Item 3",
                 "Item 4",
-                "Item 5"
-            };
+                "Item 5",
+				"Item 6",
+				"Item 7",
+				"Item 8",
+				"Item 9",
+				"Item 10",
+				"Item 11",
+				"Item 12",
+				"Item 13",
+				"Item 14",
+				"Item 15",
+				"Item 16",
+
+			};
 			
 			MyListView.ItemsSource = Items;
         }
@@ -35,7 +47,7 @@ namespace ActivityMaps.Views
             if (e.Item == null)
                 return;
 
-            await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
+            await DisplayAlert("Item Tapped", "An item was tapped. " + e.Item.ToString(), "OK");
 
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
