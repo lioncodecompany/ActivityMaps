@@ -84,7 +84,7 @@
                         Grid.Column="1"
                         MinimumDate="01/01/1919"
                         MaximumDate="{x:Static sys:DateTime.Now}"
-                        Date="{Binding Birthdate, Mode=TwoWay}"
+                        Date="{Binding Birthdate}"
                         >
                     </DatePicker>
                     <Label 
@@ -184,6 +184,7 @@
                         Placeholder="ZipCode...">
                     </Entry>
                 </StackLayout>
+                
                 <StackLayout 
                     Margin="40,15"
                     HorizontalOptions="Center"

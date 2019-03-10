@@ -6,6 +6,9 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using ActivityMaps.Models;
 using ActivityMaps.Views;
+using ActivityMaps.Helpers;
+using Microsoft.WindowsAzure.MobileServices;
+using System.Linq;
 
 namespace ActivityMaps.ViewModels
 {
@@ -17,7 +20,7 @@ namespace ActivityMaps.ViewModels
 		private string lastName;
 		private string nickname;
 		Gender selectedGender;
-		private DatePicker birthdate;
+		private DateTime birthdate;
 		private string phone;
 		private string address;
 		private string city;
@@ -56,7 +59,7 @@ namespace ActivityMaps.ViewModels
 			set { SetValue(ref this.selectedGender, value); }
 		}
 
-		public DatePicker Birthdate
+		public DateTime Birthdate
 		{
 			get { return this.birthdate; }
 			set { SetValue(ref this.birthdate, value); }
@@ -106,14 +109,7 @@ namespace ActivityMaps.ViewModels
 
 		public RegisterViewModel()
 		{
-			this.Name = "kevin";
-			this.Last_Name = "Leon";
-			this.Nickname = "Kolb22";
-			this.Phone = "7877333421";
-			this.Address = "PO BOX";
-			this.City = "Las Piedras";
-			this.State = "PR";
-			this.Zip_Code = "00771";
+			
 		}
 
 		#endregion
@@ -126,6 +122,8 @@ namespace ActivityMaps.ViewModels
 				return new RelayCommand(Next);
 			}
 		}
+
+		
 
 		private async void Next()
 		{
@@ -222,9 +220,56 @@ namespace ActivityMaps.ViewModels
 			}
 
 
+			int len = RandomId.length.Next(5, 10);
+
+			Address newAddress = new Address()
+			{
+				
+				Id = RandomId.RandomString(len),
+				Phone = this.Phone.TrimEnd(),
+				Address1 = this.Address.TrimEnd(),
+				Address2 = string.Empty,
+				City = this.City.TrimEnd(),
+				State = this.State.TrimEnd(),
+				Country = this.SelectedCountry.Name.TrimEnd(),
+				Zipcode = this.Zip_Code.TrimEnd()
+
+			};
+
+			User newUSer = new User()
+			{
+				Id = RandomId.RandomString(len),
+				Name = this.Name.TrimEnd(),
+				Last_Name = this.Last_Name.TrimEnd(),
+				Nickname = this.Nickname.TrimEnd(),
+				Gender = this.SelectedGender.Name.Substring(0,1),
+				Birthdate = this.Birthdate.Date,
+				IsAdmin = false,
+				Locked = false,
+				Address_Id_FK = newAddress.Id
+
+			};
+
+			/*
+			try
+			{
+				
+				await App.MobileService.GetTable<Address>().InsertAsync(newAddress);
+				await Application.Current.MainPage.DisplayAlert("Exito", "El contacto fue insertado", "Ok");
+				await Application.Current.MainPage.Navigation.PushAsync(new EndRegisterPage());
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error ", ex.Message, "Ok");
+			}
+			*/
+
+			//new EndRegisterViewModel(newAddress);
+			//MainViewModel.GetInstance().EndRegister = new EndRegisterViewModel();
+			//await Application.Current.MainPage.Navigation.PushAsync(new EndRegisterPage(newAddress, newUSer));
+
+			MainViewModel.GetInstance().EndRegister = new EndRegisterViewModel(newAddress, newUSer);
 			await Application.Current.MainPage.Navigation.PushAsync(new EndRegisterPage());
-
-
 		}
 		#endregion
 	}

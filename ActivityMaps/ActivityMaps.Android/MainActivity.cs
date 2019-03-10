@@ -6,6 +6,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using System.IO;
+using Microsoft.WindowsAzure.MobileServices;
 
 namespace ActivityMaps.Droid
 {
@@ -19,7 +21,15 @@ namespace ActivityMaps.Droid
 
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
+			CurrentPlatform.Init();
+
+			string nombreArchivo = "DB_ActivityMaps.sqlite";
+			string rutaCarpeta = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+			string rutaCompleta = Path.Combine(rutaCarpeta, nombreArchivo);
+
+            LoadApplication(new App(rutaCompleta));
+
+
         }
     }
 }

@@ -31,6 +31,7 @@
                         VerticalOptions="Center">
                     </Label>
                     <Entry 
+                        x:Name="Email"
                         Grid.Row="0"
                         Grid.Column="1"
                         Keyboard="Email"
@@ -81,7 +82,10 @@
 
                 <ActivityIndicator 
                     IsRunning="{Binding IsRunning, Mode=TwoWay}"
-                    VerticalOptions="CenterAndExpand">
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Color="Navy"
+                    >
                 </ActivityIndicator>
 
                 <StackLayout 

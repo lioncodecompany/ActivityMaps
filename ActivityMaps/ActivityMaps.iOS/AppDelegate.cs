@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Foundation;
+using Microsoft.WindowsAzure.MobileServices;
 using UIKit;
 
 namespace ActivityMaps.iOS
@@ -23,7 +24,8 @@ namespace ActivityMaps.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
+			CurrentPlatform.Init();
+			LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
         }

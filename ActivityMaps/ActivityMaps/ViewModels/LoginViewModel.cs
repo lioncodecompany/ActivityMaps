@@ -10,6 +10,7 @@ namespace ActivityMaps.ViewModels
 	using Views;
 	using System.Windows.Input;
 	using Xamarin.Forms;
+	using ActivityMaps.Models;
 
 	public class LoginViewModel : BaseViewModel
 	{
@@ -61,14 +62,21 @@ namespace ActivityMaps.ViewModels
 		#endregion
 
 		#region Contrusctores
-
 		public LoginViewModel()
 		{
 			this.IsRemembered = true;
 			this.IsEnabled = true;
 
-			this.Email = "k@k.com";
-			this.Password = "1234";
+
+		}
+
+		public LoginViewModel(string email)
+		{
+			this.IsRemembered = true;
+			this.IsEnabled = true;
+
+			this.Email = email;
+
 		}
 
 		#endregion
@@ -123,7 +131,35 @@ namespace ActivityMaps.ViewModels
 
 			this.IsRunning = true;
 			this.IsEnabled = false;
-			if (this.Email != "k@k.com" || this.Password != "1234")
+			var userQuerry = await App.MobileService.GetTable<User>().Where(p => p.Email == Email).ToListAsync();
+			
+			var result = string.Empty;
+			if (userQuerry.Count > 0)
+			{
+				var passwordQuerry = await App.MobileService.GetTable<User_Password>().Where(p => p.User_Id_FK == userQuerry[0].Id).ToListAsync();
+				if (passwordQuerry.Count > 0)
+				{
+
+					byte[] decryted = Convert.FromBase64String(passwordQuerry[0].Password);
+
+					result = System.Text.Encoding.Unicode.GetString(decryted);
+
+				}
+			}
+			else
+			{
+				this.IsRunning = false;
+				this.IsEnabled = true;
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"Email or Password is incorrect.",
+					"Accept");
+				this.Password = string.Empty;
+				return;
+			}
+
+
+			if (this.Email != userQuerry[0].Email || this.Password != result)
 			{
 				this.IsRunning = false;
 				this.IsEnabled = true;
