@@ -1,39 +1,102 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=netstandard"
+             xmlns:local="clr-namespace:ActivityMaps"
+             xmlns:forms="clr-namespace:ActivityMaps.Forms;assembly=ActivityMaps.Forms"
              x:Class="ActivityMaps.Views.ActivityPage"
              BindingContext="{Binding Main,Source={StaticResource Locator}}"
              Title="Activity">
-    <ScrollView>
-    <StackLayout>
+
+
+
+
+    <StackLayout >
         <Label 
                 FontAttributes="Bold"
                 FontSize="Large"
                 HorizontalOptions="Center"
                 Text="Welcome">
         </Label>
+
         <SearchBar 
-            x:Name="SearchBar" 
-            SearchCommand="{Binding SearchCommand}" 
-            SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}">
+            Placeholder="Search Activity"
+            Text="{Binding Activitytxt,Mode=TwoWay}"
+            SearchCommand="{Binding SearchCommand,Mode=TwoWay}" >
+            <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"  ES BUENO INVESTIGAR PARA QUE FUNCIONA ESTO Y COMO-->
         </SearchBar>
-        <ListView 
-            x:Name="MyListView"
+        <ScrollView BindingContext="{Binding Activity}" >
+            <ListView 
+            SeparatorVisibility="None"
+            IsRefreshing="{Binding IsRefreshing,Mode=TwoWay}"
             IsPullToRefreshEnabled="true"
-            RefreshCommand="{Binding RefreshCommand}"
-            ItemsSource="{Binding Items}"
-            ItemTapped="Handle_ItemTapped"
-            CachingStrategy="RecycleElement">
-            
-    <!--Built in Cells-->
-    <ListView.ItemTemplate>
-        <DataTemplate>
-            <TextCell Text="{Binding .}" />
-        </DataTemplate>
-    </ListView.ItemTemplate>
-    
-    <!--Custom View Cells-->
-    <!--
+            RefreshCommand="{Binding RefreshCommand,Mode=TwoWay}"
+            ItemsSource="{Binding ActivityResult,Mode=TwoWay}"
+            SelectedItem="{Binding SelectedActivity,Mode=TwoWay}"
+            IsVisible="True">
+                <ListView.RowHeight>
+                    <OnPlatform x:TypeArguments="x:Int32">
+                        <On Platform="iOS, Android" Value="90" />
+                    </OnPlatform>
+                </ListView.RowHeight>
+
+
+                <!--Built in Cells-->
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ContentView Padding="5">
+                                <Frame OutlineColor="AliceBlue"
+                    Padding="10">
+
+
+                                    <StackLayout>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label  
+                                             Grid.Row="0"
+                                             Grid.Column="0" 
+                                            Text="{Binding Name, Mode=TwoWay}"
+                                            FontSize="22"
+                                            VerticalOptions="StartAndExpand" 
+                                            />
+                                            <BoxView Grid.Row="0"
+                                            Grid.Column="1"
+                                            Color="{Binding StatusColor, Mode=TwoWay}"
+                                            CornerRadius="8"
+                                            WidthRequest="15"
+                                            HeightRequest="15"
+                                            HorizontalOptions="EndAndExpand"
+                                                     VerticalOptions="StartAndExpand"
+                                            />
+                                            <Label
+                                                Grid.Row="1"
+                                               Grid.Column="0" 
+                                                Text="{Binding Location, Mode=TwoWay}"
+                                                FontSize="16"
+                                                VerticalOptions="CenterAndExpand" />
+                                            <Label
+                                                Grid.Row="1"
+                                               Grid.Column="1" 
+                                                Text="{Binding StatusTxt, Mode=TwoWay}"
+                                                FontSize="16"
+                                                VerticalOptions="CenterAndExpand" />
+                                        </Grid>
+                                    </StackLayout>
+
+
+                                </Frame>
+                            </ContentView>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <!--Custom View Cells-->
+                <!--
     <ListView.ItemTemplate>
       <DataTemplate>
         <ViewCell>
@@ -47,16 +110,29 @@
       </DataTemplate>
     </ListView.ItemTemplate>
     -->
-  </ListView>
+            </ListView>
+
+
+            
+        </ScrollView>
+
         <Button
-            BackgroundColor="Navy"
-            BorderRadius="23"
-            WidthRequest="140"
-            IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
-            Command="{Binding CreateCommand}"
-            Text="Create Activity"
-            TextColor="White">
+                Margin="-50"
+                BackgroundColor="#0086dc"
+                BorderRadius="25"
+                WidthRequest="50"
+                HeightRequest="50"
+                IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                Command="{Binding CreateCommand}"
+                VerticalOptions="EndAndExpand"
+                HorizontalOptions="EndAndExpand"
+                TranslationX="-75"
+                TranslationY="-75"
+                Text="+"
+                TextColor="White"   >
         </Button>
+
     </StackLayout>
-    </ScrollView>
+
+
 </ContentPage>

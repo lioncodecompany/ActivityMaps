@@ -111,71 +111,71 @@ namespace ActivityMaps.ViewModels
 
 		private async void Login()
 		{
-			if (string.IsNullOrEmpty(this.Email))
-			{
-				await Application.Current.MainPage.DisplayAlert(
-					"Error",
-					"You must enter an email.",
-					"Accept");
-				return;
-			}
+			//if (string.IsNullOrEmpty(this.Email))
+			//{
+			//	await Application.Current.MainPage.DisplayAlert(
+			//		"Error",
+			//		"You must enter an email.",
+			//		"Accept");
+			//	return;
+			//}
 
-			if (string.IsNullOrEmpty(this.Password))
-			{
-				await Application.Current.MainPage.DisplayAlert(
-					"Error",
-					"You must enter an Password.",
-					"Accept");
-				return;
-			}
+			//if (string.IsNullOrEmpty(this.Password))
+			//{
+			//	await Application.Current.MainPage.DisplayAlert(
+			//		"Error",
+			//		"You must enter an Password.",
+			//		"Accept");
+			//	return;
+			//}
 
-			this.IsRunning = true;
-			this.IsEnabled = false;
-			var userQuerry = await App.MobileService.GetTable<User>().Where(p => p.Email == Email).ToListAsync();
+			//this.IsRunning = true;
+			//this.IsEnabled = false;
+			//var userQuerry = await App.MobileService.GetTable<User>().Where(p => p.Email == Email).ToListAsync();
 			
-			var result = string.Empty;
-			if (userQuerry.Count > 0)
-			{
-				var passwordQuerry = await App.MobileService.GetTable<User_Password>().Where(p => p.User_Id_FK == userQuerry[0].Id).ToListAsync();
-				if (passwordQuerry.Count > 0)
-				{
+			//var result = string.Empty;
+			//if (userQuerry.Count > 0)
+			//{
+			//	var passwordQuerry = await App.MobileService.GetTable<User_Password>().Where(p => p.User_Id_FK == userQuerry[0].Id).ToListAsync();
+			//	if (passwordQuerry.Count > 0)
+			//	{
 
-					byte[] decryted = Convert.FromBase64String(passwordQuerry[0].Password);
+			//		byte[] decryted = Convert.FromBase64String(passwordQuerry[0].Password);
 
-					result = System.Text.Encoding.Unicode.GetString(decryted);
+			//		result = System.Text.Encoding.Unicode.GetString(decryted);
 
-				}
-			}
-			else
-			{
-				this.IsRunning = false;
-				this.IsEnabled = true;
-				await Application.Current.MainPage.DisplayAlert(
-					"Error",
-					"Email or Password is incorrect.",
-					"Accept");
-				this.Password = string.Empty;
-				return;
-			}
+			//	}
+			//}
+			//else
+			//{
+			//	this.IsRunning = false;
+			//	this.IsEnabled = true;
+			//	await Application.Current.MainPage.DisplayAlert(
+			//		"Error",
+			//		"Email or Password is incorrect.",
+			//		"Accept");
+			//	this.Password = string.Empty;
+			//	return;
+			//}
 
 
-			if (this.Email != userQuerry[0].Email || this.Password != result)
-			{
-				this.IsRunning = false;
-				this.IsEnabled = true;
-				await Application.Current.MainPage.DisplayAlert(
-					"Error",
-					"Email or Password is incorrect.",
-					"Accept");
-				this.Password = string.Empty;
-				return;
-			}
+			//if (this.Email != userQuerry[0].Email || this.Password != result)
+			//{
+			//	this.IsRunning = false;
+			//	this.IsEnabled = true;
+			//	await Application.Current.MainPage.DisplayAlert(
+			//		"Error",
+			//		"Email or Password is incorrect.",
+			//		"Accept");
+			//	this.Password = string.Empty;
+			//	return;
+			//}
 
-			this.IsRunning = false;
-			this.IsEnabled = true;
+			//this.IsRunning = false;
+			//this.IsEnabled = true;
 
-			this.Email = string.Empty;
-			this.Password = string.Empty;
+			//this.Email = string.Empty;
+			//this.Password = string.Empty;
 
 			//MainViewModel.GetInstance().Activity = new ActivityViewModel();
 
