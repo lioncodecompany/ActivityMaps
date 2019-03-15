@@ -103,7 +103,7 @@
                             Command="{Binding NextCommand}"
                             Text="Register"
                             TextColor="White"
-                            Clicked="Button_Clicked">
+                            >
                             </Button>
 
                 </StackLayout>

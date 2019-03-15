@@ -22,8 +22,6 @@ namespace ActivityMaps.Views
 			InitializeComponent ();
 		}
 
-		private async void Button_Clicked(object sender, EventArgs args)
-		{
-		}
+		
 	}
 }
