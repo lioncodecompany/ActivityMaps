@@ -20,6 +20,8 @@ namespace ActivityMaps.ViewModels
         private Activity selectedActivity;
         private IEnumerable<Activity> activityResult;
         private ObservableCollection<Activity> activities;
+        private ObservableCollection<Activity_Location> locations;
+        private ObservableCollection<Activity_Category> categories;
         #endregion
 
         #region Propiedades
@@ -49,6 +51,24 @@ namespace ActivityMaps.ViewModels
 
             get { return this.activities; }
             set { SetValue(ref this.activities, value); }
+
+
+        }
+        public ObservableCollection<Activity_Location> Locations
+        {
+
+
+            get { return this.locations; }
+            set { SetValue(ref this.locations, value); }
+
+
+        }
+        public ObservableCollection<Activity_Category> Categories
+        {
+
+
+            get { return this.categories; }
+            set { SetValue(ref this.categories, value); }
 
 
         }
@@ -121,77 +141,39 @@ namespace ActivityMaps.ViewModels
         {
             this.IsRefreshing = true;
 
-            //ObservableCollection<DocumentList> DocumentLists = DocumentListData.DocumentLists;
-            activities = new ObservableCollection<Activity>();
-            {
+            ObservableCollection<Activity> Activities = ActivityData.Activities;
+            ObservableCollection<Activity_Location> Locations = Activity_LocationData.Locations;
+            ObservableCollection<Activity_Category> Categories = Activity_CategoryData.Categories;
 
-                activities.Add(new Activity
-                {
-                    Name = "BasketBall 3pa3",
-                    Location = "Las Piedras"
-                });
-
-                activities.Add(new Activity
-                {
-                    Name = "BasketBall Doble",
-                    Location = "Caguas"
-                });
-                activities.Add(new Activity
-                {
-                    Name = "Ping Pong de 4 Sets",
-                    Location = "Humacao"
-                });
-                activities.Add(new Activity
-                {
-                    Name = "BasketBall 3pa3",
-                    Location = "Las Piedras"
-                });
-
-                activities.Add(new Activity
-                {
-                    Name = "BasketBall Doble",
-                    Location = "Caguas"
-                });
-                activities.Add(new Activity
-                {
-                    Name = "Ping Pong de 4 Sets",
-                    Location = "Humacao"
-                });
-                activities.Add(new Activity
-                {
-                    Name = "BasketBall 3pa3",
-                    Location = "Las Piedras"
-                });
-
-                activities.Add(new Activity
-                {
-                    Name = "BasketBall Doble",
-                    Location = "Caguas"
-                });
-                activities.Add(new Activity
-                {
-                    Name = "Ping Pong de 4 Sets",
-                    Location = "Humacao"
-                });
-            };
-
+            //this.ActivityResult;
+            //var query
             this.ActivityResult = from act
-                                in Activities
-                                where (act.Name.ToUpper().Contains(this.Activitytxt.ToUpper()))
-                                ||
-                                (act.Location.ToUpper().Contains(this.Activitytxt.ToUpper()))
-                                select act;
+                                    in Activities
+                                    join cat in Categories on act.Activity_Cat_Code equals cat.Id
+                                    join loc in Locations on act.Activity_Loc_Id equals loc.Id
+                                    where (act.Name.ToUpper().Contains(this.Activitytxt.ToUpper()))
+                                    ||
+                                    (cat.Name.ToUpper().Contains(this.Activitytxt.ToUpper()))
+                                    ||
+                                    (loc.City.ToUpper().Contains(this.Activitytxt.ToUpper()))
+                                    select act;
+                         
+                             
+                         
+            
+           // this.ActivityResult = (IEnumerable<Activity>)query.ToList();
 
             this.IsRefreshing = false;
         }
         public async void Assign()
         {
 
-            var actID = this.SelectedActivity.Id;
+            //var actID = this.SelectedActivity.Id;
+            string actName = this.SelectedActivity.Name;
             SetValue(ref this.selectedActivity, null);
             LoadActivity();
 
-           await Application.Current.MainPage.DisplayAlert("Alert", this.SelectedActivity.Id, "OK");
+           await Application.Current.MainPage.DisplayAlert("Alert", actName, "OK");
 
             // await Application.Current.MainPage.Navigation.PushAsync(new ActivityDetail(this.SelectedActivity.Id));
 

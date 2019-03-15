@@ -14,9 +14,9 @@ namespace ActivityMaps.Models
         public bool IsPrivate { get; set; }
         public int Status { get; set; }
         public bool IsService { get; set; }
-        //public int Activity_Cat_Code { get; set; } //ID debemos buscar la forma de traer el texto de la tabla categoria
+        public string Activity_Cat_Code { get; set; } 
         public string Category { get; set; }
         public string Location { get; set; } 
-        public int Activity_Loc_Id { get; set; }
+        public string Activity_Loc_Id { get; set; }
     }
 }

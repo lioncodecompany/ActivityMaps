@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:sys="clr-namespace:System;assembly=netstandard"
              xmlns:local="clr-namespace:ActivityMaps"
-             xmlns:forms="clr-namespace:ActivityMaps.Forms;assembly=ActivityMaps.Forms"
              x:Class="ActivityMaps.Views.ActivityPage"
              BindingContext="{Binding Main,Source={StaticResource Locator}}"
              Title="Activity">
@@ -11,7 +10,7 @@
 
 
 
-    <StackLayout >
+    <StackLayout BindingContext="{Binding Activity}" >
         <Label 
                 FontAttributes="Bold"
                 FontSize="Large"
@@ -25,7 +24,7 @@
             SearchCommand="{Binding SearchCommand,Mode=TwoWay}" >
             <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"  ES BUENO INVESTIGAR PARA QUE FUNCIONA ESTO Y COMO-->
         </SearchBar>
-        <ScrollView BindingContext="{Binding Activity}" >
+        <ScrollView  >
             <ListView 
             SeparatorVisibility="None"
             IsRefreshing="{Binding IsRefreshing,Mode=TwoWay}"
@@ -54,14 +53,14 @@
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="0.5*"/>
                                             </Grid.ColumnDefinitions>
 
                                             <Label  
                                              Grid.Row="0"
                                              Grid.Column="0" 
                                             Text="{Binding Name, Mode=TwoWay}"
-                                            FontSize="22"
+                                            FontSize="18"
                                             VerticalOptions="StartAndExpand" 
                                             />
                                             <BoxView Grid.Row="0"
@@ -76,8 +75,8 @@
                                             <Label
                                                 Grid.Row="1"
                                                Grid.Column="0" 
-                                                Text="{Binding Location, Mode=TwoWay}"
-                                                FontSize="16"
+                                                Text="{Binding Activity_Cat_Code, Mode=TwoWay}"
+                                                FontSize="14"
                                                 VerticalOptions="CenterAndExpand" />
                                             <Label
                                                 Grid.Row="1"

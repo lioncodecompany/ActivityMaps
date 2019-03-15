@@ -11,6 +11,7 @@ namespace ActivityMaps.ViewModels
 		public LoginViewModel Login { get; set; }
 		public RegisterViewModel Register { get; set; }
 		public EndRegisterViewModel EndRegister { get; set; }
+        public ActivityViewModel Activity { get; set; }
 
 		#endregion
 
@@ -22,6 +23,7 @@ namespace ActivityMaps.ViewModels
 			this.Login = new LoginViewModel();
 			this.Register = new RegisterViewModel();
 			this.EndRegister = new EndRegisterViewModel();
+            this.Activity = new ActivityViewModel();
 			
 		}
 
