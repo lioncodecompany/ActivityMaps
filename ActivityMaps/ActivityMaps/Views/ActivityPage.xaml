@@ -5,12 +5,14 @@
              xmlns:local="clr-namespace:ActivityMaps"
              x:Class="ActivityMaps.Views.ActivityPage"
              BindingContext="{Binding Main,Source={StaticResource Locator}}"
-             Title="Activity">
+             Title="Activity"
+             >
 
 
 
 
-    <StackLayout BindingContext="{Binding Activity}" >
+    <StackLayout BindingContext="{Binding Activity}"
+                 Margin="0, 0, 0, 0">
         <Label 
                 FontAttributes="Bold"
                 FontSize="Large"
@@ -24,7 +26,17 @@
             SearchCommand="{Binding SearchCommand,Mode=TwoWay}" >
             <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"  ES BUENO INVESTIGAR PARA QUE FUNCIONA ESTO Y COMO-->
         </SearchBar>
-        <ScrollView  >
+
+        <Picker
+            Title="Filter"
+            HorizontalOptions="EndAndExpand"
+            WidthRequest="150"
+            ItemsSource="{Binding Genders}" 
+            ItemDisplayBinding="{Binding Name}" 
+            SelectedItem="{Binding SelectedGender}">
+        </Picker>
+
+        <ScrollView>
             <ListView 
             SeparatorVisibility="None"
             IsRefreshing="{Binding IsRefreshing,Mode=TwoWay}"
@@ -33,6 +45,7 @@
             ItemsSource="{Binding ActivityResult,Mode=TwoWay}"
             SelectedItem="{Binding SelectedActivity,Mode=TwoWay}"
             IsVisible="True">
+                
                 <ListView.RowHeight>
                     <OnPlatform x:TypeArguments="x:Int32">
                         <On Platform="iOS, Android" Value="90" />
@@ -45,13 +58,14 @@
                     <DataTemplate>
                         <ViewCell>
                             <ContentView Padding="5">
-                                <Frame OutlineColor="AliceBlue"
-                    Padding="10">
-
-
+                                <Frame OutlineColor="AliceBlue" Padding="10">
+                                    
+                                    
                                     <StackLayout>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
+                                        
+                                            <Grid>
+                                            
+                                                <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="0.5*"/>
                                             </Grid.ColumnDefinitions>
@@ -59,9 +73,9 @@
                                             <Label  
                                              Grid.Row="0"
                                              Grid.Column="0" 
-                                            Text="{Binding Name, Mode=TwoWay}"
-                                            FontSize="18"
-                                            VerticalOptions="StartAndExpand" 
+                                             Text="{Binding Name, Mode=TwoWay}"
+                                             FontSize="18"
+                                             VerticalOptions="StartAndExpand" 
                                             />
                                             <BoxView Grid.Row="0"
                                             Grid.Column="1"
@@ -70,12 +84,12 @@
                                             WidthRequest="15"
                                             HeightRequest="15"
                                             HorizontalOptions="EndAndExpand"
-                                                     VerticalOptions="StartAndExpand"
+                                            VerticalOptions="StartAndExpand"
                                             />
-                                            <Label
+                                            <Label 
                                                 Grid.Row="1"
-                                               Grid.Column="0" 
-                                                Text="{Binding Activity_Cat_Code, Mode=TwoWay}"
+                                                Grid.Column="0" 
+                                                Text="{Binding Category_Name, Mode=TwoWay}"
                                                 FontSize="14"
                                                 VerticalOptions="CenterAndExpand" />
                                             <Label
@@ -85,6 +99,7 @@
                                                 FontSize="16"
                                                 VerticalOptions="CenterAndExpand" />
                                         </Grid>
+                                
                                     </StackLayout>
 
 
@@ -116,7 +131,7 @@
         </ScrollView>
 
         <Button
-                Margin="-50"
+                Margin="-29"
                 BackgroundColor="#0086dc"
                 BorderRadius="25"
                 WidthRequest="50"
@@ -125,10 +140,10 @@
                 Command="{Binding CreateCommand}"
                 VerticalOptions="EndAndExpand"
                 HorizontalOptions="EndAndExpand"
-                TranslationX="-75"
-                TranslationY="-75"
+                TranslationX="-50"
+                TranslationY="-60"
                 Text="+"
-                TextColor="White"   >
+                TextColor="White">
         </Button>
 
     </StackLayout>

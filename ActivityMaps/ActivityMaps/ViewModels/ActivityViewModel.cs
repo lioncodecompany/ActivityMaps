@@ -19,13 +19,28 @@ namespace ActivityMaps.ViewModels
         private bool isRefreshing;
         private Activity selectedActivity;
         private IEnumerable<Activity> activityResult;
-        private ObservableCollection<Activity> activities;
+		private IEnumerable<Activity_Category> activityCatResult;
+		private ObservableCollection<Activity> activities;
         private ObservableCollection<Activity_Location> locations;
         private ObservableCollection<Activity_Category> categories;
-        #endregion
+		private string categoryName;
+		private List<User> userQuerry;
+		#endregion
 
-        #region Propiedades
-        public string Activitytxt
+		#region Propiedades
+		public string Category_Name
+		{
+			get { return this.categoryName; }
+			set
+			{
+
+				SetValue(ref this.categoryName, value);
+
+			}
+		}
+
+
+		public string Activitytxt
         {
 
             get { return this.activitytxt; }
@@ -104,11 +119,20 @@ namespace ActivityMaps.ViewModels
 
 
         }
+		public IEnumerable<Activity_Category> ActivityCatResult
+		{
 
-        #endregion
 
-        #region Commandos
-        public ICommand SearchCommand
+			get { return this.activityCatResult; }
+			set { SetValue(ref this.activityCatResult, value); }
+
+
+		}
+
+		#endregion
+
+		#region Commandos
+		public ICommand SearchCommand
         {
             get
             {
@@ -123,10 +147,17 @@ namespace ActivityMaps.ViewModels
                 return new RelayCommand(LoadActivity);
             }
         }
-        #endregion
+		public ICommand CreateCommand
+		{
+			get
+			{
+				return new RelayCommand(CreateActivity);
+			}
+		}
+		#endregion
 
-        #region Contrusctores
-        public ActivityViewModel()
+		#region Contrusctores
+		public ActivityViewModel()
         {
 
              this.Activitytxt = "";
@@ -134,34 +165,68 @@ namespace ActivityMaps.ViewModels
              LoadActivity();
 
         }
-        #endregion
 
-        #region Metodos
-        public void LoadActivity()
+		public ActivityViewModel(List<User> userQuerry)
+		{
+			this.Activitytxt = "";
+			this.IsRefreshing = false;
+			LoadActivity();
+			this.userQuerry = userQuerry;
+		}
+		#endregion
+
+		#region Metodos
+		private async void CreateActivity()
+		{
+			MainViewModel.GetInstance().CreateActivity = new CreateActivityViewModel();
+			await Application.Current.MainPage.Navigation.PushAsync(new CreateActivityPage());
+			LoadActivity();
+		}
+		private async void LoadActivity()
         {
             this.IsRefreshing = true;
 
-            ObservableCollection<Activity> Activities = ActivityData.Activities;
-            ObservableCollection<Activity_Location> Locations = Activity_LocationData.Locations;
-            ObservableCollection<Activity_Category> Categories = Activity_CategoryData.Categories;
+            Activities = ActivityData.Activities;
+            Locations = Activity_LocationData.Locations;
+            Categories = Activity_CategoryData.Categories;
 
-            //this.ActivityResult;
-            //var query
-            this.ActivityResult = from act
-                                    in Activities
-                                    join cat in Categories on act.Activity_Cat_Code equals cat.Id
-                                    join loc in Locations on act.Activity_Loc_Id equals loc.Id
-                                    where (act.Name.ToUpper().Contains(this.Activitytxt.ToUpper()))
-                                    ||
-                                    (cat.Name.ToUpper().Contains(this.Activitytxt.ToUpper()))
-                                    ||
-                                    (loc.City.ToUpper().Contains(this.Activitytxt.ToUpper()))
-                                    select act;
-                         
-                             
+			//this.ActivityResult;
+			//var query
+			this.ActivityResult = from act
+									in Activities
+						join cat in Categories on act.Activity_Cat_Code equals cat.Id
+						join loc in Locations on act.Activity_Loc_Id equals loc.Id
+						where (act.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+						||
+						(cat.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+						||
+						(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+						select act;
+			//{
+			//	act,
+			//	Category_Name = cat.Name
+
+			//};
+
+			//var query = ActivityResult.ToArray();
+			
+			//for (int i = 0; i < query.Length; i++)
+			//{
+			//	this.ActivityCatResult = from cat in Categories
+			//							 where (cat.Id.Equals(query[i].Activity_Cat_Code))
+			//							 select cat;
+			//	var catName = ActivityCatResult.ToArray();
+			//	Category_Name = catName[i].Name
+
+			//}
+
+			
+			
+			
+			
                          
             
-           // this.ActivityResult = (IEnumerable<Activity>)query.ToList();
+            //this.ActivityResult = (IEnumerable<Activity>)query.ToList();
 
             this.IsRefreshing = false;
         }

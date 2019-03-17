@@ -17,8 +17,7 @@ namespace ActivityMaps.Models
                 Name = "BasketBall 3pa3",
                 Activity_Loc_Id = "3",
                 Activity_Cat_Code = "2"
-                ,Category = ""
-                //Location = "Las Piedras"
+                
             });
 
             Activities.Add(new Activity
@@ -27,9 +26,8 @@ namespace ActivityMaps.Models
                 Name = "BasketBall Doble",
                 Activity_Loc_Id = "1",
                 Activity_Cat_Code = "2"
-                ,
-                Category = ""
-                //Location = "Caguas"
+                
+                
             });
             Activities.Add(new Activity
             {
@@ -37,9 +35,7 @@ namespace ActivityMaps.Models
                 Name = "Ping Pong de 4 Sets",
                 Activity_Loc_Id = "3",
                 Activity_Cat_Code = "1"
-                ,
-                Category = ""
-                //Location = "Humacao"
+           
             });
             Activities.Add(new Activity
             {
@@ -47,9 +43,8 @@ namespace ActivityMaps.Models
                 Name = "BasketBall 3pa3",
                 Activity_Loc_Id = "2",
                 Activity_Cat_Code = "2"
-                ,
-                Category = ""
-                //Location = "Las Piedras"
+                
+                
             });
 
             Activities.Add(new Activity
@@ -58,9 +53,8 @@ namespace ActivityMaps.Models
                 Name = "BasketBall Doble",
                 Activity_Loc_Id = "1",
                 Activity_Cat_Code = "2"
-                ,
-                Category = ""
-                //Location = "Caguas"
+                
+                
             });
             Activities.Add(new Activity
             {
@@ -68,9 +62,7 @@ namespace ActivityMaps.Models
                 Name = "Merengue",
                 Activity_Loc_Id = "3",
                 Activity_Cat_Code = "3"
-                ,
-                Category = ""
-                //Location = "Humacao"
+                
             });
             Activities.Add(new Activity
             {
@@ -78,9 +70,7 @@ namespace ActivityMaps.Models
                 Name = "BasketBall 3pa3",
                 Activity_Loc_Id = "3",
                 Activity_Cat_Code = "2"
-                ,
-                Category = ""
-                //Location = "Las Piedras"
+               
             });
 
             Activities.Add(new Activity
@@ -89,9 +79,7 @@ namespace ActivityMaps.Models
                 Name = "BasketBall Guerilla",
                 Activity_Loc_Id = "2",
                 Activity_Cat_Code = "2"
-                ,
-                Category = ""
-                //Location = "Caguas"
+                
             });
             Activities.Add(new Activity
             {
@@ -99,9 +87,7 @@ namespace ActivityMaps.Models
                 Name = "Salsa",
                 Activity_Loc_Id = "1",
                 Activity_Cat_Code = "3"
-                ,
-                Category = ""
-                //Location = "Humacao"
+               
             });
         }
     }

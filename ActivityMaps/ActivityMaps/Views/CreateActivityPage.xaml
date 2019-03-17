@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ActivityMaps.Views.CreateActivityPage"
+             xmlns:sys="clr-namespace:System;assembly=netstandard"
+             BindingContext="{Binding Main,Source={StaticResource Locator}}"
+             Title="Create Activity">
+    <ContentPage.Content>
+        <ScrollView 
+            BindingContext="{Binding EndRegister}">
+
+            <StackLayout Padding="10,20,10,5">
+
+                <Grid Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label  
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="Select Activity"
+                        VerticalOptions="Center">
+                    </Label>
+                    <Picker
+                        x:Name ="Activities"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Title="Select Activity..."
+                        ItemsSource="{Binding Activities}" 
+                        ItemDisplayBinding="{Binding Name}" 
+                        SelectedItem="{Binding SelectedActivity}">
+                    </Picker>
+                    <Label 
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Text="Activity Name"
+                            VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                            x:Name ="ActivityName"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            
+                            Text="{Binding Activity_Name, Mode=TwoWay}"
+                            Placeholder="Enter an activity name...">
+                    </Entry>
+                    
+                </Grid>
+                <Label 
+                            Text="Description"
+                            VerticalOptions="Center"
+                    HorizontalOptions="Center">
+                        
+                </Label>
+                <Editor 
+                            AutoSize="TextChanges"
+                            MaxLength="150"
+                            Text="{Binding Description, Mode=TwoWay}"
+                            Placeholder="Description...">
+                </Editor>
+
+                <Grid Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label  
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="Start Day"
+                        VerticalOptions="Center">
+                    </Label>
+                    <DatePicker
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        WidthRequest="110"
+                        TranslationX="-15"
+                        MinimumDate="{x:Static sys:DateTime.Now}"
+                        MaximumDate="{Binding MaxDate, Mode=TwoWay}"
+                        Date="{Binding StartDay}">
+                    </DatePicker>
+                    <Label 
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            TranslationX="-15"
+                            Text="Start Hour"
+                            VerticalOptions="Center">
+                    </Label>
+                    <TimePicker
+                           
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        TranslationX="-15"
+                        Time="{Binding StartTime, Mode=TwoWay}"
+                        Format="T"
+                            >
+                    </TimePicker>
+
+                </Grid>
+
+                <StackLayout 
+                        Margin="40,15"
+                        HorizontalOptions="Center"
+                        Orientation="Horizontal"
+                        VerticalOptions="EndAndExpand">
+
+                    <Button
+                            BackgroundColor="Navy"
+                            BorderRadius="23"
+                            HeightRequest="46"
+                            WidthRequest="140"
+                            AnchorX="50"
+                            IsEnabled="{Binding isEnabled, Mode=TwoWay}"
+                            Command="{Binding NextCommand}"
+                            Text="Create"
+                            TextColor="White"
+                            >
+                    </Button>
+
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
