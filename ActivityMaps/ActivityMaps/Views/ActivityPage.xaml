@@ -89,7 +89,7 @@
                                             <Label 
                                                 Grid.Row="1"
                                                 Grid.Column="0" 
-                                                Text="{Binding Category_Name, Mode=TwoWay}"
+                                                Text="{Binding CategoryName, Mode=TwoWay}"
                                                 FontSize="14"
                                                 VerticalOptions="CenterAndExpand" />
                                             <Label

@@ -11,6 +11,8 @@ namespace ActivityMaps.ViewModels
     using System.Collections.ObjectModel;
     using Models;
     using System.Linq;
+    using System.Collections;
+
     public class ActivityViewModel :BaseViewModel
     {
         #region Atributos
@@ -18,17 +20,23 @@ namespace ActivityMaps.ViewModels
         private string activitytxt;
         private bool isRefreshing;
         private Activity selectedActivity;
-        private IEnumerable<Activity> activityResult;
+        private IEnumerable activityResult;
 		private IEnumerable<Activity_Category> activityCatResult;
 		private ObservableCollection<Activity> activities;
         private ObservableCollection<Activity_Location> locations;
         private ObservableCollection<Activity_Category> categories;
 		private string categoryName;
-		private List<User> userQuerry;
-		#endregion
 
-		#region Propiedades
-		public string Category_Name
+
+        
+
+        private List<User> userQuerry;
+        #endregion
+
+        #region Propiedades
+
+
+        public string CategoryName
 		{
 			get { return this.categoryName; }
 			set
@@ -110,7 +118,7 @@ namespace ActivityMaps.ViewModels
 
 
         }
-        public IEnumerable<Activity> ActivityResult
+        public IEnumerable ActivityResult
         {
 
 
@@ -190,43 +198,43 @@ namespace ActivityMaps.ViewModels
             Locations = Activity_LocationData.Locations;
             Categories = Activity_CategoryData.Categories;
 
-			//this.ActivityResult;
-			//var query
-			this.ActivityResult = from act
-									in Activities
-						join cat in Categories on act.Activity_Cat_Code equals cat.Id
-						join loc in Locations on act.Activity_Loc_Id equals loc.Id
-						where (act.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
-						||
-						(cat.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
-						||
-						(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
-						select act;
-			//{
-			//	act,
-			//	Category_Name = cat.Name
+            //this.ActivityResult;
+            //var query
+            var query = from act
+                                   in Activities
+                                  join cat in Categories on act.Activity_Cat_Code equals cat.Id
+                                  join loc in Locations on act.Activity_Loc_Id equals loc.Id
+                                  where (act.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                                  ||
+                                  (cat.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                                  //||
+                                  //(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                                  select new
 
-			//};
+                                  {
+                                      act,             
+                                      act.Name,
+                                      CategoryName = cat.Name
+                                    };
 
-			//var query = ActivityResult.ToArray();
-			
-			//for (int i = 0; i < query.Length; i++)
-			//{
-			//	this.ActivityCatResult = from cat in Categories
-			//							 where (cat.Id.Equals(query[i].Activity_Cat_Code))
-			//							 select cat;
-			//	var catName = ActivityCatResult.ToArray();
-			//	Category_Name = catName[i].Name
+            this.ActivityResult = query.ToList();
+            //this.Activities = new ObservableCollection<ActivityViewModel>(ActivityResult);
 
-			//}
+            //var query = ActivityResult.ToArray();
 
-			
-			
-			
-			
-                         
-            
-            //this.ActivityResult = (IEnumerable<Activity>)query.ToList();
+            //for (int i = 0; i < query.Length; i++)
+            //{
+            //	this.ActivityCatResult = from cat in Categories
+            //							 where (cat.Id.Equals(query[i].Activity_Cat_Code))
+            //							 select cat;
+            //	var catName = ActivityCatResult.ToArray();
+            //	Category_Name = catName[i].Name
+
+            //}
+
+
+
+
 
             this.IsRefreshing = false;
         }
