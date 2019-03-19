@@ -7,7 +7,7 @@
              Title="Create Activity">
     <ContentPage.Content>
         <ScrollView 
-            BindingContext="{Binding EndRegister}">
+            BindingContext="{Binding CreateActivity}">
 
             <StackLayout Padding="10,20,10,5">
 
@@ -26,10 +26,10 @@
                         x:Name ="Activities"
                         Grid.Row="0"
                         Grid.Column="1"
-                        Title="Select Activity..."
-                        ItemsSource="{Binding Activities}" 
+                        Title="Select Category..."
+                        ItemsSource="{Binding Categories}" 
                         ItemDisplayBinding="{Binding Name}" 
-                        SelectedItem="{Binding SelectedActivity}">
+                        SelectedItem="{Binding SelectedCategory}">
                     </Picker>
                     <Label 
                             Grid.Row="1"
@@ -74,38 +74,76 @@
                     <DatePicker
                         Grid.Row="0"
                         Grid.Column="1"
-                        WidthRequest="110"
-                        TranslationX="-15"
                         MinimumDate="{x:Static sys:DateTime.Now}"
                         MaximumDate="{Binding MaxDate, Mode=TwoWay}"
                         Date="{Binding StartDay}">
                     </DatePicker>
                     <Label 
-                            Grid.Row="0"
-                            Grid.Column="2"
-                            TranslationX="-15"
+                            Grid.Row="1"
+                            Grid.Column="0"
                             Text="Start Hour"
                             VerticalOptions="Center">
                     </Label>
                     <TimePicker
                            
-                        Grid.Row="0"
-                        Grid.Column="3"
-                        TranslationX="-15"
-                        Time="{Binding StartTime, Mode=TwoWay}"
-                        Format="T"
-                            >
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Format="T" 
+                        Time="{Binding StartTime, Mode=TwoWay}">
+                    </TimePicker>
+
+                    <Label  
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Text="Finish Day"
+                        VerticalOptions="Center">
+                    </Label>
+                    <DatePicker
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        MinimumDate="{Binding MinDate, Mode=TwoWay}"
+                        MaximumDate="{Binding MaxDate, Mode=TwoWay}"
+                        Date="{Binding FinishDay}">
+                    </DatePicker>
+                    <Label 
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Text="Finish Hour"
+                            VerticalOptions="Center">
+                    </Label>
+                    <TimePicker
+                           
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Format="T" 
+                        Time="{Binding FinishTime, Mode=TwoWay}">
                     </TimePicker>
 
                 </Grid>
 
+
                 <StackLayout 
                         Margin="40,15"
                         HorizontalOptions="Center"
-                        Orientation="Horizontal"
+                        Orientation="Vertical"
                         VerticalOptions="EndAndExpand">
 
                     <Button
+                    
+                            BackgroundColor="{Binding ButtonColor, Mode=TwoWay}"
+                            BorderRadius="23"
+                            HeightRequest="55"
+                            WidthRequest="140"
+                            AnchorX="50"
+                            IsEnabled="True"
+                            Command="{Binding LCommand}"
+                            Text="{Binding ButtonText, Mode=TwoWay}"
+                            TextColor="White"
+                            >
+                    </Button>
+
+                    <Button
+                            IsVisible="{Binding IsVisible, Mode=TwoWay}"
                             BackgroundColor="Navy"
                             BorderRadius="23"
                             HeightRequest="46"

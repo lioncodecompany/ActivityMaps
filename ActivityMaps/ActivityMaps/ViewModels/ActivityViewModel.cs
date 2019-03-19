@@ -26,17 +26,25 @@ namespace ActivityMaps.ViewModels
         private ObservableCollection<Activity_Location> locations;
         private ObservableCollection<Activity_Category> categories;
 		private string categoryName;
+		Filter selectedFilter;
 
 
         
 
         private List<User> userQuerry;
-        #endregion
+		#endregion
 
-        #region Propiedades
+		#region Propiedades
+
+		public IList<Filter> Filters { get { return FilterData.Filters; } }
 
 
-        public string CategoryName
+		public Filter SelectedGender
+		{
+			get { return this.selectedFilter; }
+			set { SetValue(ref this.selectedFilter, value); }
+		}
+		public string CategoryName
 		{
 			get { return this.categoryName; }
 			set
@@ -218,19 +226,7 @@ namespace ActivityMaps.ViewModels
                                     };
 
             this.ActivityResult = query.ToList();
-            //this.Activities = new ObservableCollection<ActivityViewModel>(ActivityResult);
-
-            //var query = ActivityResult.ToArray();
-
-            //for (int i = 0; i < query.Length; i++)
-            //{
-            //	this.ActivityCatResult = from cat in Categories
-            //							 where (cat.Id.Equals(query[i].Activity_Cat_Code))
-            //							 select cat;
-            //	var catName = ActivityCatResult.ToArray();
-            //	Category_Name = catName[i].Name
-
-            //}
+           
 
 
 

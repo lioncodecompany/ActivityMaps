@@ -31,9 +31,9 @@
             Title="Filter"
             HorizontalOptions="EndAndExpand"
             WidthRequest="150"
-            ItemsSource="{Binding Genders}" 
+            ItemsSource="{Binding Filters}" 
             ItemDisplayBinding="{Binding Name}" 
-            SelectedItem="{Binding SelectedGender}">
+            SelectedItem="{Binding SelectedFilter}">
         </Picker>
 
         <ScrollView>

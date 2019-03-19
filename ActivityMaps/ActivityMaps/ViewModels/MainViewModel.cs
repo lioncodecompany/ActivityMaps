@@ -13,7 +13,7 @@ namespace ActivityMaps.ViewModels
 		public EndRegisterViewModel EndRegister { get; set; }
         public ActivityViewModel Activity { get; set; }
 		public CreateActivityViewModel CreateActivity { get; set; }
-
+		public LocationViewModel Location { get; set; }
 		#endregion
 
 		#region Constructors
@@ -26,6 +26,7 @@ namespace ActivityMaps.ViewModels
 			this.EndRegister = new EndRegisterViewModel();
             this.Activity = new ActivityViewModel();
 			this.CreateActivity = new CreateActivityViewModel();
+			this.Location = new LocationViewModel();
 			
 		}
 
