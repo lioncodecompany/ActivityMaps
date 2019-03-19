@@ -20,16 +20,18 @@ namespace ActivityMaps.ViewModels
         private string activitytxt;
         private bool isRefreshing;
         private Activity selectedActivity;
-        private IEnumerable activityResult;
-		private IEnumerable<Activity_Category> activityCatResult;
+        private List<Activity_Child> activityResult;
+        //private IEnumerable<Activity_Category> activityCatResult;
 		private ObservableCollection<Activity> activities;
         private ObservableCollection<Activity_Location> locations;
         private ObservableCollection<Activity_Category> categories;
 		private string categoryName;
 		Filter selectedFilter;
 
+       
 
-        
+
+
 
         private List<User> userQuerry;
 		#endregion
@@ -126,7 +128,7 @@ namespace ActivityMaps.ViewModels
 
 
         }
-        public IEnumerable ActivityResult
+        public List<Activity_Child> ActivityResult
         {
 
 
@@ -135,15 +137,7 @@ namespace ActivityMaps.ViewModels
 
 
         }
-		public IEnumerable<Activity_Category> ActivityCatResult
-		{
 
-
-			get { return this.activityCatResult; }
-			set { SetValue(ref this.activityCatResult, value); }
-
-
-		}
 
 		#endregion
 
@@ -217,11 +211,10 @@ namespace ActivityMaps.ViewModels
                                   (cat.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
                                   //||
                                   //(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
-                                  select new
+                                  select new Activity_Child
 
-                                  {
-                                      act,             
-                                      act.Name,
+                                    {
+                                      Name = act.Name,             
                                       CategoryName = cat.Name
                                     };
 
