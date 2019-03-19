@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\ActivityJoinPage.xaml.cs">
+      <DependentUpon>ActivityJoinPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\CreateActivityPage.xaml.cs">
       <DependentUpon>CreateActivityPage.xaml</DependentUpon>
     </Compile>
@@ -27,6 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Views\ActivityJoinPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\ActivityPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

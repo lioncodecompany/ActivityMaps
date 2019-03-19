@@ -12,7 +12,8 @@ namespace ActivityMaps.Models
         public DateTime Start_Act_Datetime { get; set; }
         public DateTime End_Act_Datetime { get; set; }
         public bool IsPrivate { get; set; }
-        public int Status { get; set; }
+		public string Description { get; set; }
+		public int Status { get; set; }
         public bool IsService { get; set; }
         public string Activity_Cat_Code { get; set; } 
        // public string CategoryName { get; set; }

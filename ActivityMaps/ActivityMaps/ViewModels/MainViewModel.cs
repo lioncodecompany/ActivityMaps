@@ -14,6 +14,8 @@ namespace ActivityMaps.ViewModels
         public ActivityViewModel Activity_Child { get; set; }
 		public CreateActivityViewModel CreateActivity { get; set; }
 		public LocationViewModel Location { get; set; }
+		public ActivityJoinViewModel ActivityJoin { get; set; }
+			 
 		#endregion
 
 		#region Constructors
@@ -27,7 +29,7 @@ namespace ActivityMaps.ViewModels
             this.Activity_Child = new ActivityViewModel();
 			this.CreateActivity = new CreateActivityViewModel();
 			this.Location = new LocationViewModel();
-			
+			this.ActivityJoin = new ActivityJoinViewModel();
 		}
 
 

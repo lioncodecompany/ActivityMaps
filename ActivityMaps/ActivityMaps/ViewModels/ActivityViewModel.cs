@@ -19,7 +19,7 @@ namespace ActivityMaps.ViewModels
 
         private string activitytxt;
         private bool isRefreshing;
-        private Activity selectedActivity;
+        private Activity_Child selectedActivity;
         private List<Activity_Child> activityResult;
         //private IEnumerable<Activity_Category> activityCatResult;
 		private ObservableCollection<Activity> activities;
@@ -38,7 +38,7 @@ namespace ActivityMaps.ViewModels
 
 		#region Propiedades
 
-		public IList<Filter> Filters { get { return FilterData.Filters; } }
+		public IList<Filter> Filters { get { return FilterData.Filters; }   }
 
 
 		public Filter SelectedGender
@@ -106,7 +106,7 @@ namespace ActivityMaps.ViewModels
 
         }
 
-        public Activity SelectedActivity
+        public Activity_Child SelectedActivity
         {
 
 
@@ -203,7 +203,7 @@ namespace ActivityMaps.ViewModels
             //this.ActivityResult;
             //var query
             var query = from act
-                                   in Activities
+                                  in Activities
                                   join cat in Categories on act.Activity_Cat_Code equals cat.Id
                                   join loc in Locations on act.Activity_Loc_Id equals loc.Id
                                   where (act.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
@@ -215,16 +215,12 @@ namespace ActivityMaps.ViewModels
 
                                     {
                                       Name = act.Name,             
-                                      CategoryName = cat.Name
+                                      CategoryName = cat.Name,
+								      Description = act.Description
                                     };
 
             this.ActivityResult = query.ToList();
            
-
-
-
-
-
             this.IsRefreshing = false;
         }
         public async void Assign()
@@ -232,12 +228,14 @@ namespace ActivityMaps.ViewModels
 
             //var actID = this.SelectedActivity.Id;
             string actName = this.SelectedActivity.Name;
-            SetValue(ref this.selectedActivity, null);
+			
+            //SetValue(ref this.selectedActivity, null);
             LoadActivity();
 
-           await Application.Current.MainPage.DisplayAlert("Alert", actName, "OK");
+           
 
-            // await Application.Current.MainPage.Navigation.PushAsync(new ActivityDetail(this.SelectedActivity.Id));
+			MainViewModel.GetInstance().ActivityJoin = new ActivityJoinViewModel(this.SelectedActivity);
+			await Application.Current.MainPage.Navigation.PushAsync(new ActivityJoinPage());
 
 
             // note name is property in my model (say : GeneralDataModel )

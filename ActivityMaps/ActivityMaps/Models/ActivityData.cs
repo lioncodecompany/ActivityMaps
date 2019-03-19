@@ -15,6 +15,7 @@ namespace ActivityMaps.Models
             {
                 Id = "1",
                 Name = "BasketBall 3pa3",
+				Description = "aqui es",
                 Activity_Loc_Id = "3",
                 Activity_Cat_Code = "2"
                 
@@ -23,8 +24,9 @@ namespace ActivityMaps.Models
             Activities.Add(new Activity
             {
                 Id = "2",
-                Name = "BasketBall Doble",
-                Activity_Loc_Id = "1",
+				Name = "BasketBall Doble",
+				Description = "aqui es",
+				Activity_Loc_Id = "1",
                 Activity_Cat_Code = "2"
                 
                 
@@ -68,7 +70,8 @@ namespace ActivityMaps.Models
             {
                 Id = "7",
                 Name = "BasketBall 3pa3",
-                Activity_Loc_Id = "3",
+				Description = "aqui es",
+				Activity_Loc_Id = "3",
                 Activity_Cat_Code = "2"
                
             });
@@ -85,7 +88,8 @@ namespace ActivityMaps.Models
             {
                 Id = "9",
                 Name = "Salsa",
-                Activity_Loc_Id = "1",
+				Description = "aqui es",
+				Activity_Loc_Id = "1",
                 Activity_Cat_Code = "3"
                
             });
