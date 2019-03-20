@@ -10,9 +10,21 @@ namespace ActivityMaps.ViewModels
 		
 		
 		private Activity selectedActivity;
+		private string userName;
 		private string name;
 		private string categoryName;
 		private string description;
+
+		public string UserName
+		{
+			get { return this.userName; }
+			set
+			{
+
+				SetValue(ref this.userName, value);
+
+			}
+		}
 
 		public string Description
 		{
@@ -45,12 +57,13 @@ namespace ActivityMaps.ViewModels
 
 			}
 		}
-		public ActivityJoinViewModel(Activity_Child selectedActivity)
+		public ActivityJoinViewModel(Activity_Child selectedActivity, List<User> userQuery)
 		{
 			this.selectedActivity = selectedActivity;
 			this.Name = selectedActivity.Name;
-			this.CategoryName = selectedActivity.CategoryName;
+			this.CategoryName = "Category: "+selectedActivity.CategoryName;
 			this.Description = selectedActivity.Description;
+			//this.UserName = "me " + userQuery[0].Nickname;
 		}
 		public ActivityJoinViewModel()
 		{

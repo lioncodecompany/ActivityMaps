@@ -12,6 +12,22 @@
                     FontSize="Large"
                     HorizontalOptions="Center"
                     Text="{Binding Name, Mode=TwoWay}"/>
+                <Label 
+                    FontAttributes="Bold"
+                    FontSize="Large"
+                    HorizontalOptions="Start"
+                    Text="{Binding UserName, Mode=TwoWay}"/>
+                <Label 
+                    FontAttributes="Bold"
+                    FontSize="Large"
+                    HorizontalOptions="Start"
+                    Text="{Binding CategoryName, Mode=TwoWay}"/>
+                <Label 
+                    FontAttributes="Bold"
+                    FontSize="Large"
+                    HorizontalOptions="Start"
+                    Text="{Binding Description, Mode=TwoWay}"/>
+                
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

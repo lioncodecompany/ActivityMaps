@@ -28,12 +28,7 @@ namespace ActivityMaps.ViewModels
 		private string categoryName;
 		Filter selectedFilter;
 
-       
-
-
-
-
-        private List<User> userQuerry;
+        private List<User> userQuery;
 		#endregion
 
 		#region Propiedades
@@ -181,7 +176,7 @@ namespace ActivityMaps.ViewModels
 			this.Activitytxt = "";
 			this.IsRefreshing = false;
 			LoadActivity();
-			this.userQuerry = userQuerry;
+			this.userQuery = userQuerry;
 		}
 		#endregion
 
@@ -234,7 +229,7 @@ namespace ActivityMaps.ViewModels
 
            
 
-			MainViewModel.GetInstance().ActivityJoin = new ActivityJoinViewModel(this.SelectedActivity);
+			MainViewModel.GetInstance().ActivityJoin = new ActivityJoinViewModel(this.SelectedActivity, this.userQuery);
 			await Application.Current.MainPage.Navigation.PushAsync(new ActivityJoinPage());
 
 
