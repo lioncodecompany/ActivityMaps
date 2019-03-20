@@ -11,41 +11,42 @@
 
 
 
-    <StackLayout BindingContext="{Binding Activity_Child}"
+        <StackLayout BindingContext="{Binding Activity_Child}"
                  Margin="0, 0, 0, 0">
-        <!--<Label 
+            <!--<Label 
                 FontAttributes="Bold"
                 FontSize="Large"
                 HorizontalOptions="Center"
                 Text="Welcome">
         </Label>-->
 
-        <SearchBar 
+            <SearchBar 
             Placeholder="Search Activity"
             Text="{Binding Activitytxt,Mode=TwoWay}"
             SearchCommand="{Binding SearchCommand,Mode=TwoWay}" >
-            <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"  ES BUENO INVESTIGAR PARA QUE FUNCIONA ESTO Y COMO-->
-        </SearchBar>
+                <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"  ES BUENO INVESTIGAR PARA QUE FUNCIONA ESTO Y COMO-->
+            </SearchBar>
 
-        <Picker
+            <Picker
             Title="Filter"
             HorizontalOptions="EndAndExpand"
             WidthRequest="150"
             ItemsSource="{Binding Filters}" 
             ItemDisplayBinding="{Binding Name}" 
             SelectedItem="{Binding SelectedFilter}">
-        </Picker>
+            </Picker>
 
-        <ScrollView>
+
             <ListView 
             SeparatorVisibility="None"
+            HasUnevenRows="True"
             IsRefreshing="{Binding IsRefreshing,Mode=TwoWay}"
-            IsPullToRefreshEnabled="true"
+            IsPullToRefreshEnabled="true"           
             RefreshCommand="{Binding RefreshCommand,Mode=TwoWay}"
             ItemsSource="{Binding ActivityResult,Mode=TwoWay}"
             SelectedItem="{Binding SelectedActivity,Mode=TwoWay}"
             IsVisible="True">
-                
+
                 <ListView.RowHeight>
                     <OnPlatform x:TypeArguments="x:Int32">
                         <On Platform="iOS, Android" Value="90" />
@@ -59,13 +60,13 @@
                         <ViewCell>
                             <ContentView Padding="5">
                                 <Frame OutlineColor="AliceBlue" Padding="10">
-                                    
-                                    
+
+
                                     <StackLayout>
-                                        
-                                            <Grid>
-                                            
-                                                <Grid.ColumnDefinitions>
+
+                                        <Grid>
+
+                                            <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="0.5*"/>
                                             </Grid.ColumnDefinitions>
@@ -99,7 +100,7 @@
                                                 FontSize="16"
                                                 VerticalOptions="CenterAndExpand" />
                                         </Grid>
-                                
+
                                     </StackLayout>
 
 
@@ -126,11 +127,9 @@
     -->
             </ListView>
 
+            <!--ScrollView-->
 
-            
-        </ScrollView>
-
-        <Button
+            <Button
                 Margin="-29"
                 BackgroundColor="#0086dc"
                 BorderRadius="25"
@@ -144,9 +143,7 @@
                 TranslationY="-60"
                 Text="+"
                 TextColor="White">
-        </Button>
+            </Button>
 
-    </StackLayout>
-
-
+        </StackLayout>
 </ContentPage>

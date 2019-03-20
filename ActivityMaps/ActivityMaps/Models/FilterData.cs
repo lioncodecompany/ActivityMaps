@@ -14,19 +14,23 @@ namespace ActivityMaps.Models
 
 			Filters.Add(new Filter
 			{
-				Name = "Activity"
+				Name = "BASKETBALL"
 			});
 			Filters.Add(new Filter
 			{
-				Name = "Category"
+				Name = "DANCE"
 			});
 			Filters.Add(new Filter
 			{
-				Name = "Location"
+				Name = "PING PONG"
 			});
+            Filters.Add(new Filter
+            {
+                Name = "NO FILTER"
+            });
 
-			//another one++
+            //another one++
 
-		}
+        }
 	}
 }

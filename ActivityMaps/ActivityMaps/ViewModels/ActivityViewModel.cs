@@ -26,7 +26,9 @@ namespace ActivityMaps.ViewModels
         private ObservableCollection<Activity_Location> locations;
         private ObservableCollection<Activity_Category> categories;
 		private string categoryName;
-		Filter selectedFilter;
+        private bool isFilterEmpty = true;
+
+        Filter selectedFilter;
 
         private List<User> userQuery;
 		#endregion
@@ -35,11 +37,24 @@ namespace ActivityMaps.ViewModels
 
 		public IList<Filter> Filters { get { return FilterData.Filters; }   }
 
-
-		public Filter SelectedGender
+		public Filter SelectedFilter
 		{
 			get { return this.selectedFilter; }
-			set { SetValue(ref this.selectedFilter, value); }
+			set {
+                
+                SetValue(ref this.selectedFilter, value);
+                //Console.WriteLine("TEXT: {0}", this.SelectedFilter.Name);
+                if(this.SelectedFilter.Name == "NO FILTER")
+                {
+                    this.IsFilterEmpty = true;
+                }else
+                {
+                    this.IsFilterEmpty = false;
+                }
+
+                 LoadActivity();
+
+            }
 		}
 		public string CategoryName
 		{
@@ -71,6 +86,12 @@ namespace ActivityMaps.ViewModels
         {
             get { return this.isRefreshing; }
             set { SetValue(ref this.isRefreshing, value); }
+        }
+
+        public bool IsFilterEmpty
+        {
+            get { return this.isFilterEmpty; }
+            set { SetValue(ref this.isFilterEmpty, value); }
         }
 
         public ObservableCollection<Activity> Activities
@@ -167,6 +188,7 @@ namespace ActivityMaps.ViewModels
 
              this.Activitytxt = "";
              this.IsRefreshing =false;
+             this.IsFilterEmpty = true;
              LoadActivity();
 
         }
@@ -187,7 +209,7 @@ namespace ActivityMaps.ViewModels
 			await Application.Current.MainPage.Navigation.PushAsync(new CreateActivityPage());
 			LoadActivity();
 		}
-		private async void LoadActivity()
+		public void LoadActivity()
         {
             this.IsRefreshing = true;
 
@@ -197,28 +219,54 @@ namespace ActivityMaps.ViewModels
 
             //this.ActivityResult;
             //var query
-            var query = from act
-                                  in Activities
-                                  join cat in Categories on act.Activity_Cat_Code equals cat.Id
-                                  join loc in Locations on act.Activity_Loc_Id equals loc.Id
-                                  where (act.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
-                                  ||
-                                  (cat.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
-                                  //||
-                                  //(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
-                                  select new Activity_Child
+            if (this.IsFilterEmpty) {
+                var query = from act
+                                      in Activities
+                            join cat in Categories on act.Activity_Cat_Code equals cat.Id
+                            join loc in Locations on act.Activity_Loc_Id equals loc.Id
+                            where (act.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                            ||
+                            (cat.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                            //||
+                            //(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                            select new Activity_Child
 
-                                    {
-                                      Name = act.Name,             
-                                      CategoryName = cat.Name,
-								      Description = act.Description
-                                    };
+                            {
+                                Name = act.Name,
+                                CategoryName = cat.Name,
+                                Description = act.Description
+                            };
+                this.ActivityResult = query.ToList();
+            }else
+            {
 
-            this.ActivityResult = query.ToList();
+                var query = from act
+                                      in Activities
+                            join cat in Categories on act.Activity_Cat_Code equals cat.Id
+                            join loc in Locations on act.Activity_Loc_Id equals loc.Id
+                            where (act.Name.ToUpper().Contains(this.Activitytxt.ToUpper()))
+                            &&
+                            (cat.Name.ToUpper().StartsWith(this.SelectedFilter.Name.ToUpper()))
+                            //||
+                            //(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                            select new Activity_Child
+
+                            {
+                                Name = act.Name,
+                                CategoryName = cat.Name,
+                                Description = act.Description
+                            };
+
+                this.ActivityResult = query.ToList();
+            }
+
+            
            
             this.IsRefreshing = false;
         }
-        public async void Assign()
+
+
+            public async void Assign()
         {
 
             //var actID = this.SelectedActivity.Id;
