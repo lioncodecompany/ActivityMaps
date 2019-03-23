@@ -52,6 +52,9 @@
     <PackageReference Include="Microsoft.Azure.Mobile.Client">
       <Version>4.1.1</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Azure.Storage.DataMovement">
+      <Version>0.10.1</Version>
+    </PackageReference>
     <PackageReference Include="sqlite-net-pcl">
       <Version>1.5.231</Version>
     </PackageReference>
@@ -60,6 +63,12 @@
     </PackageReference>
     <PackageReference Include="Xam.Plugin.DeviceInfo">
       <Version>4.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xam.Plugin.Media">
+      <Version>4.0.1.5</Version>
+    </PackageReference>
+    <PackageReference Include="Xam.Plugins.Forms.ImageCircle">
+      <Version>3.0.0.5</Version>
     </PackageReference>
     <PackageReference Include="Xam.Plugins.Settings">
       <Version>3.1.1</Version>
@@ -113,6 +122,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\xml\file_paths.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

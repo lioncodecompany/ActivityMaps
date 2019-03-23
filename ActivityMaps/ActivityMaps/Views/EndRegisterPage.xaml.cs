@@ -9,6 +9,10 @@ using Xamarin.Forms.Xaml;
 using ActivityMaps.Helpers;
 using Microsoft.WindowsAzure.MobileServices;
 using ActivityMaps.ViewModels;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 
 namespace ActivityMaps.Views
 {
@@ -22,6 +26,5 @@ namespace ActivityMaps.Views
 			InitializeComponent ();
 		}
 
-		
 	}
 }

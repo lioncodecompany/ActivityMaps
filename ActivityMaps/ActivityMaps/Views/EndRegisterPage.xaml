@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ActivityMaps.Views.EndRegisterPage"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              BindingContext="{Binding Main,Source={StaticResource Locator}}"
              Title="Register">
     <ContentPage.Content>
@@ -73,20 +74,39 @@
                         Orientation="Horizontal">
                     
                     <Button
+                            Command="{Binding TakePictureCommand}"
                             BackgroundColor="Magenta"
-                            HeightRequest="46"
-                            WidthRequest="140"
                             Text="Take Picture"
-                            TextColor="White">
-                        </Button>
-                        <Button
-                            BackgroundColor="MidnightBlue"
+                            BorderRadius="23"
                             HeightRequest="46"
                             WidthRequest="140"
+                            TextColor="White">
+                     </Button>
+                    <Button Command="{Binding SelectPictureCommand}"
+                             BorderRadius="23"
+                            HeightRequest="46"
+                            WidthRequest="140"
+                            BackgroundColor="MidnightBlue"
                             Text="Choose Picture"
                             TextColor="White">
-                        </Button>
+                     </Button>
+                  
                 </StackLayout>
+
+                <controls:CircleImage Source="{Binding Image}"  Aspect="AspectFill">
+                    <controls:CircleImage.WidthRequest>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="Android, iOS">250</On>
+                        </OnPlatform>
+                    </controls:CircleImage.WidthRequest>
+                    <controls:CircleImage.HeightRequest>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="Android, iOS">219</On>
+                        </OnPlatform>
+                    </controls:CircleImage.HeightRequest>
+                </controls:CircleImage>
+
+
                 <StackLayout 
                         Margin="40,15"
                         HorizontalOptions="Center"

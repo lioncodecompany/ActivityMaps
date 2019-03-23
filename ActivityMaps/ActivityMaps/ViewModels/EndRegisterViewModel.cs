@@ -7,6 +7,14 @@ using ActivityMaps.Models;
 using ActivityMaps.Views;
 using GalaSoft.MvvmLight.Command;
 using Xamarin.Forms;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
+using Plugin.Permissions.Abstractions;
+using Plugin.Permissions;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.DataMovement;
+using System.Threading;
 
 namespace ActivityMaps.ViewModels
 {
@@ -20,11 +28,20 @@ namespace ActivityMaps.ViewModels
 		private string email;
 		private string password;
 		private string reEnterPassword;
-		
+		private ImageSource image = null;
+		private string source;
+
 
 		#endregion
 
 		#region Propiedades
+
+		[Xamarin.Forms.TypeConverter(typeof(Xamarin.Forms.ImageSourceConverter))]
+		public Xamarin.Forms.ImageSource Image
+		{
+			get { return this.image; }
+			set { SetValue(ref this.image, value); }
+		}
 
 		public string Email
 		{
@@ -86,7 +103,105 @@ namespace ActivityMaps.ViewModels
 			}
 		}
 
+		public ICommand TakePictureCommand
+		{
+			get
+			{
+				return new RelayCommand(TakePicture);
+			}
+		}
 
+		public ICommand SelectPictureCommand
+		{
+			get
+			{
+				return new RelayCommand(SelectPicture);
+			}
+		}
+
+		private async void SelectPicture()
+		{
+
+
+			var storageStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
+
+			if (storageStatus != PermissionStatus.Granted)
+			{
+				var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Storage });
+				storageStatus = results[Permission.Storage];
+			}
+
+
+			if (!CrossMedia.Current.IsPickPhotoSupported)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"Picking a photo is not supported",
+					"Accept");
+				return;
+			}
+
+
+			if (storageStatus == PermissionStatus.Granted)
+			{
+				var file = await CrossMedia.Current.PickPhotoAsync();
+
+				if (file == null)
+					return;
+				source = file.Path;
+				Image = ImageSource.FromStream(() => file.GetStream());
+			}
+			else
+			{
+				await Application.Current.MainPage.DisplayAlert("Permissions Denied", "Unable to choose photo.", "OK");
+			}
+
+		}
+
+		private async void TakePicture()
+		{
+			await CrossMedia.Current.Initialize();
+
+			var cameraStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Camera);
+
+
+			if (cameraStatus != PermissionStatus.Granted)
+			{
+				var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Camera });
+				cameraStatus = results[Permission.Camera];
+
+			}
+
+			if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"No camera avaible",
+					"Accept");
+				return;
+			}
+			if (cameraStatus == PermissionStatus.Granted)
+			{
+				var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+				{
+					DefaultCamera = Plugin.Media.Abstractions.CameraDevice.Front,
+					SaveMetaData = true,
+					Name = "test.jpg"
+				});
+				if (file == null)
+					return;
+				source = file.Path;
+				Image = ImageSource.FromStream(() => file.GetStream());
+			}
+			else
+			{
+				await Application.Current.MainPage.DisplayAlert("Permissions Denied", "Unable to take photos.", "OK");
+				//On iOS you may want to send your user to the settings screen.
+				//CrossPermissions.Current.OpenAppSettings();
+			}
+
+
+		}
 
 		private async void NextActivityPage()
 		{
@@ -172,7 +287,29 @@ namespace ActivityMaps.ViewModels
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 			}
+			/*
+			//logic azure upload blob
+			string storageConnectionString = "lioncode";
+			CloudStorageAccount account = CloudStorageAccount.Parse(storageConnectionString);
+			CloudBlobClient blobClient = account.CreateCloudBlobClient();
+			CloudBlobContainer blobContainer = blobClient.GetContainerReference("activitymaps");
+			blobContainer.CreateIfNotExists();
+			string sourcePath = this.source;
+			CloudBlockBlob destBlob = blobContainer.GetBlockBlobReference("activitymaps");
 
+			// Setup the number of the concurrent operations
+			TransferManager.Configurations.ParallelOperations = 64;
+			// Setup the transfer context and track the upload progress
+			SingleTransferContext context = new SingleTransferContext();
+			context.ProgressHandler = new Progress<TransferStatus>((progress) =>
+			{
+				Console.WriteLine("Bytes uploaded: {0}", progress.BytesTransferred);
+			});
+			// Upload a local blob
+			var task = TransferManager.UploadAsync(
+				sourcePath, destBlob, null, context, CancellationToken.None);
+			task.Wait();
+			*/
 			MainViewModel.GetInstance().Login = new LoginViewModel(CurrentUser.Email);
 			await Application.Current.MainPage.Navigation.PushAsync(new LoginPage());
 
