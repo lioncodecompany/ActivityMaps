@@ -152,7 +152,7 @@ namespace ActivityMaps.ViewModels
 				if (passwordQuerry.Count > 0)
 				{
 
-					byte[] decryted = Convert.FromBase64String(passwordQuerry[0].Password);
+					byte[] decryted = System.Convert.FromBase64String(passwordQuerry[0].Password);
 
 					result = System.Text.Encoding.Unicode.GetString(decryted);
 

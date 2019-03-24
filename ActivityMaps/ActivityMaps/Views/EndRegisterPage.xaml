@@ -106,6 +106,13 @@
                     </controls:CircleImage.HeightRequest>
                 </controls:CircleImage>
 
+                <ActivityIndicator 
+                    IsRunning="{Binding IsRunning, Mode=TwoWay}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Color="Navy"
+                    >
+                </ActivityIndicator>
 
                 <StackLayout 
                         Margin="40,15"

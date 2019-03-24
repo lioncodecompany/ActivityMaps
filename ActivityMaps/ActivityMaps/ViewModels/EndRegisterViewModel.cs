@@ -15,13 +15,14 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.DataMovement;
 using System.Threading;
+using System.IO;
 
 namespace ActivityMaps.ViewModels
 {
     public class EndRegisterViewModel : BaseViewModel
     {
 		#region Atributos
-
+		private bool isRunning;
 		public static bool allValidated = false;
 		private Address currentAddress;
 		private User currentUser;
@@ -30,11 +31,20 @@ namespace ActivityMaps.ViewModels
 		private string reEnterPassword;
 		private ImageSource image = null;
 		private string source;
+		private string uploadedFilename;
+		public byte[] byteData;
+		
 
 
 		#endregion
 
 		#region Propiedades
+
+		public bool IsRunning
+		{
+			get { return this.isRunning; }
+			set { SetValue(ref this.isRunning, value); }
+		}
 
 		[Xamarin.Forms.TypeConverter(typeof(Xamarin.Forms.ImageSourceConverter))]
 		public Xamarin.Forms.ImageSource Image
@@ -86,10 +96,12 @@ namespace ActivityMaps.ViewModels
 		{
 			this.CurrentAddress = newAddress;
 			this.CurrentUser = newUSer;
+			this.IsRunning = false;
 		}
 
 		public EndRegisterViewModel()
 		{
+			this.IsRunning = false;
 		}
 
 		#endregion
@@ -208,8 +220,8 @@ namespace ActivityMaps.ViewModels
 		private async void NextActivityPage()
 		{
 
-			
-			
+			this.IsRunning = true;
+
 
 			if (string.IsNullOrEmpty(this.Email))
 			{
@@ -253,7 +265,7 @@ namespace ActivityMaps.ViewModels
 
 
 			byte[] encryted = System.Text.Encoding.Unicode.GetBytes(Password);
-			var result = Convert.ToBase64String(encryted);
+			var result = System.Convert.ToBase64String(encryted);
 			int len = RandomId.length.Next(5, 10);
 
 			User_Password password = new User_Password
@@ -263,6 +275,23 @@ namespace ActivityMaps.ViewModels
 				User_Id_FK = CurrentUser.Id
 			};
 
+			byteData = AzureStorage.Convert.ToByteArray(source);
+			uploadedFilename = await AzureStorage.AzureStorage.UploadFileAsync(AzureStorage.ContainerType.Image, new MemoryStream(byteData));
+
+			string[] arr = source.Split('/');
+
+			File_Path filepath = new File_Path
+			{
+				Id = RandomId.RandomString(len),
+				Type = "Image",
+				Path = uploadedFilename,
+				Filename = arr[arr.Length - 1],
+				FileUrl = source,
+				Saved_Date = DateTime.Today,
+				User_Id_FK = CurrentUser.Id
+
+			};
+			
 			try
 			{
 				await App.MobileService.GetTable<Address>().InsertAsync(CurrentAddress);
@@ -289,9 +318,17 @@ namespace ActivityMaps.ViewModels
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 			}
+			try
+			{
+				await App.MobileService.GetTable<File_Path>().InsertAsync(filepath);
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
 			/*
 			//logic azure upload blob
-			string storageConnectionString = "lioncode";
+			string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=lioncode;AccountKey=oY4jZN5nSf4g/4ATkgHIPAgjVRxF3fYS/R1BfhT1k9Li98e7vEYq4/DY4y38LHQ9zjvsvIXI8qEDYQWeeHbxHQ==;EndpointSuffix=core.windows.net";
 			CloudStorageAccount account = CloudStorageAccount.Parse(storageConnectionString);
 			CloudBlobClient blobClient = account.CreateCloudBlobClient();
 			CloudBlobContainer blobContainer = blobClient.GetContainerReference("activitymaps");
@@ -303,15 +340,17 @@ namespace ActivityMaps.ViewModels
 			TransferManager.Configurations.ParallelOperations = 64;
 			// Setup the transfer context and track the upload progress
 			SingleTransferContext context = new SingleTransferContext();
-			context.ProgressHandler = new Progress<TransferStatus>((progress) =>
-			{
-				Console.WriteLine("Bytes uploaded: {0}", progress.BytesTransferred);
-			});
 			// Upload a local blob
 			var task = TransferManager.UploadAsync(
 				sourcePath, destBlob, null, context, CancellationToken.None);
 			task.Wait();
 			*/
+
+		
+			
+
+			this.IsRunning = false;
+
 			MainViewModel.GetInstance().Login = new LoginViewModel(CurrentUser.Email);
 			await Application.Current.MainPage.Navigation.PushAsync(new LoginPage());
 
