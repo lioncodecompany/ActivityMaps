@@ -8,6 +8,7 @@ using Android.Widget;
 using Android.OS;
 using System.IO;
 using Microsoft.WindowsAzure.MobileServices;
+using Android.Support.V4.App;
 
 namespace ActivityMaps.Droid
 {
@@ -31,10 +32,11 @@ namespace ActivityMaps.Droid
 
 
         }
-		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
 		{
 			Plugin.Permissions.PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-		}
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
 
-	}
+    }
 }

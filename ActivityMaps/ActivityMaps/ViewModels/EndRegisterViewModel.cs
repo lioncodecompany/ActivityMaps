@@ -163,14 +163,15 @@ namespace ActivityMaps.ViewModels
 			await CrossMedia.Current.Initialize();
 
 			var cameraStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Camera);
+            
 
 
-			if (cameraStatus != PermissionStatus.Granted)
+            if (cameraStatus != PermissionStatus.Granted)
 			{
 				var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Camera });
 				cameraStatus = results[Permission.Camera];
 
-			}
+            }
 
 			if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
 			{
@@ -180,7 +181,8 @@ namespace ActivityMaps.ViewModels
 					"Accept");
 				return;
 			}
-			if (cameraStatus == PermissionStatus.Granted)
+
+            if (cameraStatus == PermissionStatus.Granted)
 			{
 				var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
 				{

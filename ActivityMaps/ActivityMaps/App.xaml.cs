@@ -14,6 +14,8 @@ namespace ActivityMaps
 		public static MobileServiceClient MobileService =
 			new MobileServiceClient("https://activitymaps.azurewebsites.net");
 
+
+
 		public App()
 		{
 			InitializeComponent();
@@ -38,8 +40,9 @@ namespace ActivityMaps
 
 		protected override void OnStart()
 		{
-			// Handle when your app starts
-		}
+            // Handle when your app starts
+            
+        }
 
 		protected override void OnSleep()
 		{
@@ -50,5 +53,6 @@ namespace ActivityMaps
 		{
 			// Handle when your app resumes
 		}
+
 	}
 }
