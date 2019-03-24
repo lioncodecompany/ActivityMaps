@@ -11,6 +11,7 @@ namespace ActivityMaps.ViewModels
 	using System.Windows.Input;
 	using Xamarin.Forms;
 	using ActivityMaps.Models;
+	using Plugin.DeviceInfo;
 
 	public class LoginViewModel : BaseViewModel
 	{
@@ -83,6 +84,7 @@ namespace ActivityMaps.ViewModels
 
 			this.Email = email;
 			this.Email = ActivityMaps.Utils.Settings.LastUsedEmail;
+
 
 
 		}
@@ -188,6 +190,7 @@ namespace ActivityMaps.ViewModels
 
 			//this.Email = string.Empty;
 			this.Password = string.Empty;
+
 
 			MainViewModel.GetInstance().Activity_Child = new ActivityViewModel(userQuerry);
 

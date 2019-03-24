@@ -12,8 +12,10 @@ namespace ActivityMaps.ViewModels
     using Models;
     using System.Linq;
     using System.Collections;
+	using Plugin.DeviceInfo;
+	using ActivityMaps.Helpers;
 
-    public class ActivityViewModel :BaseViewModel
+	public class ActivityViewModel :BaseViewModel
     {
         #region Atributos
 
@@ -190,15 +192,19 @@ namespace ActivityMaps.ViewModels
              this.IsRefreshing =false;
              this.IsFilterEmpty = true;
              LoadActivity();
+			// fillEquipment();
 
-        }
 
-		public ActivityViewModel(List<User> userQuerry)
+		}
+
+		public  ActivityViewModel(List<User> userQuerry)
 		{
 			this.Activitytxt = "";
 			this.IsRefreshing = false;
 			LoadActivity();
 			this.userQuery = userQuerry;
+	    	fillEquipment();
+
 		}
 		#endregion
 
@@ -283,9 +289,33 @@ namespace ActivityMaps.ViewModels
 
             // note name is property in my model (say : GeneralDataModel )
         }
-        #endregion
 
-    }
+		private async void fillEquipment()
+		{
+			int len = RandomId.length.Next(5, 10);
+			User_Equipment equipment = new User_Equipment
+			{
+				Id = RandomId.RandomString(len),
+				Phone_Model_Num = CrossDeviceInfo.Current.Platform.ToString(),
+				Phone_Name = CrossDeviceInfo.Current.DeviceName,
+				Phone_Version = CrossDeviceInfo.Current.Version,
+				User_Id_FK = userQuery[0].Id
+
+			};
+
+			try
+			{
+				await App.MobileService.GetTable<User_Equipment>().InsertAsync(equipment);
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
+
+		}
+		#endregion
+
+	}
 
 
 }
