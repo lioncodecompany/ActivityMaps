@@ -33,7 +33,7 @@ namespace ActivityMaps.ViewModels
 		private string source;
 		private string uploadedFilename;
 		public byte[] byteData;
-		
+		private bool isReady = false;
 
 
 		#endregion
@@ -168,6 +168,8 @@ namespace ActivityMaps.ViewModels
 				await Application.Current.MainPage.DisplayAlert("Permissions Denied", "Unable to choose photo.", "OK");
 			}
 
+			this.isReady = true;
+				
 		}
 
 		private async void TakePicture()
@@ -213,14 +215,14 @@ namespace ActivityMaps.ViewModels
 				//On iOS you may want to send your user to the settings screen.
 				//CrossPermissions.Current.OpenAppSettings();
 			}
-
+			this.isReady = true;
 
 		}
 
 		private async void NextActivityPage()
 		{
-
-			this.IsRunning = true;
+		
+			
 
 
 			if (string.IsNullOrEmpty(this.Email))
@@ -258,6 +260,16 @@ namespace ActivityMaps.ViewModels
 					"Accept");
 				return;
 			}
+			if (!this.isReady)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"You must take a picture or select one",
+					"Accept");
+				return;
+			}
+
+			this.IsRunning = true;
 
 			CurrentUser.Email = Email;
 			CurrentUser.IsActive = true;
