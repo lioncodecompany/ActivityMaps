@@ -109,7 +109,7 @@ namespace ActivityMaps.ViewModels
 
 		public RegisterViewModel()
 		{
-			
+			CheckConnectionInternet.checkConnectivity();
 		}
 
 		#endregion

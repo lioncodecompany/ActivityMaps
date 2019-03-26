@@ -83,6 +83,7 @@ namespace ActivityMaps.ViewModels
 
 		public LoginViewModel(string email)
 		{
+			CheckConnectionInternet.checkConnectivity();
 			this.IsRemembered = true;
 			this.IsEnabled = true;
 
@@ -126,6 +127,18 @@ namespace ActivityMaps.ViewModels
 
 		private async void Login()
 		{
+			var connection = await CheckConnectionInternet.CheckConnection();
+
+			if (!connection.IsSuccess)
+			{
+
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					connection.Message,
+					"Accept");
+				await Application.Current.MainPage.Navigation.PopAsync();
+				return;
+			}
 			if (this.IsRemembered)
 				this.Email = ActivityMaps.Utils.Settings.LastUsedEmail;
 
@@ -155,7 +168,7 @@ namespace ActivityMaps.ViewModels
 
 			if (this.isRegistered)
 			{
-				User_LogType.userLogTypesAsync(userQuerry[0].Id, logType);
+				User_LogType.userLogTypesAsync(userQuerry[0].Id, logType);//falta logica aqui
 			}
 
 

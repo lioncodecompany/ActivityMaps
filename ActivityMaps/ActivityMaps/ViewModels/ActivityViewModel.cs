@@ -202,6 +202,7 @@ namespace ActivityMaps.ViewModels
 
 		public  ActivityViewModel(List<User> userQuerry)
 		{
+			CheckConnectionInternet.checkConnectivity();
 			this.Activitytxt = "";
 			this.IsRefreshing = false;
 			LoadActivity();
@@ -321,6 +322,7 @@ namespace ActivityMaps.ViewModels
 				Id = RandomId.RandomString(len),
 				LogDateTime = DateTime.Today,
 				User_LogType_Id_FK1 = logType,
+				User_Equipment_code = equipment.Id,
 				User_Id_FK2 = userQuery[0].Id
 			};
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ActivityMaps.Helpers;
 using ActivityMaps.Models;
 
 namespace ActivityMaps.ViewModels
@@ -59,6 +60,7 @@ namespace ActivityMaps.ViewModels
 		}
 		public ActivityJoinViewModel(Activity_Child selectedActivity, List<User> userQuery)
 		{
+			CheckConnectionInternet.checkConnectivity();
 			this.selectedActivity = selectedActivity;
 			this.Name = selectedActivity.Name;
 			this.CategoryName = "Category: "+selectedActivity.CategoryName;

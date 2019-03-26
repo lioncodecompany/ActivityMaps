@@ -94,6 +94,7 @@ namespace ActivityMaps.ViewModels
 
 		public EndRegisterViewModel(Address newAddress, User newUSer)
 		{
+			CheckConnectionInternet.checkConnectivity();
 			this.CurrentAddress = newAddress;
 			this.CurrentUser = newUSer;
 			this.IsRunning = false;

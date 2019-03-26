@@ -102,6 +102,7 @@ namespace ActivityMaps.ViewModels
 
 		public CreateActivityViewModel(List<User> userQuery, User_Log userLog)
 		{
+			CheckConnectionInternet.checkConnectivity();
 			this.ButtonText = "Select Location";
 			this.ButtonColor = "Red";
 
