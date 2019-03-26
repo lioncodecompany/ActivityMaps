@@ -29,8 +29,11 @@ namespace ActivityMaps.ViewModels
         private ObservableCollection<Activity_Category> categories;
 		private string categoryName;
         private bool isFilterEmpty = true;
+		private string logType = "1"; //login
+		private User_Log userLog;
 
-        Filter selectedFilter;
+
+		Filter selectedFilter;
 
         private List<User> userQuery;
 		#endregion
@@ -205,13 +208,14 @@ namespace ActivityMaps.ViewModels
 			this.userQuery = userQuerry;
 	    	fillEquipment();
 
+
 		}
 		#endregion
 
 		#region Metodos
 		private async void CreateActivity()
 		{
-			MainViewModel.GetInstance().CreateActivity = new CreateActivityViewModel();
+			MainViewModel.GetInstance().CreateActivity = new CreateActivityViewModel(userQuery, userLog);
 			await Application.Current.MainPage.Navigation.PushAsync(new CreateActivityPage());
 			LoadActivity();
 		}
@@ -306,6 +310,23 @@ namespace ActivityMaps.ViewModels
 			try
 			{
 				await App.MobileService.GetTable<User_Equipment>().InsertAsync(equipment);
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
+			
+			userLog = new User_Log
+			{
+				Id = RandomId.RandomString(len),
+				LogDateTime = DateTime.Today,
+				User_LogType_Id_FK1 = logType,
+				User_Id_FK2 = userQuery[0].Id
+			};
+
+			try
+			{
+				await App.MobileService.GetTable<User_Log>().InsertAsync(userLog);
 			}
 			catch (Exception ex)
 			{

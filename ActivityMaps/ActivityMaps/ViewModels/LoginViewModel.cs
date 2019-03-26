@@ -12,6 +12,7 @@ namespace ActivityMaps.ViewModels
 	using Xamarin.Forms;
 	using ActivityMaps.Models;
 	using Plugin.DeviceInfo;
+	using ActivityMaps.Helpers;
 
 	public class LoginViewModel : BaseViewModel
 	{
@@ -26,6 +27,9 @@ namespace ActivityMaps.ViewModels
 		private bool isRunning;
 		private bool isRemembered;
 		private string password;
+		private bool isRegistered = false;
+		private string logType = "2"; //Registered
+
 
 		#endregion
 
@@ -85,7 +89,7 @@ namespace ActivityMaps.ViewModels
 			this.Email = email;
 			this.Email = ActivityMaps.Utils.Settings.LastUsedEmail;
 
-
+			this.isRegistered = true;
 
 		}
 
@@ -125,6 +129,8 @@ namespace ActivityMaps.ViewModels
 			if (this.IsRemembered)
 				this.Email = ActivityMaps.Utils.Settings.LastUsedEmail;
 
+			
+
 			if (string.IsNullOrEmpty(this.Email))
 			{
 				await Application.Current.MainPage.DisplayAlert(
@@ -146,6 +152,12 @@ namespace ActivityMaps.ViewModels
 			this.IsRunning = true;
 			this.IsEnabled = false;
 			var userQuerry = await App.MobileService.GetTable<User>().Where(p => p.Email == Email).ToListAsync();
+
+			if (this.isRegistered)
+			{
+				User_LogType.userLogTypesAsync(userQuerry[0].Id, logType);
+			}
+
 
 			var result = string.Empty;
 			if (userQuerry.Count > 0)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
+using ActivityMaps.Helpers;
 using ActivityMaps.Models;
 using ActivityMaps.Views;
 using GalaSoft.MvvmLight.Command;
@@ -22,6 +23,9 @@ namespace ActivityMaps.ViewModels
 		private DateTime startDay;
 		private DateTime finishDay;
 		private bool isVisible;
+		private List<User> userQuery;
+		private User_Log userLog;
+		private string usLog = "3"; //Create activity
 		#endregion
 		#region Propieades
 
@@ -94,6 +98,18 @@ namespace ActivityMaps.ViewModels
 		{
 			this.ButtonText = "Select Location";
 			this.ButtonColor = "Red";
+		}
+
+		public CreateActivityViewModel(List<User> userQuery, User_Log userLog)
+		{
+			this.ButtonText = "Select Location";
+			this.ButtonColor = "Red";
+
+			this.userQuery = userQuery;
+			this.userLog = userLog;
+
+			User_LogType.userLogTypesAsync(userQuery[0].Id, usLog);
+
 		}
 		#endregion
 
