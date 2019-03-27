@@ -175,8 +175,8 @@ namespace ActivityMaps.ViewModels
 				Name = this.ActivityName,
 				Created_Date = DateTime.Now,
 				IsPrivate = false,//todo
-				Start_Act_Datetime = DateTime.Now,
-				End_Act_Datetime = DateTime.Now,
+				Start_Act_Datetime = this.StartDay.Date,
+				End_Act_Datetime = this.FinishDay.Date,
 				Description = this.Description,
 				Status = 1,//check
 				IsService = false,//todo

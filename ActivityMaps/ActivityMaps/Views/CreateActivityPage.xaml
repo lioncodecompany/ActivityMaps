@@ -75,7 +75,6 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         MinimumDate="{x:Static sys:DateTime.Now}"
-                        MaximumDate="{Binding MaxDate, Mode=TwoWay}"
                         Date="{Binding StartDay}">
                     </DatePicker>
                     <Label 
@@ -101,8 +100,7 @@
                     <DatePicker
                         Grid.Row="2"
                         Grid.Column="1"
-                        MinimumDate="{Binding MinDate, Mode=TwoWay}"
-                        MaximumDate="{Binding MaxDate, Mode=TwoWay}"
+                        MinimumDate="{x:Static sys:DateTime.Now}"
                         Date="{Binding FinishDay}">
                     </DatePicker>
                     <Label 
