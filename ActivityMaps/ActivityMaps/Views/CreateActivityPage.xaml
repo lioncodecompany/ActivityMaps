@@ -42,7 +42,7 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             
-                            Text="{Binding Activity_Name, Mode=TwoWay}"
+                            Text="{Binding ActivityName, Mode=TwoWay}"
                             Placeholder="Enter an activity name...">
                     </Entry>
                     
@@ -150,7 +150,7 @@
                             WidthRequest="140"
                             AnchorX="50"
                             IsEnabled="{Binding isEnabled, Mode=TwoWay}"
-                            Command="{Binding NextCommand}"
+                            Command="{Binding Create}"
                             Text="Create"
                             TextColor="White"
                             >

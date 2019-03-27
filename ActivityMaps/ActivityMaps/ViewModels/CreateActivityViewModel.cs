@@ -22,7 +22,7 @@ namespace ActivityMaps.ViewModels
 		private TimeSpan finishHour;
 		private DateTime startDay;
 		private DateTime finishDay;
-		private bool isVisible;
+		private bool isVisible = false;
 		private List<User> userQuery;
 		private User_Log userLog;
 		private string usLog = "3"; //Create activity
@@ -114,7 +114,13 @@ namespace ActivityMaps.ViewModels
 		}
 		#endregion
 
-
+		public ICommand Create
+		{
+			get
+			{
+				return new RelayCommand(CreateActivity);
+			}
+		}
 		public ICommand LCommand
 		{
 			get
@@ -133,6 +139,63 @@ namespace ActivityMaps.ViewModels
 			this.ButtonText = "Modify Location";
 
 
+		}
+
+		private async void CreateActivity()
+		{
+
+			if (string.IsNullOrEmpty(this.ActivityName))
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"You must enter an Activity Name.",
+					"Accept");
+				return;
+			}
+			if (string.IsNullOrEmpty(this.Description))
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"You must enter a description.",
+					"Accept");
+				return;
+			}
+			if (SelectedCategory == null)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"You must select an Category.",
+					"Accept");
+				return;
+			}
+			int len = RandomId.length.Next(5, 10);
+			Activity activity = new Activity()
+			{
+				Id = RandomId.RandomString(len),
+				Name = this.ActivityName,
+				Created_Date = DateTime.Now,
+				IsPrivate = false,//todo
+				Start_Act_Datetime = DateTime.Now,
+				End_Act_Datetime = DateTime.Now,
+				Description = this.Description,
+				Status = 1,//check
+				IsService = false,//todo
+				Activity_Cat_Code = SelectedCategory.Id,
+				Activity_Loc_Id = "1" //todo
+			};
+			try
+			{
+				await App.MobileService.GetTable<Activity>().InsertAsync(activity);
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
+
+			//todo -- Entryyyyyyy Table
+
+			MainViewModel.GetInstance().Activity_Child = new ActivityViewModel(userQuery);
+			await Application.Current.MainPage.Navigation.PushAsync(new ActivityPage());
 		}
 	}
 }
