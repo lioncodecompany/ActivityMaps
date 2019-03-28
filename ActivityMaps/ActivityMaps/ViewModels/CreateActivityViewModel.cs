@@ -102,7 +102,7 @@ namespace ActivityMaps.ViewModels
 
 		public CreateActivityViewModel(List<User> userQuery, User_Log userLog)
 		{
-			CheckConnectionInternet.checkConnectivity();
+		
 			this.ButtonText = "Select Location";
 			this.ButtonColor = "Red";
 
@@ -131,6 +131,7 @@ namespace ActivityMaps.ViewModels
 
 		private async void Location()
 		{
+			CheckConnectionInternet.checkConnectivity();
 			MainViewModel.GetInstance().Location = new LocationViewModel();
 			await Application.Current.MainPage.Navigation.PushAsync(new LocationPage());
 
@@ -143,6 +144,7 @@ namespace ActivityMaps.ViewModels
 
 		private async void CreateActivity()
 		{
+			CheckConnectionInternet.checkConnectivity();
 
 			if (string.IsNullOrEmpty(this.ActivityName))
 			{

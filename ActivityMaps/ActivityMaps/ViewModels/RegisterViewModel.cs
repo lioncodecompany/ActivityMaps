@@ -109,7 +109,7 @@ namespace ActivityMaps.ViewModels
 
 		public RegisterViewModel()
 		{
-			CheckConnectionInternet.checkConnectivity();
+			
 		}
 
 		#endregion
@@ -127,7 +127,7 @@ namespace ActivityMaps.ViewModels
 
 		private async void Next()
 		{
-			
+			CheckConnectionInternet.checkConnectivity();
 			if (string.IsNullOrEmpty(this.Name))
 			{
 				await Application.Current.MainPage.DisplayAlert(

@@ -60,7 +60,7 @@ namespace ActivityMaps.ViewModels
 		}
 		public ActivityJoinViewModel(Activity_Child selectedActivity, List<User> userQuery)
 		{
-			CheckConnectionInternet.checkConnectivity();
+			
 			this.selectedActivity = selectedActivity;
 			this.Name = selectedActivity.Name;
 			this.CategoryName = "Category: "+selectedActivity.CategoryName;

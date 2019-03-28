@@ -12,7 +12,7 @@ namespace ActivityMaps.Helpers
 	{
 
 		#region Methods
-		public static async Task<Response> CheckConnection()
+		public async Task<Response> CheckConnection()
 		{
 			if (!CrossConnectivity.Current.IsConnected)
 			{
@@ -42,7 +42,8 @@ namespace ActivityMaps.Helpers
 		}
 		public static async void checkConnectivity()
 		{
-			var connection = await CheckConnection();
+			CheckConnectionInternet internet = new CheckConnectionInternet();
+			var connection = await internet.CheckConnection();
 
 			if (!connection.IsSuccess)
 			{

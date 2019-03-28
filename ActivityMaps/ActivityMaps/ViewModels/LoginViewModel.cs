@@ -29,6 +29,7 @@ namespace ActivityMaps.ViewModels
 		private string password;
 		private bool isRegistered = false;
 		private string logType = "2"; //Registered
+		CheckConnectionInternet internet;
 
 
 		#endregion
@@ -77,6 +78,7 @@ namespace ActivityMaps.ViewModels
 			this.IsRemembered = true;
 			this.IsEnabled = true;
 			this.Email = ActivityMaps.Utils.Settings.LastUsedEmail;
+			this.internet = new CheckConnectionInternet();
 
 
 		}
@@ -89,6 +91,7 @@ namespace ActivityMaps.ViewModels
 
 			this.Email = email;
 			this.Email = ActivityMaps.Utils.Settings.LastUsedEmail;
+			this.internet = new CheckConnectionInternet();
 
 			this.isRegistered = true;
 
@@ -127,7 +130,7 @@ namespace ActivityMaps.ViewModels
 
 		private async void Login()
 		{
-			var connection = await CheckConnectionInternet.CheckConnection();
+			var connection = await this.internet.CheckConnection();
 
 			if (!connection.IsSuccess)
 			{

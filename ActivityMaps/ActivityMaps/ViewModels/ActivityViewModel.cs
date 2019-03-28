@@ -202,7 +202,7 @@ namespace ActivityMaps.ViewModels
 
 		public  ActivityViewModel(List<User> userQuerry)
 		{
-			CheckConnectionInternet.checkConnectivity();
+			
 			this.Activitytxt = "";
 			this.IsRefreshing = false;
 			LoadActivity();
@@ -216,6 +216,7 @@ namespace ActivityMaps.ViewModels
 		#region Metodos
 		private async void CreateActivity()
 		{
+			CheckConnectionInternet.checkConnectivity();
 			MainViewModel.GetInstance().CreateActivity = new CreateActivityViewModel(userQuery, userLog);
 			await Application.Current.MainPage.Navigation.PushAsync(new CreateActivityPage());
 			LoadActivity();
@@ -297,6 +298,7 @@ namespace ActivityMaps.ViewModels
 
 		private async void fillEquipment()
 		{
+			CheckConnectionInternet.checkConnectivity();
 			int len = RandomId.length.Next(5, 10);
 			User_Equipment equipment = new User_Equipment
 			{

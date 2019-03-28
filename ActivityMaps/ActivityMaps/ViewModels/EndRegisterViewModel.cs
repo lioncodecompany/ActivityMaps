@@ -94,7 +94,7 @@ namespace ActivityMaps.ViewModels
 
 		public EndRegisterViewModel(Address newAddress, User newUSer)
 		{
-			CheckConnectionInternet.checkConnectivity();
+			
 			this.CurrentAddress = newAddress;
 			this.CurrentUser = newUSer;
 			this.IsRunning = false;
@@ -134,8 +134,7 @@ namespace ActivityMaps.ViewModels
 
 		private async void SelectPicture()
 		{
-
-
+			CheckConnectionInternet.checkConnectivity();
 			var storageStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
 
 			if (storageStatus != PermissionStatus.Granted)
@@ -175,6 +174,7 @@ namespace ActivityMaps.ViewModels
 
 		private async void TakePicture()
 		{
+			CheckConnectionInternet.checkConnectivity();
 			await CrossMedia.Current.Initialize();
 
 			var cameraStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Camera);
@@ -222,8 +222,8 @@ namespace ActivityMaps.ViewModels
 
 		private async void NextActivityPage()
 		{
-		
-			
+
+			CheckConnectionInternet.checkConnectivity();
 
 
 			if (string.IsNullOrEmpty(this.Email))
