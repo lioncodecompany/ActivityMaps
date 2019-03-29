@@ -20,19 +20,7 @@ namespace ActivityMaps.Models
                 City = "Las Piedras"
             });
 
-            Locations.Add(new Activity_Location
-            {
-                Id = "2",
-                Nameplace = "Bairoa",
-                City = "Caguas"
-            });
-
-            Locations.Add(new Activity_Location
-            {
-                Id = "3",
-                Nameplace = "UPR Humacao",
-                City = "Humacao"
-            });
+            
 
 
 

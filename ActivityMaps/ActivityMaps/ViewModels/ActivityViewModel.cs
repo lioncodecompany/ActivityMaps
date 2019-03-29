@@ -194,7 +194,7 @@ namespace ActivityMaps.ViewModels
              this.Activitytxt = "";
              this.IsRefreshing =false;
              this.IsFilterEmpty = true;
-             LoadActivity();
+            // LoadActivity();
 			// fillEquipment();
 
 
@@ -217,21 +217,62 @@ namespace ActivityMaps.ViewModels
 		private async void CreateActivity()
 		{
 			CheckConnectionInternet.checkConnectivity();
-			MainViewModel.GetInstance().CreateActivity = new CreateActivityViewModel(userQuery, userLog);
+			MainViewModel.GetInstance().CreateActivity = new CreateActivityViewModel(userQuery, userLog, Categories);
 			await Application.Current.MainPage.Navigation.PushAsync(new CreateActivityPage());
 			LoadActivity();
 		}
-		public void LoadActivity()
+		public async void LoadActivity()
         {
-            this.IsRefreshing = true;
 
-            Activities = ActivityData.Activities;
-            Locations = Activity_LocationData.Locations;
-            Categories = Activity_CategoryData.Categories;
+			//Activities = ActivityData.Activities;
+			try
+			{
+				var querry = await App.MobileService.GetTable<Activity>().ToListAsync();
+				Activities = new ObservableCollection<Activity>();
+				var arr = querry.ToArray();
+				for (int idx = 0; idx < arr.Length; idx++)
+				{
+					Activities.Add(new Activity
+					{
+						Id = arr[idx].Id,
+						Description = arr[idx].Description,
+						Name = arr[idx].Name,
+						Activity_Loc_Id = "1",
+						Activity_Cat_Code = arr[idx].Activity_Cat_Code
+					});
+				}
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
+			Locations = Activity_LocationData.Locations;
 
-            //this.ActivityResult;
-            //var query
-            if (this.IsFilterEmpty) {
+			try
+			{
+				var querry = await App.MobileService.GetTable<Activity_Category>().ToListAsync();
+				Categories = new ObservableCollection<Activity_Category>();
+				var arr = querry.ToArray();
+				for (int idx = 0; idx < arr.Length; idx++)
+				{
+					Categories.Add(new Activity_Category
+					{
+						Id = arr[idx].Id,
+						Parent = arr[idx].Parent,
+						Name = arr[idx].Name
+					});
+				}
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
+			this.IsRefreshing = true;
+			//Categories = Activity_CategoryData.Categories;
+
+			//this.ActivityResult;
+			//var query
+			if (this.IsFilterEmpty) {
                 var query = from act
                                       in Activities
                             join cat in Categories on act.Activity_Cat_Code equals cat.Id
@@ -298,7 +339,7 @@ namespace ActivityMaps.ViewModels
 
 		private async void fillEquipment()
 		{
-			CheckConnectionInternet.checkConnectivity();
+
 			int len = RandomId.length.Next(5, 10);
 			User_Equipment equipment = new User_Equipment
 			{

@@ -54,7 +54,7 @@ namespace ActivityMaps.Models
                 Id = "5",
                 Name = "BasketBall Doble",
                 Activity_Loc_Id = "1",
-                Activity_Cat_Code = "2"
+                Activity_Cat_Code = "11"
                 
                 
             });
@@ -62,8 +62,8 @@ namespace ActivityMaps.Models
             {
                 Id = "6",
                 Name = "Merengue",
-                Activity_Loc_Id = "3",
-                Activity_Cat_Code = "3"
+                Activity_Loc_Id = "1",
+                Activity_Cat_Code = "21"
                 
             });
             Activities.Add(new Activity
@@ -71,8 +71,8 @@ namespace ActivityMaps.Models
                 Id = "7",
                 Name = "BasketBall 3pa3",
 				Description = "aqui es",
-				Activity_Loc_Id = "3",
-                Activity_Cat_Code = "2"
+				Activity_Loc_Id = "1",
+                Activity_Cat_Code = "21"
                
             });
 

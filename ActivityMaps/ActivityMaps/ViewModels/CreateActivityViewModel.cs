@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 using ActivityMaps.Helpers;
@@ -26,6 +27,7 @@ namespace ActivityMaps.ViewModels
 		private List<User> userQuery;
 		private User_Log userLog;
 		private string usLog = "3"; //Create activity
+		private ObservableCollection<Activity_Category> categories;
 		#endregion
 		#region Propieades
 
@@ -71,7 +73,16 @@ namespace ActivityMaps.ViewModels
 			set { SetValue(ref this.finishHour, value); }
 		}
 
-		public IList<Activity_Category> Categories { get { return Activity_CategoryData.Categories; } }
+
+		public ObservableCollection<Activity_Category> Categories
+		{
+
+
+			get { return this.categories; }
+			set { SetValue(ref this.categories, value); }
+
+
+		}
 
 
 		public Activity_Category SelectedCategory
@@ -100,7 +111,7 @@ namespace ActivityMaps.ViewModels
 			this.ButtonColor = "Red";
 		}
 
-		public CreateActivityViewModel(List<User> userQuery, User_Log userLog)
+		public CreateActivityViewModel(List<User> userQuery, User_Log userLog, ObservableCollection<Activity_Category> categories)
 		{
 		
 			this.ButtonText = "Select Location";
@@ -108,7 +119,7 @@ namespace ActivityMaps.ViewModels
 
 			this.userQuery = userQuery;
 			this.userLog = userLog;
-
+			this.Categories = categories;
 			User_LogType.userLogTypesAsync(userQuery[0].Id, usLog);
 
 		}
@@ -145,6 +156,8 @@ namespace ActivityMaps.ViewModels
 		private async void CreateActivity()
 		{
 			CheckConnectionInternet.checkConnectivity();
+			
+			
 
 			if (string.IsNullOrEmpty(this.ActivityName))
 			{
@@ -199,5 +212,8 @@ namespace ActivityMaps.ViewModels
 			MainViewModel.GetInstance().Activity_Child = new ActivityViewModel(userQuery);
 			await Application.Current.MainPage.Navigation.PushAsync(new ActivityPage());
 		}
+
+		
+		
 	}
 }

@@ -71,5 +71,10 @@ namespace ActivityMaps.ViewModels
 		{
 
 		}
+
+		private async void setUserCreated()
+		{
+			//todo
+		}
 	}
 }

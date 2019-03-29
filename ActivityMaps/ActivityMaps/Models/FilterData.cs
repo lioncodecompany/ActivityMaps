@@ -18,11 +18,11 @@ namespace ActivityMaps.Models
 			});
 			Filters.Add(new Filter
 			{
-				Name = "DANCE"
+				Name = "Salsa"
 			});
 			Filters.Add(new Filter
 			{
-				Name = "PING PONG"
+				Name = "Table Tennis"
 			});
             Filters.Add(new Filter
             {
