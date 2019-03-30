@@ -27,7 +27,13 @@
                     FontSize="Large"
                     HorizontalOptions="Start"
                     Text="{Binding Description, Mode=TwoWay}"/>
-                
+                <ActivityIndicator 
+                    IsRunning="{Binding IsRunning, Mode=TwoWay}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Color="Navy"
+                    >
+                </ActivityIndicator>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

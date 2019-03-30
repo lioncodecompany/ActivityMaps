@@ -16,8 +16,7 @@ namespace ActivityMaps.Models
 		public int Status { get; set; }
         public bool IsService { get; set; }
         public string Activity_Cat_Code { get; set; } 
-       // public string CategoryName { get; set; }
-        //public string LocationPlaceName { get; set; } 
+        public bool deleted { get; set; }
         public string Activity_Loc_Id { get; set; }
 
     }

@@ -26,6 +26,7 @@ namespace ActivityMaps.ViewModels
 		private bool isVisible = false;
 		private List<User> userQuery;
 		private User_Log userLog;
+		public static User_Log userCreating;
 		private string usLog = "3"; //Create activity
 		private ObservableCollection<Activity_Category> categories;
 		#endregion
@@ -120,7 +121,7 @@ namespace ActivityMaps.ViewModels
 			this.userQuery = userQuery;
 			this.userLog = userLog;
 			this.Categories = categories;
-			User_LogType.userLogTypesAsync(userQuery[0].Id, usLog);
+			
 
 		}
 		#endregion
@@ -198,18 +199,46 @@ namespace ActivityMaps.ViewModels
 				Activity_Cat_Code = SelectedCategory.Id,
 				Activity_Loc_Id = "1" //todo
 			};
+			
+			//ctivity history
+			Activity_History activityHistory = new Activity_History()
+			{
+				Id = RandomId.RandomString(len),
+				Activity_Code_Id = activity.Id,
+				Name = this.ActivityName,
+				Created_Date = DateTime.Now,
+				IsPrivate = false,//todo
+				Start_Act_Date = this.StartDay.Date,
+				End_Act_Date = this.FinishDay.Date,
+				Description = this.Description,
+				Status = 1,//check
+				IsService = false,//todo
+				Activity_Cat_code = SelectedCategory.Id,
+				Activity_Loc_Id_FK = "1" //todo
+			};
+			userCreating = User_LogType.userLogTypesAsync(userQuery[0].Id, usLog);
+			User_Entered entry = new User_Entered()
+			{
+				Id = RandomId.RandomString(len),
+				Status = "in",
+				IsCreator = true,
+				User_Log_Id_FK1 = userCreating.Id,
+				Activity_Code_FK2 = activityHistory.Activity_Code_Id
+			};
 			try
 			{
 				await App.MobileService.GetTable<Activity>().InsertAsync(activity);
+				await App.MobileService.GetTable<Activity_History>().InsertAsync(activityHistory);
+				await App.MobileService.GetTable<User_Log>().InsertAsync(userCreating);
+				await App.MobileService.GetTable<User_Entered>().InsertAsync(entry);
+				
 			}
 			catch (Exception ex)
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 			}
-
-			//todo -- Entryyyyyyy Table
-
-			MainViewModel.GetInstance().Activity_Child = new ActivityViewModel(userQuery);
+			
+			MainViewModel.GetInstance().Activity_Child = new ActivityViewModel(userQuery, entry);
 			await Application.Current.MainPage.Navigation.PushAsync(new ActivityPage());
 		}
 

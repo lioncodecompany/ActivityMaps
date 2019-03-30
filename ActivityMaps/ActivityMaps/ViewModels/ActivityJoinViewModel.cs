@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ActivityMaps.Helpers;
 using ActivityMaps.Models;
@@ -15,6 +16,18 @@ namespace ActivityMaps.ViewModels
 		private string name;
 		private string categoryName;
 		private string description;
+		private bool isRunning;
+
+		public bool IsRunning
+		{
+			get { return this.isRunning; }
+			set
+			{
+
+				SetValue(ref this.isRunning, value);
+
+			}
+		}
 
 		public string UserName
 		{
@@ -37,6 +50,7 @@ namespace ActivityMaps.ViewModels
 
 			}
 		}
+
 		public string Name
 		{
 			get { return this.name; }
@@ -62,9 +76,10 @@ namespace ActivityMaps.ViewModels
 		{
 			
 			this.selectedActivity = selectedActivity;
-			this.Name = selectedActivity.Name;
-			this.CategoryName = "Category: "+selectedActivity.CategoryName;
-			this.Description = selectedActivity.Description;
+			this.name = selectedActivity.Name;
+			this.categoryName = "Category: "+selectedActivity.CategoryName;
+			this.description = selectedActivity.Description;
+			setUserCreated();
 			//this.UserName = "me " + userQuery[0].Nickname;
 		}
 		public ActivityJoinViewModel()
@@ -74,7 +89,16 @@ namespace ActivityMaps.ViewModels
 
 		private async void setUserCreated()
 		{
-			//todo
+			this.IsRunning = true;
+			var user = await App.MobileService.GetTable<User_Entered>().Where(p => p.Activity_Code_FK2 == selectedActivity.Id && p.IsCreator).ToListAsync();
+			var userCreator = await App.MobileService.GetTable<User_Log>().Where(p => p.Id == user[0].User_Log_Id_FK1).ToListAsync();
+			var userName = await App.MobileService.GetTable<User>().Where(p => p.Id == userCreator[0].User_Id_FK2).ToListAsync();
+			UserName = userName[0].Nickname;
+			this.Name = this.name;
+			this.Description = this.description;
+			this.CategoryName = this.categoryName;
+			this.IsRunning = false;
+
 		}
 	}
 }

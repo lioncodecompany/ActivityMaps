@@ -4,9 +4,9 @@ using System.Text;
 
 namespace ActivityMaps.Models
 {
-    public class User_Log
+    public class User_Log : User
     {
-		public string Id { get; set; }
+		public new string Id { get; set; }
 		public DateTime LogDateTime { get; set; }
 		public string LogInfo { get; set; }
 		public string Activity_code { get; set; }

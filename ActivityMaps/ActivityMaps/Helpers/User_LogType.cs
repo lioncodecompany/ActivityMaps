@@ -1,4 +1,5 @@
 ﻿using ActivityMaps.Models;
+using ActivityMaps.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ namespace ActivityMaps.Helpers
 {
     public class User_LogType
     {
-		public async static void userLogTypesAsync(string userId, string logTypeId)
+		public static User_Log userLogTypesAsync(string userId, string logTypeId)
 		{
 			int len = RandomId.length.Next(5, 10);
 			User_Log user = new User_Log
@@ -19,14 +20,8 @@ namespace ActivityMaps.Helpers
 				User_Id_FK2 = userId
 			};
 
-			try
-			{
-				await App.MobileService.GetTable<User_Log>().InsertAsync(user);
-			}
-			catch (Exception ex)
-			{
-				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
-			}
+			return user;
+			
 		} 
     }
 }

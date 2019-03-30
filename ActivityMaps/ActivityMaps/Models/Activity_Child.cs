@@ -6,8 +6,9 @@ namespace ActivityMaps.Models
 {
     public class Activity_Child:Activity
     {
-
+		
          public string CategoryName { get; set; }
          public string LocationPlaceName { get; set; } 
+
     }
 }

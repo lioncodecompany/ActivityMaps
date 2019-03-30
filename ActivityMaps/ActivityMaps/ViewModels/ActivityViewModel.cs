@@ -36,6 +36,7 @@ namespace ActivityMaps.ViewModels
 		Filter selectedFilter;
 
         private List<User> userQuery;
+		private User_Entered entryUser;
 		#endregion
 
 		#region Propiedades
@@ -133,7 +134,6 @@ namespace ActivityMaps.ViewModels
 
             get
             {
-
                 return this.selectedActivity;
             }
             set
@@ -199,14 +199,26 @@ namespace ActivityMaps.ViewModels
 
 
 		}
+		public ActivityViewModel(List<User> userQuerry)
+		{
 
-		public  ActivityViewModel(List<User> userQuerry)
+			this.Activitytxt = "";
+			this.IsRefreshing = false;
+			LoadActivity();
+			this.userQuery = userQuerry;
+			fillEquipment();
+
+
+		}
+
+		public  ActivityViewModel(List<User> userQuerry, User_Entered entry)
 		{
 			
 			this.Activitytxt = "";
 			this.IsRefreshing = false;
 			LoadActivity();
 			this.userQuery = userQuerry;
+			this.entryUser = entry;
 	    	fillEquipment();
 
 
@@ -232,14 +244,18 @@ namespace ActivityMaps.ViewModels
 				var arr = querry.ToArray();
 				for (int idx = 0; idx < arr.Length; idx++)
 				{
-					Activities.Add(new Activity
+					if (!arr[idx].deleted)
 					{
-						Id = arr[idx].Id,
-						Description = arr[idx].Description,
-						Name = arr[idx].Name,
-						Activity_Loc_Id = "1",
-						Activity_Cat_Code = arr[idx].Activity_Cat_Code
-					});
+						Activities.Add(new Activity
+						{
+							Id = arr[idx].Id,
+							Description = arr[idx].Description,
+							Name = arr[idx].Name,
+							Activity_Loc_Id = "1",
+							Activity_Cat_Code = arr[idx].Activity_Cat_Code
+						});
+					}
+					
 				}
 			}
 			catch (Exception ex)
@@ -285,9 +301,11 @@ namespace ActivityMaps.ViewModels
                             select new Activity_Child
 
                             {
+								Id = act.Id,
                                 Name = act.Name,
                                 CategoryName = cat.Name,
                                 Description = act.Description
+
                             };
                 this.ActivityResult = query.ToList();
             }else
@@ -305,7 +323,8 @@ namespace ActivityMaps.ViewModels
                             select new Activity_Child
 
                             {
-                                Name = act.Name,
+								Id = act.Id,
+								Name = act.Name,
                                 CategoryName = cat.Name,
                                 Description = act.Description
                             };
@@ -322,7 +341,7 @@ namespace ActivityMaps.ViewModels
             public async void Assign()
         {
 
-            //var actID = this.SelectedActivity.Id;
+            var actID = this.SelectedActivity.Id;
             string actName = this.SelectedActivity.Name;
 			
             //SetValue(ref this.selectedActivity, null);
