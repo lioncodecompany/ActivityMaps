@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ActivityMaps.Views.ActivityJoinPage"
+              xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              BindingContext="{Binding Main,Source={StaticResource Locator}}"
              Title="Join Activity">
     <ContentPage.Content>
@@ -12,11 +13,29 @@
                     FontSize="Large"
                     HorizontalOptions="Center"
                     Text="{Binding Name, Mode=TwoWay}"/>
-                <Label 
+                <StackLayout Orientation="Horizontal">
+
+                    <Label 
                     FontAttributes="Bold"
                     FontSize="Large"
                     HorizontalOptions="Start"
                     Text="{Binding UserName, Mode=TwoWay}"/>
+
+                    <controls:CircleImage Source="{Binding Image}"  Aspect="AspectFill">
+                        <controls:CircleImage.WidthRequest>
+                            <OnPlatform x:TypeArguments="x:Double">
+                                <On Platform="Android, iOS">50</On>
+                            </OnPlatform>
+                        </controls:CircleImage.WidthRequest>
+                        <controls:CircleImage.HeightRequest>
+                            <OnPlatform x:TypeArguments="x:Double">
+                                <On Platform="Android, iOS">50</On>
+                            </OnPlatform>
+                        </controls:CircleImage.HeightRequest>
+                    </controls:CircleImage>
+
+                </StackLayout>
+
                 <Label 
                     FontAttributes="Bold"
                     FontSize="Large"
@@ -27,6 +46,7 @@
                     FontSize="Large"
                     HorizontalOptions="Start"
                     Text="{Binding Description, Mode=TwoWay}"/>
+                
                 <ActivityIndicator 
                     IsRunning="{Binding IsRunning, Mode=TwoWay}"
                     VerticalOptions="Center"
