@@ -46,8 +46,36 @@
                     FontSize="Large"
                     HorizontalOptions="Start"
                     Text="{Binding Description, Mode=TwoWay}"/>
-                
-                <ActivityIndicator 
+
+            <StackLayout Orientation="Horizontal">
+                    <Button
+                            
+                            BackgroundColor="Navy"
+                            BorderRadius="23"
+                            HeightRequest="46"
+                            WidthRequest="140"
+                            AnchorX="50"
+                            IsEnabled="{Binding isEnabled, Mode=TwoWay}"
+                            Command="{Binding JoinCommand}"
+                            Text="Join"
+                            TextColor="White"
+                            >
+                    </Button>
+                    <Button
+                            IsVisible="{Binding IsVisible, Mode=TwoWay}"
+                            BackgroundColor="Red"
+                            BorderRadius="23"
+                            HeightRequest="46"
+                            WidthRequest="140"
+                            AnchorX="50"
+                            IsEnabled="{Binding isEnabled, Mode=TwoWay}"
+                            Command="{Binding Quit}"
+                            Text="Quit"
+                            TextColor="White"
+                            >
+                    </Button>
+                </StackLayout>
+            <ActivityIndicator 
                     IsRunning="{Binding IsRunning, Mode=TwoWay}"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"

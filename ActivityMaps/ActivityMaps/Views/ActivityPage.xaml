@@ -101,7 +101,9 @@
                                                 VerticalOptions="CenterAndExpand" />
                                         </Grid>
 
-                                    </StackLayout>
+                     
+
+                                </StackLayout>
 
 
                                 </Frame>
@@ -109,6 +111,7 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                
 
                 <!--Custom View Cells-->
                 <!--
@@ -126,8 +129,15 @@
     </ListView.ItemTemplate>
     -->
             </ListView>
+        <ActivityIndicator 
+                                        IsRunning="{Binding IsRunning, Mode=TwoWay}"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center"
+                                        Color="Navy"
+                                        >
+        </ActivityIndicator>
 
-            <!--ScrollView-->
+        <!--ScrollView-->
 
             <Button
                 Margin="-29"

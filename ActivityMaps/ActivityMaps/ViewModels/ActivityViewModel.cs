@@ -14,6 +14,8 @@ namespace ActivityMaps.ViewModels
     using System.Collections;
 	using Plugin.DeviceInfo;
 	using ActivityMaps.Helpers;
+	using ActivityMaps.AzureStorage;
+	using System.IO;
 
 	public class ActivityViewModel :BaseViewModel
     {
@@ -31,17 +33,27 @@ namespace ActivityMaps.ViewModels
         private bool isFilterEmpty = true;
 		private string logType = "1"; //login
 		private User_Log userLog;
-
-
+		private ImageSource image;
+		private bool isRunning;
 		Filter selectedFilter;
+		User_Equipment equipment;
 
-        private List<User> userQuery;
+		private List<User> userQuery;
 		private User_Entered entryUser;
 		#endregion
 
 		#region Propiedades
 
+
+		[Xamarin.Forms.TypeConverter(typeof(Xamarin.Forms.ImageSourceConverter))]
+		public Xamarin.Forms.ImageSource Image
+		{
+			get { return this.image; }
+			set { SetValue(ref this.image, value); }
+		}
+
 		public IList<Filter> Filters { get { return FilterData.Filters; }   }
+
 
 		public Filter SelectedFilter
 		{
@@ -94,7 +106,14 @@ namespace ActivityMaps.ViewModels
             set { SetValue(ref this.isRefreshing, value); }
         }
 
-        public bool IsFilterEmpty
+		public bool IsRunning
+		{
+
+			get { return this.isRunning; }
+			set { SetValue(ref this.isRunning, value); }
+		}
+
+		public bool IsFilterEmpty
         {
             get { return this.isFilterEmpty; }
             set { SetValue(ref this.isFilterEmpty, value); }
@@ -340,16 +359,20 @@ namespace ActivityMaps.ViewModels
 
             public async void Assign()
         {
-
-            var actID = this.SelectedActivity.Id;
+			this.IsRunning = true;
+			var actID = this.SelectedActivity.Id;
             string actName = this.SelectedActivity.Name;
 			
             //SetValue(ref this.selectedActivity, null);
             LoadActivity();
+			
+			var user = await App.MobileService.GetTable<User_Entered>().Where(p => p.Activity_Code_FK2 == selectedActivity.Id && p.IsCreator).ToListAsync();
+			var userCreator = await App.MobileService.GetTable<User_Log>().Where(p => p.Id == user[0].User_Log_Id_FK1).ToListAsync();
+			var userName = await App.MobileService.GetTable<User>().Where(p => p.Id == userCreator[0].User_Id_FK2).ToListAsync();
+			
 
-           
-
-			MainViewModel.GetInstance().ActivityJoin = new ActivityJoinViewModel(this.SelectedActivity, this.userQuery);
+			this.IsRunning = false;
+			MainViewModel.GetInstance().ActivityJoin = new ActivityJoinViewModel(this.SelectedActivity, this.userQuery, userName, userCreator,equipment);
 			await Application.Current.MainPage.Navigation.PushAsync(new ActivityJoinPage());
 
 
@@ -360,7 +383,7 @@ namespace ActivityMaps.ViewModels
 		{
 
 			int len = RandomId.length.Next(5, 10);
-			User_Equipment equipment = new User_Equipment
+			 equipment = new User_Equipment
 			{
 				Id = RandomId.RandomString(len),
 				Phone_Model_Num = CrossDeviceInfo.Current.Platform.ToString(),
