@@ -69,7 +69,7 @@
                             WidthRequest="140"
                             AnchorX="50"
                             IsEnabled="{Binding isEnabled, Mode=TwoWay}"
-                            Command="{Binding Quit}"
+                            Command="{Binding QuitCommand}"
                             Text="Quit"
                             TextColor="White"
                             >

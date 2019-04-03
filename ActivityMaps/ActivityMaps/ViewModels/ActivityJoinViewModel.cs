@@ -119,6 +119,72 @@ namespace ActivityMaps.ViewModels
 			}
 		}
 
+		public ICommand QuitCommand
+		{
+			get
+			{
+				return new RelayCommand(Quit);
+			}
+		}
+		private async void Quit()
+		{
+
+
+			bool isNotEntered = true;
+			List<User_Log> userLogged;
+			User_Log current = null;
+			int userQuit = 0;
+			var queue = await App.MobileService.GetTable<User_Entered>().Where(p => p.Activity_Code_FK2 == selectedActivity.Id && !p.IsCreator).ToListAsync();
+
+			if (queue.Count > 0)
+			{
+
+				for (int i = 0; i < queue.Count; i++)
+				{
+					 userLogged = await App.MobileService.GetTable<User_Log>().Where(p => p.Id == queue[i].User_Log_Id_FK1 && p.User_LogType_Id_FK1 == "4").ToListAsync();
+					if (userLogged[i].User_Id_FK2.Equals(userJoining[0].Id))
+					{
+						userQuit = i;
+						current = new User_Log
+						{
+							
+							Id = userLogged[i].Id,
+							LogDateTime = DateTime.Now,
+							User_Id_FK2 = userLogged[i].User_Id_FK2,
+							User_Equipment_code = userLogged[i].User_Equipment_code,
+							User_LogType_Id_FK1 = "5" // quit activity
+							
+						};
+						isNotEntered = false;
+					}
+				}
+			}
+
+			if (!isNotEntered)
+			{
+				try
+				{
+					await App.MobileService.GetTable<User_Log>().UpdateAsync(current);
+					await App.MobileService.GetTable<User_Entered>().DeleteAsync(queue[userQuit]);
+				}
+				catch (Exception ex)
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+					return;
+
+				}
+
+				await Application.Current.MainPage.DisplayAlert("Success", " You are now out of the queue", "Ok");
+			}
+			else
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", "You are not on the lobby", "Ok");
+				return;
+			}
+
+
+		}
+
 		private async void Join()
 		{
 
