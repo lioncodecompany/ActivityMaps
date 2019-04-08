@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ActivityMaps.Views.ActivityJoinPage"
-              xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:control="clr-namespace:HorizontalList;assembly=HorizontalList"
              BindingContext="{Binding Main,Source={StaticResource Locator}}"
              Title="Join Activity">
     <ContentPage.Content>
@@ -36,6 +37,8 @@
 
                 </StackLayout>
 
+
+
                 <Label 
                     FontAttributes="Bold"
                     FontSize="Large"
@@ -47,7 +50,7 @@
                     HorizontalOptions="Start"
                     Text="{Binding Description, Mode=TwoWay}"/>
 
-            <StackLayout Orientation="Horizontal">
+                <StackLayout Orientation="Horizontal">
                     <Button
                             
                             BackgroundColor="Navy"
@@ -75,14 +78,46 @@
                             >
                     </Button>
                 </StackLayout>
-            <ActivityIndicator 
+                <ActivityIndicator 
                     IsRunning="{Binding IsRunning, Mode=TwoWay}"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
                     Color="Navy"
                     >
                 </ActivityIndicator>
+
+
+                <control:HorizontalList
+        ItemsSource="{Binding UserList}"
+        ListOrientation="Horizontal" >
+                    <control:HorizontalList.ItemTemplate >
+                        <DataTemplate>
+                            <Grid>
+                                
+                                <controls:CircleImage Source="{Binding ImageUser}"  Aspect="AspectFill"
+                                                      Grid.Column="0"
+                                                      Grid.Row="0">
+                                    <controls:CircleImage.WidthRequest>
+                                        <OnPlatform x:TypeArguments="x:Double">
+                                            <On Platform="Android, iOS">50</On>
+                                        </OnPlatform>
+                                    </controls:CircleImage.WidthRequest>
+                                    <controls:CircleImage.HeightRequest>
+                                        <OnPlatform x:TypeArguments="x:Double">
+                                            <On Platform="Android, iOS">50</On>
+                                        </OnPlatform>
+                                    </controls:CircleImage.HeightRequest>
+                                </controls:CircleImage>
+                                <Label Text="{Binding Nickname}"
+                                       Grid.Column="0"
+                                       Grid.Row="1"/>
+                            </Grid>
+                        </DataTemplate>
+                    </control:HorizontalList.ItemTemplate>
+                </control:HorizontalList>
+
             </StackLayout>
+            
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

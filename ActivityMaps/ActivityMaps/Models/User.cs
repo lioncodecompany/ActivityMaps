@@ -19,6 +19,9 @@ namespace ActivityMaps.Models
 		public bool IsAdmin { get; set; }
 		public bool Locked { get; set; }
 		public string Address_Id_FK { get; set; }
+		public string ImageUserPath { get; set; }
+		public ImageSource ImageUser { get; set; }
+
 
 	}
 }

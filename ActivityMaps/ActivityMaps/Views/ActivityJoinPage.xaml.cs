@@ -12,6 +12,7 @@ namespace ActivityMaps.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ActivityJoinPage : ContentPage
 	{
+		
 		public ActivityJoinPage ()
 		{
 			InitializeComponent ();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,18 +23,42 @@ namespace ActivityMaps.ViewModels
 		private string categoryName;
 		private string description;
 		private ImageSource image;
+		private ImageSource imageUser;
 		private bool isRunning;
 		List<User_Log> userCreator;
 		List<User> userCreatorActivity;
 		User_Equipment equipment;
 		private string logtypeJoin = "4";
 		List<User> userJoining;
+		private ObservableCollection<User> userFoto;
+		public List<User> userList;
+
+
+		public List<User> UserList { get { return this.userList; }  set { SetValue(ref this.userList, value); } }
+		public ObservableCollection<User> UserFoto
+		{
+
+
+			get { return this.userFoto; }
+			set { SetValue(ref this.userFoto, value); }
+
+
+		}
+
+		private User userListView;
 
 		[Xamarin.Forms.TypeConverter(typeof(Xamarin.Forms.ImageSourceConverter))]
 		public Xamarin.Forms.ImageSource Image
 		{
 			get { return this.image; }
 			set { SetValue(ref this.image, value); }
+		}
+
+		[Xamarin.Forms.TypeConverter(typeof(Xamarin.Forms.ImageSourceConverter))]
+		public Xamarin.Forms.ImageSource ImageUser
+		{
+			get { return this.imageUser; }
+			set { SetValue(ref this.imageUser, value); }
 		}
 
 		public bool IsRunning
@@ -100,8 +125,9 @@ namespace ActivityMaps.ViewModels
 			this.name = selectedActivity.Name;
 			this.categoryName = "Category: "+selectedActivity.CategoryName;
 			this.description = selectedActivity.Description;
-			this.UserName = this.userJoining[0].Nickname;
+			this.UserName = userJoining[0].Nickname;
 			getFile();
+			getFileUserEntry();
 
 			//this.UserName = "me " + userQuery[0].Nickname;
 		}
@@ -126,6 +152,13 @@ namespace ActivityMaps.ViewModels
 				return new RelayCommand(Quit);
 			}
 		}
+
+		public ObservableCollection<User_Log> UserLog { get; private set; }
+		public ObservableCollection<User> User { get; private set; }
+		public ObservableCollection<File_Path> FilePath { get; private set; }
+		public ObservableCollection<User_Entered> UserEntry { get; private set; }
+		
+
 		private async void Quit()
 		{
 
@@ -141,17 +174,18 @@ namespace ActivityMaps.ViewModels
 
 				for (int i = 0; i < queue.Count; i++)
 				{
-					 userLogged = await App.MobileService.GetTable<User_Log>().Where(p => p.Id == queue[i].User_Log_Id_FK1 && p.User_LogType_Id_FK1 == "4").ToListAsync();
-					if (userLogged[i].User_Id_FK2.Equals(userJoining[0].Id))
+					
+					userLogged = await App.MobileService.GetTable<User_Log>().Where(p => p.Id == queue[i].User_Log_Id_FK1 && p.User_LogType_Id_FK1 == "4").ToListAsync();
+					if (userLogged[0].User_Id_FK2.Equals(userJoining[0].Id))
 					{
 						userQuit = i;
 						current = new User_Log
 						{
 							
-							Id = userLogged[i].Id,
+							Id = userLogged[0].Id,
 							LogDateTime = DateTime.Now,
-							User_Id_FK2 = userLogged[i].User_Id_FK2,
-							User_Equipment_code = userLogged[i].User_Equipment_code,
+							User_Id_FK2 = userLogged[0].User_Id_FK2,
+							User_Equipment_code = userLogged[0].User_Equipment_code,
 							User_LogType_Id_FK1 = "5" // quit activity
 							
 						};
@@ -166,6 +200,7 @@ namespace ActivityMaps.ViewModels
 				{
 					await App.MobileService.GetTable<User_Log>().UpdateAsync(current);
 					await App.MobileService.GetTable<User_Entered>().DeleteAsync(queue[userQuit]);
+					getFileUserEntry();
 				}
 				catch (Exception ex)
 				{
@@ -198,7 +233,7 @@ namespace ActivityMaps.ViewModels
 				for (int i = 0; i < queue.Count; i++)
 				{
 					var userLogged = await App.MobileService.GetTable<User_Log>().Where(p => p.Id == queue[i].User_Log_Id_FK1 && p.User_LogType_Id_FK1 == "4").ToListAsync();
-					if (userLogged[i].User_Id_FK2.Equals(userJoining[0].Id))
+					if (userLogged[0].User_Id_FK2.Equals(userJoining[0].Id))
 					{
 						await Application.Current.MainPage.DisplayAlert(
 					"Error",
@@ -240,6 +275,8 @@ namespace ActivityMaps.ViewModels
 			{
 				await App.MobileService.GetTable<User_Log>().InsertAsync(userLog);
 				await App.MobileService.GetTable<User_Entered>().InsertAsync(entry);
+				getFileUserEntry();
+				
 
 			}
 			catch (Exception ex)
@@ -264,6 +301,187 @@ namespace ActivityMaps.ViewModels
 			}
 
 			this.IsRunning = false;
+		}
+
+		private async void getFileUserEntry()
+		{
+			
+			this.IsRunning = true;
+			var userEntry = await App.MobileService.GetTable<User_Entered>().Where(p => !p.deleted && p.Activity_Code_FK2 == selectedActivity.Id  && !p.IsCreator).ToListAsync();
+			if (userEntry.Count > 0)
+			{
+				try
+				{
+					var querry = await App.MobileService.GetTable<User_Entered>().Where(entry => !entry.IsCreator && !entry.deleted && entry.Activity_Code_FK2 == selectedActivity.Id).ToListAsync();
+					UserEntry = new ObservableCollection<User_Entered>();
+					var arr = querry.ToArray();
+					for (int idx = 0; idx < arr.Length; idx++)
+					{
+
+						UserEntry.Add(new User_Entered
+						{
+							Id = arr[idx].Id,
+							deleted = arr[idx].deleted,
+							Activity_Code_FK2 = arr[idx].Activity_Code_FK2,
+							IsCreator = arr[idx].IsCreator,
+							User_Log_Id_FK1 = arr[idx].User_Log_Id_FK1
+							
+							
+						});
+
+
+					}
+				}
+				catch (Exception ex)
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+				}
+
+				try
+				{
+					
+						var querry = await App.MobileService.GetTable<User_Log>().ToListAsync();
+						UserLog = new ObservableCollection<User_Log>();
+						var arr = querry.ToArray();
+
+					for (int idx = 0; idx < arr.Length; idx++)
+					{
+						UserLog.Add(new User_Log
+						{
+							Id = arr[idx].Id,
+							User_Id_FK2 = arr[idx].User_Id_FK2
+						});
+
+
+					}
+					
+				}
+				catch (Exception ex)
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+				}
+
+				try
+				{
+					var querry = await App.MobileService.GetTable<User>().ToListAsync();
+					User = new ObservableCollection<User>();
+					var arr = querry.ToArray();
+					for (int idx = 0; idx < arr.Length; idx++)
+					{
+
+						User.Add(new User
+						{
+							Id = arr[idx].Id,
+							Nickname = arr[idx].Nickname
+						});
+
+
+					}
+				}
+				catch (Exception ex)
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+				}
+
+				try
+				{
+					var querry = await App.MobileService.GetTable<File_Path>().ToListAsync();
+					FilePath = new ObservableCollection<File_Path>();
+					var arr = querry.ToArray();
+					for (int idx = 0; idx < arr.Length; idx++)
+					{
+
+						FilePath.Add(new File_Path
+						{
+							Id = arr[idx].Id,
+							User_Id_FK = arr[idx].User_Id_FK,
+							Path = arr[idx].Path
+						});
+
+
+					}
+				}
+				catch (Exception ex)
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+				}
+
+
+				var query =
+									from entry in UserEntry
+									join usL in UserLog on entry.User_Log_Id_FK1 equals usL.Id
+									join user in User on usL.User_Id_FK2 equals user.Id
+									join file in FilePath on user.Id equals file.User_Id_FK
+							
+							//||
+							//(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+							select new User
+
+							{
+								Nickname = user.Nickname,
+								ImageUserPath = file.Path
+
+							
+
+							};
+				//	userEntry = query.ToList();
+				//this.UserFoto = query.ToList();
+				var arr2 = query.ToArray();
+				UserFoto = new ObservableCollection<User>();
+				for (int i = 0; i < arr2.Length; i++)
+				{
+					byte[] imageData = null;
+
+					ImageUser = null;
+					imageData = await AzureStorage.AzureStorage.GetFileAsync(ContainerType.Image, arr2[i].ImageUserPath);
+					this.ImageUser = ImageSource.FromStream(() => new MemoryStream(imageData));
+
+					UserFoto.Add(new User
+					{ 
+						Nickname = arr2[i].Nickname,
+						ImageUser = this.ImageUser
+					});
+					
+				}
+
+				this.UserList = UserFoto.ToList();
+				//try
+				//{
+
+				//		//var userLog = await App.MobileService.GetTable<User_Log>().Where(p => p.Id == userEntry[i].User_Log_Id_FK1).ToListAsync();
+				//		var user = await App.MobileService.GetTable<User>().Where(p => p.Id == userLog[i].User_Id_FK2).ToListAsync();
+				//	    var filePath = await App.MobileService.GetTable<File_Path>().Where(p => p.User_Id_FK == user[i].Id).ToListAsync();
+
+				//		byte[] imageData = null;
+				//		if (filePath.Count > 0)
+				//		{
+				//			ImageUser = null;
+				//			imageData = await AzureStorage.AzureStorage.GetFileAsync(ContainerType.Image, filePath[i].Path);
+				//			this.ImageUser = ImageSource.FromStream(() => new MemoryStream(imageData));
+				//			UserFoto = new ObservableCollection<User>();
+				//			userListView = new User
+				//			{
+				//				Nickname = user[i].Nickname,
+				//				ImageUser = this.ImageUser
+				//			};
+				//			UserFoto.Add(userListView);
+				//		}
+				//	}
+				//	catch (Exception e)
+				//	{
+				//		await Application.Current.MainPage.DisplayAlert("Error", e.Message, "Ok");
+				//	}
+
+
+			}
+
+			
+
+			this.IsRunning = false;
+		}
+		private void queue()
+		{
+
 		}
 
 	}
