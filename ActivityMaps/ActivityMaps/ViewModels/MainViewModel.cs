@@ -15,12 +15,13 @@ namespace ActivityMaps.ViewModels
 		public CreateActivityViewModel CreateActivity { get; set; }
 		public LocationViewModel Location { get; set; }
 		public ActivityJoinViewModel ActivityJoin { get; set; }
-			 
-		#endregion
+ 
 
-		#region Constructors
+        #endregion
 
-		public MainViewModel()
+        #region Constructors
+
+        public MainViewModel()
 		{
 			instance = this;
 			this.Login = new LoginViewModel();

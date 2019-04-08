@@ -16,6 +16,8 @@ using Android.App;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 
+
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
@@ -36,3 +38,12 @@ using Android.App;
 [assembly: UsesPermission(Android.Manifest.Permission.ReadExternalStorage)]
 [assembly: UsesFeature("android.hardware.camera", Required = true)]
 [assembly: UsesFeature("android.hardware.camera.autofocus", Required = true)]
+[assembly: UsesPermission(Android.Manifest.Permission.AccessFineLocation)] //LLEON - AD20190804
+[assembly: UsesPermission(Android.Manifest.Permission.AccessCoarseLocation)] //LLEON - AD20190804
+[assembly: UsesPermission(Android.Manifest.Permission.AccessLocationExtraCommands)] //LLEON - AD20190804
+[assembly: UsesPermission(Android.Manifest.Permission.AccessMockLocation)] //LLEON - AD20190804
+[assembly: UsesPermission(Android.Manifest.Permission.AccessNetworkState)] //LLEON - AD20190804
+[assembly: UsesPermission(Android.Manifest.Permission.AccessWifiState)] //LLEON - AD20190804
+[assembly: UsesFeature("android.hardware.location", Required = false)]
+[assembly: UsesFeature("android.hardware.location.gps", Required = false)]
+[assembly: UsesFeature("android.hardware.location.network", Required = false)]
