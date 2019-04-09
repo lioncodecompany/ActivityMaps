@@ -32,6 +32,9 @@ namespace ActivityMaps.ViewModels
 		List<User> userJoining;
 		private ObservableCollection<User> userFoto;
 		public List<User> userList;
+		private string participantes;
+
+		public string Participantes { get { return this.participantes; } set { SetValue(ref this.participantes, value); } }
 
 
 		public List<User> UserList { get { return this.userList; }  set { SetValue(ref this.userList, value); } }
@@ -308,6 +311,8 @@ namespace ActivityMaps.ViewModels
 			
 			this.IsRunning = true;
 			var userEntry = await App.MobileService.GetTable<User_Entered>().Where(p => !p.deleted && p.Activity_Code_FK2 == selectedActivity.Id  && !p.IsCreator).ToListAsync();
+
+			Participantes = "Numero de Participantes: " + userEntry.Count;
 			if (userEntry.Count > 0)
 			{
 				try

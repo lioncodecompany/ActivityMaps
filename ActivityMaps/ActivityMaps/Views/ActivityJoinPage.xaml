@@ -79,7 +79,7 @@
                     </Button>
                 </StackLayout>
                 <StackLayout>
-                    <Label Text="Participantes" 
+                    <Label Text="{Binding Participantes}" 
                            HorizontalOptions="Center"/>
                 </StackLayout>
 
@@ -106,6 +106,7 @@
                                     </controls:CircleImage.HeightRequest>
                                 </controls:CircleImage>
                                 <Label Text="{Binding Nickname}"
+                                       HorizontalOptions="Center"
                                        Grid.Column="0"
                                        Grid.Row="1"/>
                             </Grid>

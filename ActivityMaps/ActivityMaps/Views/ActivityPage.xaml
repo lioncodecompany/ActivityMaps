@@ -13,12 +13,17 @@
 
         <StackLayout BindingContext="{Binding Activity_Child}"
                  Margin="0, 0, 0, 0">
-            <!--<Label 
-                FontAttributes="Bold"
-                FontSize="Large"
-                HorizontalOptions="Center"
-                Text="Welcome">
-        </Label>-->
+        <Button
+            HorizontalOptions="EndAndExpand"
+            Text="Menu"
+            TextColor="White"
+            BackgroundColor="#0086dc"
+            BorderRadius="23"
+            HeightRequest="46"
+            TranslationY="15"
+            TranslationX="-10">
+            
+        </Button>
 
             <SearchBar 
             Placeholder="Search Activity"
