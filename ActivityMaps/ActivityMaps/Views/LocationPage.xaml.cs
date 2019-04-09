@@ -18,7 +18,10 @@ namespace ActivityMaps.Views
 		public LocationPage ()
 		{
 			InitializeComponent ();
-            //MyPosition();
+            //Default location: Puerto Rico
+            MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(18.2, -66), Distance.FromMiles(15)));
+            MyPosition();
+           
 
         }
 
@@ -33,15 +36,45 @@ namespace ActivityMaps.Views
             var locationVM = LocationViewModel.GetInstance();
             await locationVM.LoadPin();
             var pin = locationVM.CreatorPin;
+            var location = locationVM.Loc;
             MyMap.Pins.Add(pin);
 
-        }
-  
+            //move Screen
+            MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(
+                new Position(location.Latitude, location.Longitude), Distance.FromMiles(3)));
 
-        public void OnMapClicked(object sender, EventArgs args)
-        {
-            Console.WriteLine("****TEST CLICKED*****");
         }
+
+        void MovePin()
+        {
+            if (MyMap.Pins.Count > 0)
+            {
+                
+                MyMap.Pins[0].Position = MyMap.VisibleRegion.Center;
+                Console.WriteLine(MyMap.VisibleRegion.Center.Latitude + "    ****TEST CLICKED*****");
+                Console.WriteLine(MyMap.VisibleRegion.Center.Longitude + "    ****TEST CLICKED*****");
+            }
+            else
+            {
+                Console.WriteLine(MyMap.VisibleRegion.Center + "    ****TEST CLICKED*****");
+            }
+        }
+
+        private void MyMap_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+
+            if (e.PropertyName == "VisibleRegion" && MyMap.VisibleRegion != null)
+            {
+                MovePin();
+            }
+
+        }
+
+
+        //public void OnMapClicked(object sender, EventArgs args)
+        //{
+        //    Console.WriteLine("****TEST CLICKED*****");
+        //}
         //void OnMapLongClick(object sender, MapLongClickEventArgs e)
         //{
         //    if (MyMap == null) return;
@@ -50,5 +83,9 @@ namespace ActivityMaps.Views
 
         //}
 
+        //private void MyMap_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //{
+        //    Console.WriteLine("****TEST CLICKED*****");
+        //}
     }
 }

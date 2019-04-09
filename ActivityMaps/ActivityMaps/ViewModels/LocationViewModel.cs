@@ -11,10 +11,20 @@ namespace ActivityMaps.ViewModels
     {
         #region attributes
         private Pin creatorPin;
+        private Location loc;
+     
+        
 
         #endregion
 
         #region Properties
+        public Location Loc
+        {
+            get { return this.loc; }
+            set { SetValue(ref this.loc, value); }
+        }
+
+
         public Pin CreatorPin
         {
             get { return this.creatorPin; }
@@ -47,8 +57,9 @@ namespace ActivityMaps.ViewModels
         public async Task LoadPin()
         {
             var request = new GeolocationRequest(GeolocationAccuracy.Medium);
-            var location = await Geolocation.GetLocationAsync(request);
-            var position = new Position(location.Latitude, location.Longitude); // Latitude, Longitude
+            this.Loc = await Geolocation.GetLocationAsync(request);
+
+            var position = new Position(this.Loc.Latitude, this.Loc.Longitude); // Latitude, Longitude
             this.CreatorPin = new Pin
             {
                 Type = PinType.Place,

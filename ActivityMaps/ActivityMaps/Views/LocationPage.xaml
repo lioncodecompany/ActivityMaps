@@ -6,15 +6,19 @@
              BindingContext="{Binding Main,Source={StaticResource Locator}}"
              Title="Location">
     <ContentPage.Content>
-        <ScrollView 
-            BindingContext="{Binding Location}">
-            <StackLayout>
+                 
+        <StackLayout BindingContext="{Binding Location}">
                 <maps:Map
                 x:Name="MyMap"
                 IsShowingUser="true"
+                VerticalOptions="FillAndExpand"
+                HasScrollEnabled ="True"
+                HasZoomEnabled="True"
+                MapType="Street"
+                PropertyChanged="MyMap_PropertyChanged"
                 >
                 </maps:Map>
             </StackLayout>
-        </ScrollView>
+        
     </ContentPage.Content>
 </ContentPage>
