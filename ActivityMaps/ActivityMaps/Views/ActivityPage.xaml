@@ -7,12 +7,8 @@
              BindingContext="{Binding Main,Source={StaticResource Locator}}"
              Title="Activity"
              >
-
-
-
-
-        <StackLayout BindingContext="{Binding Activity_Child}"
-                 Margin="0, 0, 0, 0">
+    <StackLayout BindingContext="{Binding Activity_Child}"
+                Margin="0, 0, 0, 0">
         <Button
             HorizontalOptions="EndAndExpand"
             Text="Menu"
@@ -21,28 +17,28 @@
             BorderRadius="23"
             HeightRequest="46"
             TranslationY="15"
-            TranslationX="-10">
-            
+            TranslationX="-10"
+            IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+            Command="{Binding MenuCommand}">
         </Button>
 
-            <SearchBar 
+        <SearchBar 
             Placeholder="Search Activity"
             Text="{Binding Activitytxt,Mode=TwoWay}"
             SearchCommand="{Binding SearchCommand,Mode=TwoWay}" >
-                <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"  ES BUENO INVESTIGAR PARA QUE FUNCIONA ESTO Y COMO-->
-            </SearchBar>
+            <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"  ES BUENO INVESTIGAR PARA QUE FUNCIONA ESTO Y COMO-->
+        </SearchBar>
 
-            <Picker
+        <Picker
             Title="Filter"
             HorizontalOptions="EndAndExpand"
             WidthRequest="150"
             ItemsSource="{Binding Filters}" 
             ItemDisplayBinding="{Binding Name}" 
             SelectedItem="{Binding SelectedFilter}">
-            </Picker>
+        </Picker>
 
-
-            <ListView 
+        <ListView 
             SeparatorVisibility="None"
             HasUnevenRows="True"
             IsRefreshing="{Binding IsRefreshing,Mode=TwoWay}"
@@ -51,100 +47,67 @@
             ItemsSource="{Binding ActivityResult,Mode=TwoWay}"
             SelectedItem="{Binding SelectedActivity,Mode=TwoWay}"
             IsVisible="True">
-
-                <ListView.RowHeight>
-                    <OnPlatform x:TypeArguments="x:Int32">
-                        <On Platform="iOS, Android" Value="90" />
-                    </OnPlatform>
-                </ListView.RowHeight>
-
-
-                <!--Built in Cells-->
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <ContentView Padding="5">
-                                <Frame OutlineColor="AliceBlue" Padding="10">
-
-
-                                    <StackLayout>
-
-                                        <Grid>
-
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="0.5*"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <Label  
+            <ListView.RowHeight>
+                <OnPlatform x:TypeArguments="x:Int32">
+                    <On Platform="iOS, Android" Value="90" />
+                </OnPlatform>
+            </ListView.RowHeight>
+            <!--Built in Cells-->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ContentView Padding="5">
+                            <Frame OutlineColor="AliceBlue" Padding="10">
+                                <StackLayout>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="0.5*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label  
                                              Grid.Row="0"
                                              Grid.Column="0" 
                                              Text="{Binding Name, Mode=TwoWay}"
                                              FontSize="18"
-                                             VerticalOptions="StartAndExpand" 
-                                            />
-                                            <BoxView Grid.Row="0"
+                                             VerticalOptions="StartAndExpand"/>
+                                        <BoxView Grid.Row="0"
                                             Grid.Column="1"
                                             Color="{Binding StatusColor, Mode=TwoWay}"
                                             CornerRadius="8"
                                             WidthRequest="15"
                                             HeightRequest="15"
                                             HorizontalOptions="EndAndExpand"
-                                            VerticalOptions="StartAndExpand"
-                                            />
-                                            <Label 
-                                                Grid.Row="1"
-                                                Grid.Column="0" 
-                                                Text="{Binding CategoryName, Mode=TwoWay}"
-                                                FontSize="14"
-                                                VerticalOptions="CenterAndExpand" />
-                                            <Label
-                                                Grid.Row="1"
-                                               Grid.Column="1" 
-                                                Text="{Binding StatusTxt, Mode=TwoWay}"
-                                                FontSize="16"
-                                                VerticalOptions="CenterAndExpand" />
-                                        </Grid>
-
-                     
-
+                                            VerticalOptions="StartAndExpand"/>
+                                        <Label 
+                                            Grid.Row="1"
+                                            Grid.Column="0" 
+                                            Text="{Binding CategoryName, Mode=TwoWay}"
+                                            FontSize="14"
+                                            VerticalOptions="CenterAndExpand"/>
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.Column="1" 
+                                            Text="{Binding StatusTxt, Mode=TwoWay}"
+                                            FontSize="16"
+                                            VerticalOptions="CenterAndExpand"/>
+                                    </Grid>
                                 </StackLayout>
-
-
-                                </Frame>
-                            </ContentView>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                
-
-                <!--Custom View Cells-->
-                <!--
-    <ListView.ItemTemplate>
-      <DataTemplate>
-        <ViewCell>
-          <StackLayout>
-            <Label Text="{Binding Text}" 
-                   Style="{DynamicResource ListItemTextStyle}" />
-            <Label Text="{Binding Detail}" 
-                   Style="{DynamicResource ListItemDetailTextStyle}"/>
-          </StackLayout>
-        </ViewCell>
-      </DataTemplate>
-    </ListView.ItemTemplate>
-    -->
-            </ListView>
+                            </Frame>
+                        </ContentView>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
         <ActivityIndicator 
-                                        IsRunning="{Binding IsRunning, Mode=TwoWay}"
-                                        VerticalOptions="Center"
-                                        HorizontalOptions="Center"
-                                        Color="Navy"
-                                        >
+                IsRunning="{Binding IsRunning, Mode=TwoWay}"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                 Color="Navy">
         </ActivityIndicator>
 
         <!--ScrollView-->
 
-            <Button
+        <Button
                 Margin="-29"
                 BackgroundColor="#0086dc"
                 BorderRadius="25"
@@ -158,7 +121,7 @@
                 TranslationY="-60"
                 Text="+"
                 TextColor="White">
-            </Button>
+        </Button>
 
-        </StackLayout>
+    </StackLayout>
 </ContentPage>
