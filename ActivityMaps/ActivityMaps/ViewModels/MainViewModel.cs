@@ -16,6 +16,7 @@ namespace ActivityMaps.ViewModels
 		public LocationViewModel Location { get; set; }
 		public ActivityJoinViewModel ActivityJoin { get; set; }
 		public MenuViewModel Menu { get; set; }
+		public ProfileViewModel Profile { get; set; }
  
 
         #endregion
@@ -33,6 +34,7 @@ namespace ActivityMaps.ViewModels
 			this.Location = new LocationViewModel();
 			this.ActivityJoin = new ActivityJoinViewModel();
 			this.Menu = new MenuViewModel();
+			this.Profile = new ProfileViewModel();
 		}
 
 

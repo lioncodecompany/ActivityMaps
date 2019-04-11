@@ -8,12 +8,98 @@
 
         <ScrollView
             BindingContext="{Binding Menu}">
-            <StackLayout Padding="10,20,10,5">
-                <Label Text="Welcome to Menu!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            
+            <StackLayout 
+               
+                HorizontalOptions="CenterAndExpand">
 
+                <Label
+                    Text="{Binding NickName}"
+                    FontAttributes="Bold"
+                    FontSize="Large"
+                    TextColor="Black"
+                    TranslationY="15"
+                    HorizontalOptions="CenterAndExpand"/>
+                <StackLayout 
+               VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand">
+                    <Button
+                        BackgroundColor="Navy"
+                        BorderRadius="23"
+                        HeightRequest="46"
+                        IsEnabled="{Binding isEnabled, Mode=TwoWay}"
+                        Command="{Binding ProfileCommand}"
+                        Text="Profile"
+                        TextColor="White">
+                        </Button>
 
+                        <Button
+                         BackgroundColor="Navy"
+                         BorderRadius="23"
+                         HeightRequest="46"
+                         HorizontalOptions="FillAndExpand"
+                         IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                         Command="{Binding ActivityHistoryCommand}"
+                         Text="Activity History"
+                         TextColor="White">
+                        </Button>
+
+                        <Button
+                         BackgroundColor="Navy"
+                         BorderRadius="23"
+                         HeightRequest="46"
+                         HorizontalOptions="FillAndExpand"
+                         IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                         Command="{Binding FriendsCommand}"
+                         Text="Friends"
+                         TextColor="White">
+                        </Button>
+
+                        <Button
+                         BackgroundColor="Navy"
+                         BorderRadius="23"
+                         HeightRequest="46"
+                         HorizontalOptions="FillAndExpand"
+                         IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                         Command="{Binding FeedbackCommand}"
+                         Text="Feedback"
+                         TextColor="White">
+                        </Button>
+
+                        <Button
+                         BackgroundColor="Navy"
+                         BorderRadius="23"
+                         HeightRequest="46"
+                         HorizontalOptions="FillAndExpand"
+                         IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                         Command="{Binding StatisticsCommand}"
+                         Text="Statistics"
+                         TextColor="White">
+                        </Button>
+
+                        <Button
+                         BackgroundColor="Navy"
+                         BorderRadius="23"
+                         HeightRequest="46"
+                         HorizontalOptions="FillAndExpand"
+                         IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                         Command="{Binding SettingCommand}"
+                         Text="Setting"
+                         TextColor="White">
+                        </Button>
+
+                        <Button
+                         BackgroundColor="Navy"
+                         BorderRadius="23"
+                         HeightRequest="46"
+                         HorizontalOptions="FillAndExpand"
+                         IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                         Command="{Binding AboutCommand}"
+                         Text="About"
+                         TextColor="White">
+                        </Button>
+
+                </StackLayout>
             </StackLayout>
 
         </ScrollView>

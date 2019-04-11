@@ -1,0 +1,15 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ActivityMaps.Views.ProfilePage"
+             BindingContext="{Binding Main,Source={StaticResource Locator}}"
+             Title="Profile">
+    <ContentPage.Content>
+        <ScrollView BindingContext="{Binding Profile}">
+            <StackLayout>
+                <Label Text="{Binding NickName}"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
