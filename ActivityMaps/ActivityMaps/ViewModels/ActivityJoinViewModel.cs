@@ -9,6 +9,7 @@ using System.Windows.Input;
 using ActivityMaps.AzureStorage;
 using ActivityMaps.Helpers;
 using ActivityMaps.Models;
+using ActivityMaps.Views;
 using GalaSoft.MvvmLight.Command;
 using Xamarin.Forms;
 
@@ -170,7 +171,8 @@ namespace ActivityMaps.ViewModels
 			List<User_Log> userLogged;
 			User_Log current = null;
 			int userQuit = 0;
-			var queue = await App.MobileService.GetTable<User_Entered>().Where(p => p.Activity_Code_FK2 == selectedActivity.Id && !p.IsCreator).ToListAsync();
+
+			var queue = await App.MobileService.GetTable<User_Entered>().Where(p => p.Activity_Code_FK2 == selectedActivity.Id).ToListAsync();
 
 			if (queue.Count > 0)
 			{
@@ -178,7 +180,7 @@ namespace ActivityMaps.ViewModels
 				for (int i = 0; i < queue.Count; i++)
 				{
 					
-					userLogged = await App.MobileService.GetTable<User_Log>().Where(p => p.Id == queue[i].User_Log_Id_FK1 && p.User_LogType_Id_FK1 == "4").ToListAsync();
+					userLogged = await App.MobileService.GetTable<User_Log>().Where(p => p.Id == queue[i].User_Log_Id_FK1 && (p.User_LogType_Id_FK1 == "4" || p.User_LogType_Id_FK1 == "3")).ToListAsync();
 					if (userLogged[0].User_Id_FK2.Equals(userJoining[0].Id))
 					{
 						userQuit = i;
@@ -201,9 +203,32 @@ namespace ActivityMaps.ViewModels
 			{
 				try
 				{
-					await App.MobileService.GetTable<User_Log>().UpdateAsync(current);
-					await App.MobileService.GetTable<User_Entered>().DeleteAsync(queue[userQuit]);
-					getFileUserEntry();
+					if (!queue[userQuit].IsCreator)
+					{
+						await App.MobileService.GetTable<User_Log>().UpdateAsync(current);
+						await App.MobileService.GetTable<User_Entered>().DeleteAsync(queue[userQuit]);
+						await Application.Current.MainPage.DisplayAlert("Success", " You are now out of the activity", "Ok");
+						getFileUserEntry();
+					}
+					else
+					{
+						await App.MobileService.GetTable<User_Log>().UpdateAsync(current);
+
+						if(queue.Count > 1)
+							for (int i = 0; i < queue.Count; i++)
+							{
+								await App.MobileService.GetTable<User_Entered>().DeleteAsync(queue[i]);
+							}
+						else
+							await App.MobileService.GetTable<User_Entered>().DeleteAsync(queue[0]);
+
+
+
+						await App.MobileService.GetTable<Activity>().DeleteAsync(selectedActivity);
+						await Application.Current.MainPage.DisplayAlert("Success", " You are deleted the activity", "Ok");
+						MainViewModel.GetInstance().Activity_Child = new ActivityViewModel(userCreatorActivity);
+						await Application.Current.MainPage.Navigation.PushAsync(new ActivityPage());
+					}
 				}
 				catch (Exception ex)
 				{
@@ -212,7 +237,6 @@ namespace ActivityMaps.ViewModels
 
 				}
 
-				await Application.Current.MainPage.DisplayAlert("Success", " You are now out of the queue", "Ok");
 			}
 			else
 			{

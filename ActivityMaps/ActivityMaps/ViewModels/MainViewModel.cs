@@ -17,13 +17,20 @@ namespace ActivityMaps.ViewModels
 		public ActivityJoinViewModel ActivityJoin { get; set; }
 		public MenuViewModel Menu { get; set; }
 		public ProfileViewModel Profile { get; set; }
- 
+		public FriendsViewModel Friends { get; set; }
+		public HistoryViewModel History { get; set; }
+		public AboutViewModel About { get; set; }
+		public SettingViewModel Setting { get; set; }
+		public StatisticsViewModel Statistics { get; set; }
+		public FeedbackViewModel Feedback { get; set; }
 
-        #endregion
 
-        #region Constructors
 
-        public MainViewModel()
+		#endregion
+
+		#region Constructors
+
+		public MainViewModel()
 		{
 			instance = this;
 			this.Login = new LoginViewModel();
@@ -35,6 +42,12 @@ namespace ActivityMaps.ViewModels
 			this.ActivityJoin = new ActivityJoinViewModel();
 			this.Menu = new MenuViewModel();
 			this.Profile = new ProfileViewModel();
+			this.Friends = new FriendsViewModel();
+			this.History = new HistoryViewModel();
+			this.About = new AboutViewModel();
+			this.Setting = new SettingViewModel();
+			this.Statistics = new StatisticsViewModel();
+			this.Feedback = new FeedbackViewModel();
 		}
 
 

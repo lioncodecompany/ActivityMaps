@@ -118,32 +118,44 @@ namespace ActivityMaps.ViewModels
 			MainViewModel.GetInstance().Profile = new ProfileViewModel(user);
 			await Application.Current.MainPage.Navigation.PushAsync(new ProfilePage());
 		}
-		private void Friends()
+		private async void Friends()
 		{
-			throw new NotImplementedException();
+			CheckConnectionInternet.checkConnectivity();
+			MainViewModel.GetInstance().Friends = new FriendsViewModel(user);
+			await Application.Current.MainPage.Navigation.PushAsync(new FriendsPage());
 		}
-		private void History()
+		private async void History()
 		{
-			throw new NotImplementedException();
+			CheckConnectionInternet.checkConnectivity();
+			MainViewModel.GetInstance().History = new HistoryViewModel(user);
+			await Application.Current.MainPage.Navigation.PushAsync(new HistoryPage());
 		}
-		private void About()
+		private async void About()
 		{
-			throw new NotImplementedException();
-		}
-
-		private void Setting()
-		{
-			throw new NotImplementedException();
-		}
-
-		private void Statistics()
-		{
-			throw new NotImplementedException();
+			CheckConnectionInternet.checkConnectivity();
+			MainViewModel.GetInstance().About = new AboutViewModel();
+			await Application.Current.MainPage.Navigation.PushAsync(new AboutPage());
 		}
 
-		private void Feedback()
+		private async void Setting()
 		{
-			throw new NotImplementedException();
+			CheckConnectionInternet.checkConnectivity();
+			MainViewModel.GetInstance().Setting = new SettingViewModel(user);
+			await Application.Current.MainPage.Navigation.PushAsync(new SettingPage());
+		}
+
+		private async void Statistics()
+		{
+			CheckConnectionInternet.checkConnectivity();
+			MainViewModel.GetInstance().Statistics = new StatisticsViewModel();
+			await Application.Current.MainPage.Navigation.PushAsync(new StatisticsPage());
+		}
+
+		private async void Feedback()
+		{
+			CheckConnectionInternet.checkConnectivity();
+			MainViewModel.GetInstance().Feedback = new FeedbackViewModel(user);
+			await Application.Current.MainPage.Navigation.PushAsync(new FeedbackPage());
 		}
 
 		#endregion

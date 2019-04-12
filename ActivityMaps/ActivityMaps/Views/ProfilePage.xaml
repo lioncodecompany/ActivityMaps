@@ -1,14 +1,54 @@
 ﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ActivityMaps.Views.ProfilePage"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              BindingContext="{Binding Main,Source={StaticResource Locator}}"
              Title="Profile">
     <ContentPage.Content>
         <ScrollView BindingContext="{Binding Profile}">
             <StackLayout>
-                <Label Text="{Binding NickName}"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+                <Label
+                    Text="{Binding NickName}"
+                    FontAttributes="Bold"
+                    FontSize="Large"
+                    TextColor="Black"
+                    TranslationY="15"
+                    HorizontalOptions="CenterAndExpand"/>
+                <controls:CircleImage Source="{Binding Image}"  Aspect="AspectFill"
+                                      HorizontalOptions="CenterAndExpand"
+                                      TranslationY="15">
+                    <controls:CircleImage.WidthRequest>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="Android, iOS">250</On>
+                        </OnPlatform>
+                    </controls:CircleImage.WidthRequest>
+                    <controls:CircleImage.HeightRequest>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="Android, iOS">219</On>
+                        </OnPlatform>
+                    </controls:CircleImage.HeightRequest>
+                </controls:CircleImage>
+                <Label
+                    Text="{Binding Name}"
+                   FontAttributes="Bold"
+                    FontSize="Large"
+                    TextColor="Black"
+                    TranslationY="15"
+                    HorizontalOptions="StartAndExpand"/>
+                <Label
+                    Text="{Binding Gender}"
+                     FontAttributes="Bold"
+                    FontSize="Large"
+                    TextColor="Black"
+                    TranslationY="15"
+                    HorizontalOptions="StartAndExpand"/>
+                <Label
+                    Text="{Binding Email}"
+                    FontAttributes="Bold"
+                    FontSize="Large"
+                    TextColor="Black"
+                    TranslationY="15"
+                    HorizontalOptions="StartAndExpand"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
