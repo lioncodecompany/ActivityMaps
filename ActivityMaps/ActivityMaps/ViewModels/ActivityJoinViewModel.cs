@@ -341,7 +341,7 @@ namespace ActivityMaps.ViewModels
 			{
 				try
 				{
-					var querry = await App.MobileService.GetTable<User_Entered>().Where(entry => !entry.IsCreator && !entry.deleted && entry.Activity_Code_FK2 == selectedActivity.Id).ToListAsync();
+					var querry = await App.MobileService.GetTable<User_Entered>().Where(entry => !entry.IsCreator && !entry.deleted && entry.Activity_Code_FK2 == selectedActivity.Id && !entry.deleted).ToListAsync();
 					UserEntry = new ObservableCollection<User_Entered>();
 					var arr = querry.ToArray();
 					for (int idx = 0; idx < arr.Length; idx++)
@@ -369,7 +369,7 @@ namespace ActivityMaps.ViewModels
 				try
 				{
 					
-						var querry = await App.MobileService.GetTable<User_Log>().ToListAsync();
+						var querry = await App.MobileService.GetTable<User_Log>().Where(p => p.User_LogType_Id_FK1 == "4").ToListAsync();
 						UserLog = new ObservableCollection<User_Log>();
 						var arr = querry.ToArray();
 
@@ -442,8 +442,6 @@ namespace ActivityMaps.ViewModels
 									join user in User on usL.User_Id_FK2 equals user.Id
 									join file in FilePath on user.Id equals file.User_Id_FK
 							
-							//||
-							//(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
 							select new User
 
 							{
