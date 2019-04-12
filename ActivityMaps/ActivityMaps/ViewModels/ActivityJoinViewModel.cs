@@ -190,6 +190,7 @@ namespace ActivityMaps.ViewModels
 							Id = userLogged[0].Id,
 							LogDateTime = DateTime.Now,
 							User_Id_FK2 = userLogged[0].User_Id_FK2,
+							Activity_code = selectedActivity.Id,
 							User_Equipment_code = userLogged[0].User_Equipment_code,
 							User_LogType_Id_FK1 = "5" // quit activity
 							
@@ -278,6 +279,7 @@ namespace ActivityMaps.ViewModels
 				LogDateTime = DateTime.Today,
 				User_LogType_Id_FK1 = logtypeJoin,
 				User_Equipment_code = equipment.Id,
+				Activity_code = selectedActivity.Id,
 				User_Id_FK2 = userJoining[0].Id
 			};
 			User_Entered entry = new User_Entered()
@@ -369,7 +371,7 @@ namespace ActivityMaps.ViewModels
 				try
 				{
 					
-						var querry = await App.MobileService.GetTable<User_Log>().Where(p => p.User_LogType_Id_FK1 == "4").ToListAsync();
+						var querry = await App.MobileService.GetTable<User_Log>().Where(p => p.User_LogType_Id_FK1 == "4" && p.Activity_code == selectedActivity.Id).ToListAsync();
 						UserLog = new ObservableCollection<User_Log>();
 						var arr = querry.ToArray();
 
