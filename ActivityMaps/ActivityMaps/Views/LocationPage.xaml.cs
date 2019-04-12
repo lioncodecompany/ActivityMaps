@@ -21,8 +21,19 @@ namespace ActivityMaps.Views
             //Default location: Puerto Rico
             MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(18.2, -66), Distance.FromMiles(15)));
             MyPosition();
-           
 
+            var locationVM = LocationViewModel.GetInstance();
+            // locationVM.DoSomething += DoSomething;
+
+            locationVM.MyEvent += (someParameter) => DoSomething(someParameter);
+
+
+
+        }
+
+        private async void DoSomething(string str)
+        {
+            await LoadSearchPin();
         }
 
         async void MyPosition()
@@ -38,6 +49,23 @@ namespace ActivityMaps.Views
             var pin = locationVM.CreatorPin;
             var location = locationVM.Loc;
             MyMap.Pins.Add(pin);
+
+            //move Screen
+            MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(
+                new Position(location.Latitude, location.Longitude), Distance.FromMiles(3)));
+
+        }
+
+
+        async Task LoadSearchPin()
+        {
+            
+            var locationVM = LocationViewModel.GetInstance();
+            await locationVM.LoadSearchPin();
+            var pin = locationVM.CreatorPin;
+            var location = locationVM.Loc;
+            var position = new Position(location.Latitude, location.Longitude);
+            MyMap.Pins[0].Position = position;
 
             //move Screen
             MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(
@@ -69,6 +97,11 @@ namespace ActivityMaps.Views
             }
 
         }
+
+        //public void LoadSearchLocation()
+        //{
+
+        //}
 
 
         //public void OnMapClicked(object sender, EventArgs args)

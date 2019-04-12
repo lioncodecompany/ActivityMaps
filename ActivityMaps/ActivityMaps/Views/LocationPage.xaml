@@ -8,7 +8,13 @@
     <ContentPage.Content>
                  
         <StackLayout BindingContext="{Binding Location}">
-                <maps:Map
+            <SearchBar 
+            Placeholder="Search Location"
+            Text="{Binding Locationtxt,Mode=TwoWay}"
+            SearchCommand="{Binding SearchCommand,Mode=TwoWay}" >
+                <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}-->
+            </SearchBar>
+            <maps:Map
                 x:Name="MyMap"
                 IsShowingUser="true"
                 VerticalOptions="FillAndExpand"
