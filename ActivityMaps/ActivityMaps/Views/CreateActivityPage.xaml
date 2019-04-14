@@ -54,10 +54,10 @@
                         
                 </Label>
                 <Editor 
-                            AutoSize="TextChanges"
-                            MaxLength="150"
-                            Text="{Binding Description, Mode=TwoWay}"
-                            Placeholder="Description...">
+                    AutoSize="TextChanges"
+                    MaxLength="150"
+                    Text="{Binding Description, Mode=TwoWay}"
+                    Placeholder="Description...">
                 </Editor>
 
                 <Grid Margin="0,10">

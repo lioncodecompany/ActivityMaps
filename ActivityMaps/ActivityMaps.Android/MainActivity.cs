@@ -20,7 +20,8 @@ namespace ActivityMaps.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            TabLayoutResource = Resource.Layout.Tabbar;
+			
+			TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
@@ -41,15 +42,17 @@ namespace ActivityMaps.Droid
         }
         protected override void OnStart()
         {
-            base.OnStart();                               //Ponerlo en otra clase
-            //if (ActivityCompat.CheckSelfPermission(this, "ACCESS_FINE_LOCATION") != Permission.Granted
-            //    && ActivityCompat.CheckSelfPermission(this, "ACCESS_COARSE_LOCATION") != Permission.Granted)
-            //{
-            //    return;
-            //}
+            base.OnStart();
+			
+			//Ponerlo en otra clase
+			//if (ActivityCompat.CheckSelfPermission(this, "ACCESS_FINE_LOCATION") != Permission.Granted
+			//    && ActivityCompat.CheckSelfPermission(this, "ACCESS_COARSE_LOCATION") != Permission.Granted)
+			//{
+			//    return;
+			//}
 
 
-            if (ActivityCompat.CheckSelfPermission(this, "ACCESS_FINE_LOCATION") != Permission.Granted)
+			if (ActivityCompat.CheckSelfPermission(this, "ACCESS_FINE_LOCATION") != Permission.Granted)
             {
                 ActivityCompat.RequestPermissions(this, new String[] { Manifest.Permission.AccessCoarseLocation, Manifest.Permission.AccessFineLocation }, 0);
             }

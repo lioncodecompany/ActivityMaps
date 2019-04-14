@@ -17,10 +17,40 @@ namespace ActivityMaps.ViewModels
 		private string name;
 		private string gender;
 		private string email;
+		private string country;
+		private string phone;
+		private bool isRunning;
 		private ImageSource image = null;
 		#endregion
 
 		#region Propieades
+
+		public bool IsRunning
+		{
+			get { return this.isRunning; }
+			set
+			{
+				SetValue(ref this.isRunning, value);
+			}
+		}
+
+		public string Country
+		{
+			get { return this.country; }
+			set
+			{
+				SetValue(ref this.country, value);
+			}
+		}
+
+		public string Phone
+		{
+			get { return this.phone; }
+			set
+			{
+				SetValue(ref this.phone, value);
+			}
+		}
 
 		[Xamarin.Forms.TypeConverter(typeof(Xamarin.Forms.ImageSourceConverter))]
 		public Xamarin.Forms.ImageSource Image
@@ -76,13 +106,14 @@ namespace ActivityMaps.ViewModels
 
 		private async void setValues()
 		{
+			this.IsRunning = true;
 			this.NickName = user[0].Nickname;
-			this.Email = "Email: " + user[0].Email;
-			this.Name = "Name: " + user[0].Name + " " + user[0].Last_Name;
+			this.Email =  user[0].Email;
+			this.Name = user[0].Name + " " + user[0].Last_Name;
 			if (user[0].Gender.Equals("M"))
-				this.Gender = "Gender: Male";
+				this.Gender = "Male";
 			else
-				this.Gender = "Gender: Female";
+				this.Gender = "Female";
 
 
 			try
@@ -99,6 +130,18 @@ namespace ActivityMaps.ViewModels
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 			}
+
+			try
+			{
+				var querry = await App.MobileService.GetTable<Address>().Where(p => p.Id == user[0].Address_Id_FK).ToListAsync();
+				this.Phone = querry[0].Phone;
+				this.Country = querry[0].Country;
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
+			this.IsRunning = false;
 		}
 	}
 }

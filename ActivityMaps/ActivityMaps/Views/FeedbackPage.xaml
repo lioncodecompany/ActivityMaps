@@ -1,17 +1,119 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ActivityMaps.Views.FeedbackPage"
-              BindingContext="{Binding Main,Source={StaticResource Locator}}"
-             Title="Feedback">
-    <ContentPage.Content>
+            xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+            x:Class="ActivityMaps.Views.FeedbackPage"
+             BindingContext="{Binding Main,Source={StaticResource Locator}}"
+            Title="Feedback">
+  <!--Pages can be added as references or inline-->
+    <ContentPage Title="AcitivityMaps" >
+
+        <ScrollView BindingContext="{Binding Feedback}">
+            <StackLayout Padding="10,20,10,5">
+                <Label 
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="Tell me your ideas, opinions or thoughts about the application below">
+                </Label>
+                <Grid Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="Comment"
+                        VerticalOptions="Center">
+                    </Label>
+                    <Editor
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        AutoSize="TextChanges"
+                        Keyboard="Text"
+                        IsEnabled="{Binding IsFeedbackEnable, Mode=TwoWay}"
+                        Text="{Binding FeedbackDescription, Mode=TwoWay}">
+                    </Editor>
+
+                </Grid>
+                <StackLayout
+                        Orientation="Horizontal">
+                    <Label 
+                       
+                        Text="Rating"
+                        WidthRequest="100"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start">
+                    </Label>
+                    <Picker
+                       
+                        HorizontalOptions="Center"
+                        WidthRequest="110"
+                        TranslationX="11"
+                        ItemsSource="{Binding FeedbackRating}" 
+                        ItemDisplayBinding="{Binding FeedbackName}" 
+                        SelectedItem="{Binding SelectedFeedbcakRating}"
+                        IsEnabled="{Binding IsFeedbackEnable, Mode=TwoWay}"
+                        Title="Rating...">
+                    </Picker>
+                </StackLayout>
+
+                <StackLayout 
+                    Margin="40,15"
+                    HorizontalOptions="Center"
+                    >
+
+                    <Button
+                        BackgroundColor="Navy"
+                        BorderRadius="23"
+                        HeightRequest="46"
+                        WidthRequest="140"
+                        IsEnabled="{Binding IsFeedbackEnable, Mode=TwoWay}"
+                        Command="{Binding FeedbackNextCommand}"
+                        Text="Submit"
+                        TextColor="White">
+                    </Button>
+
+                    <Image
+                    Aspect="AspectFill"
+                    HeightRequest="150"
+                        TranslationY="15"
+                    Source="Done"
+                    IsVisible="{Binding IsFeedbackVisible, Mode=TwoWay}">
+
+                    </Image>
+
+
+                    <ActivityIndicator
+                        IsRunning="{Binding IsFeedbackRunning, Mode=TwoWay}"
+                        VerticalOptions="CenterAndExpand">
+                    </ActivityIndicator>
+
+                </StackLayout>
+            </StackLayout>
+            
+        </ScrollView>
+    </ContentPage>
+
+    <ContentPage Title="User">
+
         <ScrollView BindingContext="{Binding Feedback}">
             <StackLayout>
-                <Label Text="Welcome to Feedback!"
+                <Label Text="Welcome to User Feedback!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
             </StackLayout>
         </ScrollView>
-                  
-    </ContentPage.Content>
-</ContentPage>
+    </ContentPage>
+    <ContentPage Title="Location">
+
+        <ScrollView BindingContext="{Binding Feedback}">
+            <StackLayout>
+                <Label Text="Welcome to Feedback Location!"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage>
+</TabbedPage>

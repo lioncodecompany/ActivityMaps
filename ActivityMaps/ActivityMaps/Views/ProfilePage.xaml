@@ -5,50 +5,146 @@
              BindingContext="{Binding Main,Source={StaticResource Locator}}"
              Title="Profile">
     <ContentPage.Content>
-        <ScrollView BindingContext="{Binding Profile}">
-            <StackLayout>
-                <Label
-                    Text="{Binding NickName}"
-                    FontAttributes="Bold"
-                    FontSize="Large"
-                    TextColor="Black"
-                    TranslationY="15"
-                    HorizontalOptions="CenterAndExpand"/>
-                <controls:CircleImage Source="{Binding Image}"  Aspect="AspectFill"
-                                      HorizontalOptions="CenterAndExpand"
-                                      TranslationY="15">
-                    <controls:CircleImage.WidthRequest>
-                        <OnPlatform x:TypeArguments="x:Double">
-                            <On Platform="Android, iOS">250</On>
-                        </OnPlatform>
-                    </controls:CircleImage.WidthRequest>
-                    <controls:CircleImage.HeightRequest>
-                        <OnPlatform x:TypeArguments="x:Double">
-                            <On Platform="Android, iOS">219</On>
-                        </OnPlatform>
-                    </controls:CircleImage.HeightRequest>
+        <ScrollView  
+            BindingContext="{Binding Profile}">
+            <StackLayout
+                Padding="5">
+                <controls:CircleImage 
+                    Aspect="AspectFill"
+                    HeightRequest="250"
+                    Source="{Binding Image}">
+                    <!--<controls:CircleImage.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ChangeImageCommand}" />
+                    </controls:CircleImage.GestureRecognizers>-->
                 </controls:CircleImage>
-                <Label
-                    Text="{Binding Name}"
-                   FontAttributes="Bold"
-                    FontSize="Large"
-                    TextColor="Black"
-                    TranslationY="15"
-                    HorizontalOptions="StartAndExpand"/>
-                <Label
-                    Text="{Binding Gender}"
-                     FontAttributes="Bold"
-                    FontSize="Large"
-                    TextColor="Black"
-                    TranslationY="15"
-                    HorizontalOptions="StartAndExpand"/>
-                <Label
-                    Text="{Binding Email}"
-                    FontAttributes="Bold"
-                    FontSize="Large"
-                    TextColor="Black"
-                    TranslationY="15"
-                    HorizontalOptions="StartAndExpand"/>
+                <!--<Label 
+                    HorizontalOptions="Center" 
+                    FontSize="Small" 
+                    Text="{i18n:Translate ChangeImage}" 
+                    TextColor="Black">
+                </Label>-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="0" 
+                        Text="Name: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Column="1" 
+                        Grid.Row="0" 
+                        TextColor="Black" 
+                        Text="{Binding Name, Mode=TwoWay}"
+                        IsEnabled="False">
+                    </Entry>
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="1" 
+                        Text="Nickname: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center"
+                       >
+                    </Label>
+                    <Entry 
+                        Grid.Column="1" 
+                        Grid.Row="1" 
+                        TextColor="Black" 
+                        Text="{Binding NickName, Mode=TwoWay}"
+                        IsEnabled="False">
+                    </Entry>
+                    
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="2" 
+                        Text="Email: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Keyboard="Email" 
+                        Grid.Column="1" 
+                        Grid.Row="2" 
+                        TextColor="Black" 
+                        Text="{Binding Email, Mode=TwoWay}"
+                        IsEnabled="False">
+                    </Entry>
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="3" 
+                        Text="Gender: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Column="1" 
+                        Grid.Row="3" 
+                        TextColor="Black" 
+                        Text="{Binding Gender, Mode=TwoWay}"
+                        IsEnabled="False">
+                    </Entry>
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="4" 
+                        Text="Phone: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Column="1" 
+                        Grid.Row="4" 
+                        TextColor="Black" 
+                        Text="{Binding Phone, Mode=TwoWay}"
+                        IsEnabled="False">
+                    </Entry>
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="5" 
+                        Text="Country: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Column="1" 
+                        Grid.Row="5" 
+                        TextColor="Black" 
+                        Text="{Binding Country, Mode=TwoWay}"
+                        IsEnabled="False">
+                    </Entry>
+                </Grid>
+                <ActivityIndicator
+                    IsRunning="{Binding IsRunning, Mode=TwoWay}"
+                    VerticalOptions="CenterAndExpand">
+                </ActivityIndicator>
+                <!--<StackLayout
+                    Margin="40,0"
+                    Orientation="Horizontal"
+                    VerticalOptions="End">
+                    <Button
+                        BackgroundColor="Navy"
+                        BorderRadius="23"
+                        Command="{Binding SaveCommand}"
+                        HeightRequest="46"
+                        HorizontalOptions="FillAndExpand"
+                        IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                        Text="{i18n:Translate Save}"
+                        TextColor="White">
+                    </Button>
+                    <Button
+                        BackgroundColor="Purple"
+                        BorderRadius="23"
+                        Command="{Binding ChangePasswordCommand}"
+                        HeightRequest="46"
+                        HorizontalOptions="FillAndExpand"
+                        IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                        Text="{i18n:Translate ChangePassword}"
+                        TextColor="White">
+                    </Button>
+                </StackLayout>-->
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

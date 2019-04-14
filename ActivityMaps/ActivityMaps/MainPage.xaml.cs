@@ -11,6 +11,7 @@ namespace ActivityMaps
 	{
 		public MainPage()
 		{
+			
 			InitializeComponent();
 		}
 	}
