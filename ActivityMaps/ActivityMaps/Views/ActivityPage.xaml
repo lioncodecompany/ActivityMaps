@@ -9,26 +9,32 @@
              >
     <StackLayout BindingContext="{Binding Activity_Child}"
                 Margin="0, 0, 0, 0">
-        <Button
+        <StackLayout Orientation="Horizontal">
+            <SearchBar 
+            Placeholder="Search Activity"
+            Text="{Binding Activitytxt,Mode=TwoWay}"
+            SearchCommand="{Binding SearchCommand,Mode=TwoWay}"
+                TranslationX="-10"
+                TranslationY="3"
+                >
+                <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"  ES BUENO INVESTIGAR PARA QUE FUNCIONA ESTO Y COMO-->
+            </SearchBar>
+            <Button
             HorizontalOptions="EndAndExpand"
             Text="Menu"
             TextColor="White"
             BackgroundColor="#0086dc"
             BorderRadius="23"
             HeightRequest="46"
-            TranslationY="15"
-            TranslationX="-10"
             IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
-            Command="{Binding MenuCommand}">
-        </Button>
+            Command="{Binding MenuCommand}"
+                TranslationX="-55"
+                TranslationY="3">
+            </Button>
 
-        <SearchBar 
-            Placeholder="Search Activity"
-            Text="{Binding Activitytxt,Mode=TwoWay}"
-            SearchCommand="{Binding SearchCommand,Mode=TwoWay}" >
-            <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"  ES BUENO INVESTIGAR PARA QUE FUNCIONA ESTO Y COMO-->
-        </SearchBar>
 
+        </StackLayout>
+       
         <Picker
             Title="Filter"
             HorizontalOptions="EndAndExpand"

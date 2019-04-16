@@ -99,20 +99,208 @@
     <ContentPage Title="User">
 
         <ScrollView BindingContext="{Binding Feedback}">
-            <StackLayout>
-                <Label Text="Welcome to User Feedback!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <StackLayout Padding="10,20,10,5">
+                <SearchBar 
+            Placeholder="Search User"
+            Text="{Binding Usertxt,Mode=TwoWay}"
+            SearchCommand="{Binding SearchCommand,Mode=TwoWay}" >
+                    <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}-->
+                    
+                </SearchBar>
+
+                <Grid Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="User:"
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Keyboard="Text"
+                        IsEnabled="False"
+                        Text="{Binding UserNick, Mode=TwoWay}">
+                    </Entry>
+                    <Label 
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text="Comment"
+                        VerticalOptions="Center">
+                    </Label>
+                    <Editor
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        AutoSize="TextChanges"
+                        Keyboard="Text"
+                        IsEnabled="{Binding IsUserEnable, Mode=TwoWay}"
+                        Text="{Binding UserDescription, Mode=TwoWay}">
+                    </Editor>
+
+                </Grid>
+                <StackLayout
+                        Orientation="Horizontal">
+                    <Label 
+                       
+                        Text="Rating"
+                        WidthRequest="100"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start">
+                    </Label>
+                    <Picker
+                       
+                        HorizontalOptions="Center"
+                        WidthRequest="110"
+                        TranslationX="11"
+                        ItemsSource="{Binding UserRating}" 
+                        ItemDisplayBinding="{Binding FeedbackName}" 
+                        SelectedItem="{Binding SelectedUserRating}"
+                        IsEnabled="{Binding IsUserEnable, Mode=TwoWay}"
+                        Title="Rating...">
+                    </Picker>
+                </StackLayout>
+
+                <StackLayout 
+                    Margin="40,15"
+                    HorizontalOptions="Center"
+                    >
+
+                    <Button
+                        BackgroundColor="Navy"
+                        BorderRadius="23"
+                        HeightRequest="46"
+                        WidthRequest="140"
+                        IsEnabled="{Binding IsUserEnable, Mode=TwoWay}"
+                        Command="{Binding UserNextCommand}"
+                        Text="Submit"
+                        TextColor="White">
+                    </Button>
+
+                    <Image
+                    Aspect="AspectFill"
+                    HeightRequest="150"
+                        TranslationY="15"
+                    Source="Done"
+                    IsVisible="{Binding IsUserVisible, Mode=TwoWay}">
+
+                    </Image>
+
+                    <ActivityIndicator
+                        IsRunning="{Binding IsUserRunning, Mode=TwoWay}"
+                        VerticalOptions="CenterAndExpand">
+                    </ActivityIndicator>
+
+                </StackLayout>
+
+
             </StackLayout>
         </ScrollView>
     </ContentPage>
     <ContentPage Title="Location">
 
         <ScrollView BindingContext="{Binding Feedback}">
-            <StackLayout>
-                <Label Text="Welcome to Feedback Location!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <StackLayout Padding="10,20,10,5">
+                <SearchBar 
+            Placeholder="Search Location"
+            Text="{Binding Locationtxt,Mode=TwoWay}"
+            SearchCommand="{Binding SearchLocationCommand,Mode=TwoWay}" >
+                    <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}-->
+
+                </SearchBar>
+
+                <Grid Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="Location:"
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Keyboard="Text"
+                        IsEnabled="False"
+                        Text="{Binding LocationNick, Mode=TwoWay}">
+                    </Entry>
+                    <Label 
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text="Comment"
+                        VerticalOptions="Center">
+                    </Label>
+                    <Editor
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        AutoSize="TextChanges"
+                        Keyboard="Text"
+                        IsEnabled="{Binding IsLocationEnable, Mode=TwoWay}"
+                        Text="{Binding LocationDescription, Mode=TwoWay}">
+                    </Editor>
+
+                </Grid>
+                <StackLayout
+                        Orientation="Horizontal">
+                    <Label 
+                       
+                        Text="Rating"
+                        WidthRequest="100"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start">
+                    </Label>
+                    <Picker
+                       
+                        HorizontalOptions="Center"
+                        WidthRequest="110"
+                        TranslationX="11"
+                        ItemsSource="{Binding LocationRating}" 
+                        ItemDisplayBinding="{Binding FeedbackName}" 
+                        SelectedItem="{Binding SelectedLocationRating}"
+                        IsEnabled="{Binding IsLocationEnable, Mode=TwoWay}"
+                        Title="Rating...">
+                    </Picker>
+                </StackLayout>
+
+                <StackLayout 
+                    Margin="40,15"
+                    HorizontalOptions="Center"
+                    >
+
+                    <Button
+                        BackgroundColor="Navy"
+                        BorderRadius="23"
+                        HeightRequest="46"
+                        WidthRequest="140"
+                        IsEnabled="{Binding IsLocationEnable, Mode=TwoWay}"
+                        Command="{Binding LocationNextCommand}"
+                        Text="Submit"
+                        TextColor="White">
+                    </Button>
+
+                    <Image
+                    Aspect="AspectFill"
+                    HeightRequest="150"
+                        TranslationY="15"
+                    Source="Done"
+                    IsVisible="{Binding IsLocationVisible, Mode=TwoWay}">
+
+                    </Image>
+
+                    <ActivityIndicator
+                        IsRunning="{Binding IsLocationRunning, Mode=TwoWay}"
+                        VerticalOptions="CenterAndExpand">
+                    </ActivityIndicator>
+
+                </StackLayout>
+
+
             </StackLayout>
         </ScrollView>
     </ContentPage>
