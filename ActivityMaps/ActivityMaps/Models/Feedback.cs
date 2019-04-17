@@ -10,5 +10,6 @@ namespace ActivityMaps.Models
 		public string Comment{ get; set; }
 		public string User_Id_FK { get; set; }
 		public string Rating { get; set; }
+
 	}
 }

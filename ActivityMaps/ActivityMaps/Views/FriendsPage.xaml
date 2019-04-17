@@ -1,40 +1,177 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ActivityMaps.Views.FriendsPage"
-             Title="Friends">
-    <ScrollView BindingContext="{Binding Friends}">
-        <StackLayout>
-            <ListView x:Name="MyListView"
-            ItemsSource="{Binding Items}"
-            ItemTapped="Handle_ItemTapped"
-            CachingStrategy="RecycleElement">
+             BindingContext="{Binding Main,Source={StaticResource Locator}}"
+            Title="Friends">
+  <!--Pages can be added as references or inline-->
+    <ContentPage Title="Add Friend">
 
-                <!--Built in Cells-->
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding .}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+        <ScrollView BindingContext="{Binding Friends}">
+            <StackLayout Padding="10,20,10,5">
+                <SearchBar 
+            Placeholder="Search User"
+            Text="{Binding Usertxt,Mode=TwoWay}"
+            SearchCommand="{Binding SearchCommand,Mode=TwoWay}" >
+                    <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}-->
 
-                <!--Custom View Cells-->
-                <!--
-    <ListView.ItemTemplate>
-      <DataTemplate>
-        <ViewCell>
-          <StackLayout>
-            <Label Text="{Binding Text}" 
-                   Style="{DynamicResource ListItemTextStyle}" />
-            <Label Text="{Binding Detail}" 
-                   Style="{DynamicResource ListItemDetailTextStyle}"/>
-          </StackLayout>
-        </ViewCell>
-      </DataTemplate>
-    </ListView.ItemTemplate>
-    -->
-            </ListView>
-        </StackLayout>
-        
-    </ScrollView>
-  
-</ContentPage>
+                </SearchBar>
+                <Label 
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="User List"/>
+                <ListView 
+            SeparatorVisibility="None"
+            HasUnevenRows="True"
+            IsRefreshing="{Binding IsRefreshing,Mode=TwoWay}"
+            IsPullToRefreshEnabled="true"           
+            RefreshCommand="{Binding RefreshCommand,Mode=TwoWay}"
+            ItemsSource="{Binding UserResult,Mode=TwoWay}"
+            SelectedItem="{Binding SelectedUser,Mode=TwoWay}"
+            IsVisible="True">
+                    <ListView.RowHeight>
+                        <OnPlatform x:TypeArguments="x:Int32">
+                            <On Platform="iOS, Android" Value="90" />
+                        </OnPlatform>
+                    </ListView.RowHeight>
+                    <!--Built in Cells-->
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ContentView Padding="5">
+                                    <Frame OutlineColor="AliceBlue" Padding="10">
+                                        <StackLayout>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label  
+                                             Grid.Row="0"
+                                             Grid.Column="0" 
+                                             Text="{Binding Nickname, Mode=TwoWay}"
+                                             FontSize="18"
+                                             VerticalOptions="StartAndExpand"/>
+                                            </Grid>
+                                        </StackLayout>
+                                    </Frame>
+                                </ContentView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage>
+
+    <ContentPage Title="Friends">
+
+        <ScrollView BindingContext="{Binding FriendList}">
+            <StackLayout Padding="10,20,10,5">
+               
+                <Label 
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="Friend List"/>
+                <ListView 
+            SeparatorVisibility="None"
+            HasUnevenRows="True"
+            IsRefreshing="{Binding IsRefreshing,Mode=TwoWay}"
+            IsPullToRefreshEnabled="true"           
+            RefreshCommand="{Binding RefreshCommand,Mode=TwoWay}"
+            ItemsSource="{Binding UserResult,Mode=TwoWay}"
+            SelectedItem="{Binding SelectedUser,Mode=TwoWay}"
+            IsVisible="True"
+                    x:Name="MyListView">
+                    <ListView.RowHeight>
+                        <OnPlatform x:TypeArguments="x:Int32">
+                            <On Platform="iOS, Android" Value="90" />
+                        </OnPlatform>
+                    </ListView.RowHeight>
+                    <!--Built in Cells-->
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.ContextActions >
+                                    <MenuItem  Command="{Binding Path=BindingContext.ViewProfileCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}"
+               Text="View Profile" />
+                                    <MenuItem  Command="{Binding .}"
+               Text="Delete" IsDestructive="True" />
+                                </ViewCell.ContextActions>
+                                <ContentView Padding="5">
+                                    <Frame OutlineColor="AliceBlue" Padding="10">
+                                        <StackLayout>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label  
+                                             Grid.Row="0"
+                                             Grid.Column="0" 
+                                             Text="{Binding Nickname, Mode=TwoWay}"
+                                             FontSize="18"
+                                             VerticalOptions="StartAndExpand"/>
+                                            </Grid>
+                                        </StackLayout>
+                                    </Frame>
+                                </ContentView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage>
+
+    <ContentPage Title="Pendings" >
+        <ScrollView BindingContext="{Binding PendingFriends}">
+            <StackLayout Padding="10,20,10,5">
+               
+                <ListView 
+            SeparatorVisibility="None"
+            HasUnevenRows="True"
+            IsRefreshing="{Binding IsRefreshing,Mode=TwoWay}"
+            IsPullToRefreshEnabled="true"           
+            RefreshCommand="{Binding RefreshCommand,Mode=TwoWay}"
+            ItemsSource="{Binding UserResult,Mode=TwoWay}"
+            SelectedItem="{Binding SelectedUser,Mode=TwoWay}"
+            IsVisible="True">
+                    <ListView.RowHeight>
+                        <OnPlatform x:TypeArguments="x:Int32">
+                            <On Platform="iOS, Android" Value="90" />
+                        </OnPlatform>
+                    </ListView.RowHeight>
+                    <!--Built in Cells-->
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ContentView Padding="5">
+                                    <Frame OutlineColor="AliceBlue" Padding="10">
+                                        <StackLayout>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label  
+                                             Grid.Row="0"
+                                             Grid.Column="0" 
+                                             Text="{Binding Nickname, Mode=TwoWay}"
+                                             FontSize="18"
+                                             VerticalOptions="StartAndExpand"/>
+                                            </Grid>
+                                        </StackLayout>
+                                    </Frame>
+                                </ContentView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage>
+
+</TabbedPage>

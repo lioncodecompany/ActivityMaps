@@ -18,11 +18,13 @@ namespace ActivityMaps.ViewModels
 		public MenuViewModel Menu { get; set; }
 		public ProfileViewModel Profile { get; set; }
 		public FriendsViewModel Friends { get; set; }
+		public PendingFriendsViewModel PendingFriends { get; set; }
 		public HistoryViewModel History { get; set; }
 		public AboutViewModel About { get; set; }
 		public SettingViewModel Setting { get; set; }
 		public StatisticsViewModel Statistics { get; set; }
 		public FeedbackViewModel Feedback { get; set; }
+		public FriendListViewModel FriendList { get; set; }
 
 
 
@@ -48,6 +50,8 @@ namespace ActivityMaps.ViewModels
 			this.Setting = new SettingViewModel();
 			this.Statistics = new StatisticsViewModel();
 			this.Feedback = new FeedbackViewModel();
+			this.PendingFriends = new PendingFriendsViewModel();
+			this.FriendList = new FriendListViewModel();
 		}
 
 

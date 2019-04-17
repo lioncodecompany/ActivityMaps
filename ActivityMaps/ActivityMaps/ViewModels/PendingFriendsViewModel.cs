@@ -1,27 +1,27 @@
-﻿using System;
+﻿using ActivityMaps.Helpers;
+using ActivityMaps.Models;
+using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
-using ActivityMaps.Helpers;
-using ActivityMaps.Models;
-using GalaSoft.MvvmLight.Command;
 using Xamarin.Forms;
 
 namespace ActivityMaps.ViewModels
 {
-	public class FriendsViewModel : BaseViewModel
-	{
+     public class PendingFriendsViewModel : BaseViewModel
+    {
 		#region Atributos
 		private List<User> user;
-		private string usertxt;
 		private bool isRefreshing;
-		private User selectedUser;
-		private List<User> userResult;
-		private ObservableCollection<User> users;
+		private Pending_Friend selectedUser;
+		private List<Pending_Friend> userResult;
+		private ObservableCollection<Pending_Friend> users;
 		private string nickName;
 		private bool isRunning;
+		private ObservableCollection<User> userName;
 
 
 
@@ -30,24 +30,6 @@ namespace ActivityMaps.ViewModels
 		#region property
 
 
-
-
-
-
-		public string Usertxt
-		{
-
-			get { return this.usertxt; }
-			set
-			{
-
-				SetValue(ref this.usertxt, value);
-
-				if(!string.IsNullOrEmpty(this.Usertxt) || !Usertxt.Equals(""))
-					LoadActivity();
-
-			}
-		}
 
 		public bool IsRefreshing
 		{
@@ -68,9 +50,9 @@ namespace ActivityMaps.ViewModels
 			set { SetValue(ref this.isRunning, value); }
 		}
 
-		
 
-		public ObservableCollection<User> User
+
+		public ObservableCollection<Pending_Friend> User
 		{
 
 
@@ -79,9 +61,15 @@ namespace ActivityMaps.ViewModels
 
 
 		}
-		
 
-		public User SelectedUser
+		public ObservableCollection<User> UserName
+		{
+			get { return this.userName; }
+			set { SetValue(ref this.userName, value); }
+		}
+
+
+		public Pending_Friend SelectedUser
 		{
 
 
@@ -102,22 +90,21 @@ namespace ActivityMaps.ViewModels
 
 
 		}
-		
+
 		#endregion
 
 		#region Contructores
-		public FriendsViewModel(List<User> user)
+		public PendingFriendsViewModel(List<User> user)
 		{
 			this.user = user;
-			this.Usertxt = "";
-			LoadActivity();
+			LoadPendingFriends();
 		}
-		public FriendsViewModel()
+		public PendingFriendsViewModel()
 		{
-			
+
 		}
 
-		public List<User> UserResult
+		public List<Pending_Friend> UserResult
 		{
 
 
@@ -133,35 +120,39 @@ namespace ActivityMaps.ViewModels
 		{
 			get
 			{
-				return new RelayCommand(LoadActivity);
+				return new RelayCommand(LoadPendingFriends);
 			}
 		}
 		public ICommand SearchCommand
 		{
 			get
 			{
-				return new RelayCommand(LoadActivity);
+				return new RelayCommand(LoadPendingFriends);
 			}
 
 		}
-		public async void LoadActivity()
+
+
+		public async void LoadPendingFriends()
 		{
 
 			//Activities = ActivityData.Activities;
 			try
 			{
-				var querry = await App.MobileService.GetTable<User>().ToListAsync();
-				User = new ObservableCollection<User>();
+				var querry = await App.MobileService.GetTable<Pending_Friend>().ToListAsync();
+				User = new ObservableCollection<Pending_Friend>();
 				var arr = querry.ToArray();
 				for (int idx = 0; idx < arr.Length; idx++)
 				{
-					
-						User.Add(new User
-						{
-							Id = arr[idx].Id,
-							Nickname = arr[idx].Nickname,
-						});
-					
+
+					User.Add(new Pending_Friend
+					{
+						Id = arr[idx].Id,
+						Requested_By_FK1 = arr[idx].Requested_By_FK1,
+						Requested_To_FK2 = arr[idx].Requested_To_FK2,
+						Status = arr[idx].Status
+					});
+
 
 				}
 			}
@@ -169,90 +160,107 @@ namespace ActivityMaps.ViewModels
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 			}
-			
+
+			try
+			{
+				var querry = await App.MobileService.GetTable<User>().ToListAsync();
+				UserName = new ObservableCollection<User>();
+				var arr = querry.ToArray();
+				for (int idx = 0; idx < arr.Length; idx++)
+				{
+
+					UserName.Add(new User
+					{
+						Id = arr[idx].Id,
+						Nickname = arr[idx].Nickname
+					});
+
+
+				}
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
+
 			this.IsRefreshing = true;
 			//Categories = Activity_CategoryData.Categories;
 
 			//this.ActivityResult;
 			//var query
-		
-				var query = from act
-									  in User
-							
-							where (act.Nickname.ToUpper().StartsWith(this.Usertxt.ToUpper()))
-		
-							&&
-							(!act.Nickname.Equals(user[0].Nickname))
-							select new User
 
-							{
-								Id = act.Id,
-								Nickname = act.Nickname
-							};
-				this.UserResult = query.ToList();
-			
+			var query = from act
+								  in User
+						join u in UserName on act.Requested_By_FK1 equals u.Id
+						where (act.Requested_To_FK2.Equals(user[0].Id))
+
+						&&
+						(act.Status.Equals("Requested"))
+						select new Pending_Friend
+						{
+							Id = act.Id,
+							Requested_By_FK1 = act.Requested_By_FK1,
+							Nickname = u.Nickname
+						};
+			this.UserResult = query.ToList();
+
 			this.IsRefreshing = false;
 		}
 		public async void Assign()
 		{
 			this.IsRunning = true;
-			
+
 			//SetValue(ref this.selectedActivity, null);
 			//LoadActivity();
 			var action = await Application.Current.MainPage.DisplayAlert("Sure?", "Are you sure want to add " + SelectedUser.Nickname, "No", "Yes");
-			if(!action)//yess
+			if (!action)//yess
 			{
-				var check = await App.MobileService.GetTable<Pending_Friend>().Where(p => p.Requested_By_FK1 == user[0].Id &&
-				p.Requested_To_FK2 == SelectedUser.Id).ToListAsync();
-
-				if(check.Count > 0)
-				{
-					await Application.Current.MainPage.DisplayAlert("Warning", "You have already sent a friend request to  " + SelectedUser.Nickname, "ok");
-					this.Usertxt = "";
-					LoadActivity();
-					return;
-				}
-
+				
 				var checkFriend = await App.MobileService.GetTable<Friend>().Where(p => p.User_Id_FK1 == user[0].Id &&
-			p.User_Friend_Id_FK2 == SelectedUser.Id).ToListAsync();
+			p.User_Friend_Id_FK2 == SelectedUser.Requested_By_FK1).ToListAsync();
 
 				if (checkFriend.Count > 0)
 				{
 					await Application.Current.MainPage.DisplayAlert("Warning", "You have already be a friend of  " + SelectedUser.Nickname, "ok");
-					this.Usertxt = "";
-					LoadActivity();
+					
 					return;
 				}
 
 				int len = RandomId.length.Next(5, 10);
-				Pending_Friend pending = new Pending_Friend
+				Friend pending = new Friend
 				{
 					Id = RandomId.RandomString(len),
-					Requested_By_FK1 = user[0].Id,
-					Requested_To_FK2 = SelectedUser.Id,
-					Status = "Requested"
+					User_Id_FK1 = user[0].Id,
+					User_Friend_Id_FK2 = SelectedUser.Requested_By_FK1,
+					Type = 1
 				};
-
+				int nl = RandomId.length.Next(5, 10);
+				Friend friend= new Friend
+				{
+					Id = RandomId.RandomString(nl),
+					User_Id_FK1 = SelectedUser.Requested_By_FK1,
+					User_Friend_Id_FK2 = user[0].Id,
+					Type = 1
+				};
 				try
 				{
-					await App.MobileService.GetTable<Pending_Friend>().InsertAsync(pending);
+					await App.MobileService.GetTable<Friend>().InsertAsync(pending);
+					await App.MobileService.GetTable<Friend>().InsertAsync(friend);
+					await App.MobileService.GetTable<Pending_Friend>().DeleteAsync(SelectedUser);
 					await Application.Current.MainPage.DisplayAlert("Succesfuly!", "DONE!", "ok");
+					LoadPendingFriends();
+
 				}
 				catch (Exception ex)
 				{
 					await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 				}
 
-				
+
 			}
-			else
-			{
-				this.Usertxt = "";
-				LoadActivity();
-				return;
-			}
-			this.IsRunning = false;
 		
+			this.IsRunning = false;
+
 
 
 			// note name is property in my model (say : GeneralDataModel )

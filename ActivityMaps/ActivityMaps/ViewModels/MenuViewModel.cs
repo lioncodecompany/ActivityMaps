@@ -121,6 +121,8 @@ namespace ActivityMaps.ViewModels
 		private async void Friends()
 		{
 			CheckConnectionInternet.checkConnectivity();
+			MainViewModel.GetInstance().FriendList = new FriendListViewModel(user);
+			MainViewModel.GetInstance().PendingFriends = new PendingFriendsViewModel(user);
 			MainViewModel.GetInstance().Friends = new FriendsViewModel(user);
 			await Application.Current.MainPage.Navigation.PushAsync(new FriendsPage());
 		}
