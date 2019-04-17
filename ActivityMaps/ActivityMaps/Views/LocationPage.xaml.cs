@@ -15,9 +15,11 @@ namespace ActivityMaps.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class LocationPage : ContentPage
     {
+        private bool MovePinAllowed;
 		public LocationPage ()
 		{
 			InitializeComponent ();
+            MovePinAllowed = false;
             //Default location: Puerto Rico
             MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(18.2, -66), Distance.FromMiles(15)));
             MyPosition();
@@ -26,9 +28,15 @@ namespace ActivityMaps.Views
             // locationVM.DoSomething += DoSomething;
 
             locationVM.MyEvent += (someParameter) => DoSomething(someParameter);
+            locationVM.movePinEvent += (someParameter) => AllowMovePin(someParameter);
 
 
 
+        }
+
+        private void AllowMovePin(bool moveBinAllowed)
+        {
+            MovePinAllowed = moveBinAllowed;
         }
 
         private async void DoSomething(string str)
@@ -91,7 +99,7 @@ namespace ActivityMaps.Views
         private void MyMap_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
 
-            if (e.PropertyName == "VisibleRegion" && MyMap.VisibleRegion != null)
+            if (e.PropertyName == "VisibleRegion" && MyMap.VisibleRegion != null && MovePinAllowed)
             {
                 MovePin();
             }

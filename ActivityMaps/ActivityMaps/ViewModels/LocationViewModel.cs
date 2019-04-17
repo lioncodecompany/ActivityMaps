@@ -18,10 +18,14 @@ namespace ActivityMaps.ViewModels
         #region attributes
         public delegate void MyEventAction(string someParameter);
         public event MyEventAction MyEvent;
+
+        public delegate void MovePinEvent(bool AllowMovePin);
+        public event MovePinEvent movePinEvent;
         private Pin creatorPin;
         private Location loc;
         private string locationtxt;
-
+        private bool movePinAllowed;
+        private string movePinButtonText;
 
 
         #endregion
@@ -46,6 +50,18 @@ namespace ActivityMaps.ViewModels
             set { SetValue(ref this.loc, value); }
         }
 
+        public bool MovePinAllowed
+        {
+            get { return this.movePinAllowed; }
+            set { SetValue(ref this.movePinAllowed, value); }
+        }
+        public string MovePinButtonText
+        {
+            get { return this.movePinButtonText; }
+            set { SetValue(ref this.movePinButtonText, value); }
+        }
+        
+
 
         public Pin CreatorPin
         {
@@ -63,6 +79,15 @@ namespace ActivityMaps.ViewModels
             }
 
         }
+
+        public ICommand AllowMovePinCommand
+        {
+            get
+            {
+                return new RelayCommand(AllowMovePin);
+            }
+
+        }
         #endregion
 
         #region Constructors
@@ -70,6 +95,8 @@ namespace ActivityMaps.ViewModels
         {
             instance = this;
             this.Locationtxt = "";
+            this.MovePinAllowed = false;
+            this.MovePinButtonText = "Allow Move Pin";
            // this.CreatorPin = new Pin();
         }
         #endregion
@@ -122,15 +149,33 @@ namespace ActivityMaps.ViewModels
 
         }
 
+
+        public async void AllowMovePin()
+        {
+            this.MovePinAllowed = !this.MovePinAllowed;
+            if (this.MovePinAllowed)
+            {
+                this.MovePinButtonText = "Lock Move Pin";
+            }
+            else
+            {
+                this.MovePinButtonText = "Allow Move Pin";
+            }
+            
+            movePinEvent?.Invoke(this.MovePinAllowed);
+
+
+        }
+
         //public delegate void MyEventAction(string someParameter);
         //public event MyEventAction MyEvent;
 
         //// rise event when you need to
         //MyEvent?.Invoke("123");
 
- 
 
-        
+
+
 
 
 
