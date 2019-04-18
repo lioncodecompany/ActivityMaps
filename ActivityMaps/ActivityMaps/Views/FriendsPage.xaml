@@ -97,7 +97,7 @@
                                 <ViewCell.ContextActions >
                                     <MenuItem  Command="{Binding Path=BindingContext.ViewProfileCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}"
                Text="View Profile" />
-                                    <MenuItem  Command="{Binding .}"
+                                    <MenuItem  Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}"
                Text="Delete" IsDestructive="True" />
                                 </ViewCell.ContextActions>
                                 <ContentView Padding="5">

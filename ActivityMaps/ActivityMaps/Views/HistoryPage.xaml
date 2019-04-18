@@ -2,40 +2,92 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ActivityMaps.Views.HistoryPage"
+              BindingContext="{Binding Main,Source={StaticResource Locator}}"
              Title="History">
-    
-    <ScrollView BindingContext="{Binding History}">
-        <StackLayout>
-            <ListView x:Name="MyListView"
-            ItemsSource="{Binding Items}"
-            ItemTapped="Handle_ItemTapped"
-            CachingStrategy="RecycleElement">
 
-                <!--Built in Cells-->
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding .}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+    <StackLayout BindingContext="{Binding History}"
+                Margin="0, 0, 0, 0">
+        <StackLayout Orientation="Horizontal">
+            <SearchBar 
+            Placeholder="Search Activity"
+            Text="{Binding Activitytxt,Mode=TwoWay}"
+            SearchCommand="{Binding SearchCommand,Mode=TwoWay}"
 
-                <!--Custom View Cells-->
-                <!--
-    <ListView.ItemTemplate>
-      <DataTemplate>
-        <ViewCell>
-          <StackLayout>
-            <Label Text="{Binding Text}" 
-                   Style="{DynamicResource ListItemTextStyle}" />
-            <Label Text="{Binding Detail}" 
-                   Style="{DynamicResource ListItemDetailTextStyle}"/>
-          </StackLayout>
-        </ViewCell>
-      </DataTemplate>
-    </ListView.ItemTemplate>
-    -->
-            </ListView>
+                >
+                <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"  ES BUENO INVESTIGAR PARA QUE FUNCIONA ESTO Y COMO-->
+            </SearchBar>
+
         </StackLayout>
 
-    </ScrollView>
+        <Picker
+            Title="Filter"
+            HorizontalOptions="EndAndExpand"
+            WidthRequest="150"
+            ItemsSource="{Binding Filters}" 
+            ItemDisplayBinding="{Binding Name}" 
+            SelectedItem="{Binding SelectedFilter}">
+        </Picker>
+
+        <ListView 
+            SeparatorVisibility="None"
+            HasUnevenRows="True"
+            IsRefreshing="{Binding IsRefreshing,Mode=TwoWay}"
+            IsPullToRefreshEnabled="true"           
+            RefreshCommand="{Binding RefreshCommand,Mode=TwoWay}"
+            ItemsSource="{Binding ActivityResult,Mode=TwoWay}"
+            SelectedItem="{Binding SelectedActivity,Mode=TwoWay}"
+            IsVisible="True">
+            <ListView.RowHeight>
+                <OnPlatform x:TypeArguments="x:Int32">
+                    <On Platform="iOS, Android" Value="90" />
+                </OnPlatform>
+            </ListView.RowHeight>
+            <!--Built in Cells-->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ContentView Padding="5">
+                            <Frame OutlineColor="AliceBlue" Padding="10">
+                                <StackLayout>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="0.5*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label  
+                                             Grid.Row="0"
+                                             Grid.Column="0" 
+                                             Text="{Binding Name, Mode=TwoWay}"
+                                             FontSize="18"
+                                             VerticalOptions="StartAndExpand"/>
+                                        <BoxView Grid.Row="0"
+                                            Grid.Column="1"
+                                            Color="{Binding StatusColor, Mode=TwoWay}"
+                                            CornerRadius="8"
+                                            WidthRequest="15"
+                                            HeightRequest="15"
+                                            HorizontalOptions="EndAndExpand"
+                                            VerticalOptions="StartAndExpand"/>
+                                        <Label 
+                                            Grid.Row="1"
+                                            Grid.Column="0" 
+                                            Text="{Binding CategoryName, Mode=TwoWay}"
+                                            FontSize="14"
+                                            VerticalOptions="CenterAndExpand"/>
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.Column="1" 
+                                            Text="{Binding StatusTxt, Mode=TwoWay}"
+                                            FontSize="16"
+                                            VerticalOptions="CenterAndExpand"/>
+                                    </Grid>
+                                </StackLayout>
+                            </Frame>
+                        </ContentView>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        </StackLayout>
 
 </ContentPage>

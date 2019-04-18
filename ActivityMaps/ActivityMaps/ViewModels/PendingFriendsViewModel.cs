@@ -1,5 +1,6 @@
 ﻿using ActivityMaps.Helpers;
 using ActivityMaps.Models;
+using ActivityMaps.Views;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
@@ -249,6 +250,8 @@ namespace ActivityMaps.ViewModels
 					await App.MobileService.GetTable<Pending_Friend>().DeleteAsync(SelectedUser);
 					await Application.Current.MainPage.DisplayAlert("Succesfuly!", "DONE!", "ok");
 					LoadPendingFriends();
+					MainViewModel.GetInstance().FriendList = new FriendListViewModel(user);
+					await Application.Current.MainPage.Navigation.PushAsync(new FriendsPage());
 
 				}
 				catch (Exception ex)

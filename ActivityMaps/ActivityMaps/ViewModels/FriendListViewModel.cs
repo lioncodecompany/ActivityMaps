@@ -141,6 +141,15 @@ namespace ActivityMaps.ViewModels
 
 		}
 
+		public ICommand DeleteCommand
+		{
+			get
+			{
+				return new RelayCommand(Delete);
+			}
+
+		}
+
 
 		public async void LoadFriends()
 		{
@@ -261,6 +270,43 @@ namespace ActivityMaps.ViewModels
 	
 			}
 			*/
+
+			this.IsRunning = false;
+
+
+
+			// note name is property in my model (say : GeneralDataModel )
+		}
+		public async void Delete()
+		{
+			this.IsRunning = true;
+			CheckConnectionInternet.checkConnectivity();
+			
+		
+			try
+				{
+
+				var query = await App.MobileService.GetTable<Friend>().Where(p => p.User_Friend_Id_FK2 == SelectedUser.User_Id_FK1 && p.User_Id_FK1 == user[0].Id).ToListAsync();
+				Friend delete = new Friend
+				{
+					Id = query[0].Id,
+					User_Id_FK1 = query[0].User_Id_FK1,
+					User_Friend_Id_FK2 = query[0].User_Friend_Id_FK2,
+					Type = query[0].Type
+					
+				};
+				await App.MobileService.GetTable<Friend>().DeleteAsync(delete);//me
+					await App.MobileService.GetTable<Friend>().DeleteAsync(SelectedUser);//other user
+					await Application.Current.MainPage.DisplayAlert("Succesfuly!", "DONE!", "ok");
+					LoadFriends();
+
+				}
+				catch (Exception ex)
+				{
+					await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+				}
+
+	
 
 			this.IsRunning = false;
 

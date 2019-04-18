@@ -290,7 +290,16 @@ namespace ActivityMaps.ViewModels
 				User_Log_Id_FK1 = userLog.Id,
 				Activity_Code_FK2 = selectedActivity.Id
 			};
-
+			User_EnteredHistory entryHistory = new User_EnteredHistory()
+			{
+				Id = RandomId.RandomString(len),
+				Status = "in",
+				IsCreator = false,
+				User_Log_Id_FK1 = userLog.Id,
+				Activity_Code_FK2 = selectedActivity.Id,
+				UserJoin = userJoining[0].Id,
+				UserCreator = userCreatorActivity[0].Id
+			};
 			if (userJoining[0].Id.Equals(userCreatorActivity[0].Id))
 			{
 				await Application.Current.MainPage.DisplayAlert(
@@ -304,6 +313,7 @@ namespace ActivityMaps.ViewModels
 			{
 				await App.MobileService.GetTable<User_Log>().InsertAsync(userLog);
 				await App.MobileService.GetTable<User_Entered>().InsertAsync(entry);
+				await App.MobileService.GetTable<User_EnteredHistory>().InsertAsync(entryHistory);
 				getFileUserEntry();
 				
 
@@ -338,7 +348,7 @@ namespace ActivityMaps.ViewModels
 			this.IsRunning = true;
 			var userEntry = await App.MobileService.GetTable<User_Entered>().Where(p => !p.deleted && p.Activity_Code_FK2 == selectedActivity.Id  && !p.IsCreator).ToListAsync();
 
-			Participantes = "Numero de Participantes: " + userEntry.Count;
+			Participantes = "Numero de Participantes: " + (userEntry.Count + 1);
 			if (userEntry.Count > 0)
 			{
 				try

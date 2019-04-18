@@ -5,10 +5,79 @@
              Title="About">
     <ContentPage.Content>
         <ScrollView BindingContext="{Binding About}">
-            <StackLayout>
-            <Label Text="Welcome to About!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <StackLayout Padding="50,50,50,50">
+                <Label 
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="ActivityMaps">
+                </Label>
+                <Image
+                Source="Logo"
+                WidthRequest="200">
+                </Image>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="0" 
+                        Text="Created by: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Column="1" 
+                        Grid.Row="0" 
+                        TextColor="Black" 
+                        Text="Kevin O. Leon"
+                        IsEnabled="False">
+                    </Entry>
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="1" 
+                        Text="Supported by: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center"
+                       >
+                    </Label>
+                    <Entry 
+                        Grid.Column="1" 
+                        Grid.Row="1" 
+                        TextColor="Black" 
+                        Text="Azure"
+                        IsEnabled="False">
+                    </Entry>
+
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="2" 
+                        Text="Version App: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Keyboard="Email" 
+                        Grid.Column="1" 
+                        Grid.Row="2" 
+                        TextColor="Black" 
+                        Text="1.0.0 (Beta)"
+                        IsEnabled="False">
+                    </Entry>
+
+                </Grid>
+                <Label 
+                        Text="Contact me:" 
+                        TextColor="DarkSlateGray" 
+                        HorizontalOptions="Center">
+                </Label>
+                <Label 
+                        Text="lioncodecompany@gmail.com" 
+                        TextColor="DarkSlateGray" 
+                       HorizontalOptions="Center">
+                </Label>
             </StackLayout>
         </ScrollView>
         
