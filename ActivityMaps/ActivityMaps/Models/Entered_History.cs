@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ActivityMaps.Models
 {
-    public class User_EnteredHistory
+    public class Entered_History
     {
 		public string Id { get; set; }
 		public string Status { get; set; }

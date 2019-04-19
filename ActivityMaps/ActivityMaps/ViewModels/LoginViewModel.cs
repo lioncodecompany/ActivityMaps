@@ -79,7 +79,7 @@ namespace ActivityMaps.ViewModels
 			this.IsEnabled = true;
 			this.Email = ActivityMaps.Utils.Settings.LastUsedEmail;
 			this.internet = new CheckConnectionInternet();
-
+			
 
 		}
 

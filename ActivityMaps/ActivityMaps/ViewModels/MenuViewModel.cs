@@ -107,6 +107,15 @@ namespace ActivityMaps.ViewModels
 
 		}
 
+		public ICommand SignOutCommand
+		{
+			get
+			{
+				return new RelayCommand(SignOut);
+			}
+
+		}
+
 
 
 		#endregion
@@ -158,6 +167,14 @@ namespace ActivityMaps.ViewModels
 			CheckConnectionInternet.checkConnectivity();
 			MainViewModel.GetInstance().Feedback = new FeedbackViewModel(user);
 			await Application.Current.MainPage.Navigation.PushAsync(new FeedbackPage());
+		}
+
+		private async void SignOut()
+		{
+			CheckConnectionInternet.checkConnectivity();
+			
+			await Application.Current.MainPage.Navigation.PushAsync(new LoginPage());
+			
 		}
 
 		#endregion

@@ -290,7 +290,7 @@ namespace ActivityMaps.ViewModels
 				User_Log_Id_FK1 = userLog.Id,
 				Activity_Code_FK2 = selectedActivity.Id
 			};
-			User_EnteredHistory entryHistory = new User_EnteredHistory()
+			Entered_History entryHistory = new Entered_History()
 			{
 				Id = RandomId.RandomString(len),
 				Status = "in",
@@ -313,7 +313,7 @@ namespace ActivityMaps.ViewModels
 			{
 				await App.MobileService.GetTable<User_Log>().InsertAsync(userLog);
 				await App.MobileService.GetTable<User_Entered>().InsertAsync(entry);
-				await App.MobileService.GetTable<User_EnteredHistory>().InsertAsync(entryHistory);
+				await App.MobileService.GetTable<Entered_History>().InsertAsync(entryHistory);
 				getFileUserEntry();
 				
 

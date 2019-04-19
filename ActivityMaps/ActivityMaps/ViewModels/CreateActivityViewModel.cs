@@ -225,13 +225,14 @@ namespace ActivityMaps.ViewModels
 				User_Log_Id_FK1 = userCreating.Id,
 				Activity_Code_FK2 = activityHistory.Activity_Code_Id
 			};
-			User_EnteredHistory entryHistory = new User_EnteredHistory()
+			Entered_History entryHistory = new Entered_History()
 			{
 				Id = RandomId.RandomString(len),
 				Status = "in",
 				IsCreator = false,
 				User_Log_Id_FK1 = userLog.Id,
 				Activity_Code_FK2 = activityHistory.Activity_Code_Id,
+				UserJoin = userQuery[0].Id,
 				UserCreator = userQuery[0].Id
 			};
 			try
@@ -240,7 +241,7 @@ namespace ActivityMaps.ViewModels
 				await App.MobileService.GetTable<Activity_History>().InsertAsync(activityHistory);
 				await App.MobileService.GetTable<User_Log>().InsertAsync(userCreating);
 				await App.MobileService.GetTable<User_Entered>().InsertAsync(entry);
-				await App.MobileService.GetTable<User_EnteredHistory>().InsertAsync(entryHistory);
+				await App.MobileService.GetTable<Entered_History>().InsertAsync(entryHistory);
 
 
 			}

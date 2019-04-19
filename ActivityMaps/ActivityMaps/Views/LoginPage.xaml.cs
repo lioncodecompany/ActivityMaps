@@ -7,11 +7,11 @@ namespace ActivityMaps.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class LoginPage : ContentPage
 	{
-		private string email;
 
 		public LoginPage ()
 		{
 			InitializeComponent();
+			NavigationPage.SetHasBackButton(this, false);
 		}
 
 	}

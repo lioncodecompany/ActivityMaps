@@ -35,7 +35,7 @@ namespace ActivityMaps.ViewModels
 		User_Equipment equipment;
 		private List<User> userQuery;
 		private User_Entered entryUser;
-		private ObservableCollection<User_EnteredHistory> userQueue;
+		private ObservableCollection<Entered_History> userQueue;
 		#endregion
 
 		#region properties
@@ -177,7 +177,7 @@ namespace ActivityMaps.ViewModels
 		#region Contructores
 		public HistoryViewModel()
 		{
-			this.Activitytxt = "";
+		
 		}
 
 		public HistoryViewModel(List<User> user)
@@ -216,7 +216,7 @@ namespace ActivityMaps.ViewModels
 
 		
 		
-		public async void LoadActivity()
+		private async void LoadActivity()
 		{
 
 			//Activities = ActivityData.Activities;
@@ -248,13 +248,13 @@ namespace ActivityMaps.ViewModels
 
 			try
 			{
-				var querry = await App.MobileService.GetTable<User_EnteredHistory>().Where(use => use.UserCreator == user[0].Id || use.UserJoin == user[0].Id).ToListAsync();
-				userQueue = new ObservableCollection<User_EnteredHistory>();
+				var querry = await App.MobileService.GetTable<Entered_History>().Where(use => use.UserCreator == user[0].Id || use.UserJoin == user[0].Id).ToListAsync();
+				userQueue = new ObservableCollection<Entered_History>();
 				var arr = querry.ToArray();
 				for (int idx = 0; idx < arr.Length; idx++)
 				{
 
-					userQueue.Add(new User_EnteredHistory
+					userQueue.Add(new Entered_History
 					{
 						Id = arr[idx].Id,
 						Status = arr[idx].Status,
@@ -305,9 +305,8 @@ namespace ActivityMaps.ViewModels
 							join cat in Categories on act.Activity_Cat_code equals cat.Id
 							join loc in Locations on act.Activity_Loc_Id_FK equals loc.Id
 							join use in userQueue on act.Activity_Code_Id equals use.Activity_Code_FK2
-							//where (act.Name.ToUpper().Contains(this.Activitytxt.ToUpper()))
-							//&&
-							//(cat.Name.ToUpper().StartsWith(this.SelectedFilter.Name.ToUpper()))
+							where (act.Name.ToUpper().Contains(this.Activitytxt.ToUpper()))
+							
 							
 							select new Activity_Child
 
