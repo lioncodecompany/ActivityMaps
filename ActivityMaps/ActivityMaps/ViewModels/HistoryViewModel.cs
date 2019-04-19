@@ -259,7 +259,6 @@ namespace ActivityMaps.ViewModels
 						Id = arr[idx].Id,
 						Status = arr[idx].Status,
 						IsCreator = arr[idx].IsCreator,
-						User_Log_Id_FK1 = arr[idx].User_Log_Id_FK1,
 						Activity_Code_FK2 = arr[idx].Activity_Code_FK2,
 						UserJoin = arr[idx].UserJoin,
 						UserCreator = arr[idx].UserCreator

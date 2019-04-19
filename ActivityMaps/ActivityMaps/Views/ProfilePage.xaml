@@ -90,7 +90,7 @@
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="4" 
-                        Text="Phone: " 
+                        Text="Completed activities: " 
                         TextColor="Black" 
                         VerticalOptions="Center">
                     </Label>
@@ -98,7 +98,7 @@
                         Grid.Column="1" 
                         Grid.Row="4" 
                         TextColor="Black" 
-                        Text="{Binding Phone, Mode=TwoWay}"
+                        Text="{Binding Count, Mode=TwoWay}"
                         IsEnabled="False">
                     </Entry>
                     <Label 

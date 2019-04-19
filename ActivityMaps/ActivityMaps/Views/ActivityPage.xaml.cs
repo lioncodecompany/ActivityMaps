@@ -19,37 +19,38 @@ namespace ActivityMaps.Views
         public ActivityPage()
         {
             InitializeComponent();
+			NavigationPage.SetHasBackButton(this, false);
 
-            //Items = new ObservableCollection<string>
-            //         {
-            //             "Item 1",
-            //             "Item 2",
-            //             "Item 3",
-            //             "Item 4",
-            //             "Item 5",
-            //            "Item 6",
-            //            "Item 7",
-            //            "Item 8",
-            //            "Item 9",
-            //            "Item 10",
-            //            "Item 11",
-            //            "Item 12",
-            //            "Item 13",
-            //            "Item 14",
-            //            "Item 15",
-            //            "Item 16",
+			//Items = new ObservableCollection<string>
+			//         {
+			//             "Item 1",
+			//             "Item 2",
+			//             "Item 3",
+			//             "Item 4",
+			//             "Item 5",
+			//            "Item 6",
+			//            "Item 7",
+			//            "Item 8",
+			//            "Item 9",
+			//            "Item 10",
+			//            "Item 11",
+			//            "Item 12",
+			//            "Item 13",
+			//            "Item 14",
+			//            "Item 15",
+			//            "Item 16",
 
-            //};
+			//};
 
-            //MyListView.ItemsSource = Items;
-            ////    MyListView.ItemsSource = new ObservableCollection<Address>()
-            //    {
-            //        new Address()
-            //        {
-            //            Address1 = "Activity Name", Address2 = "Location"
-            //        }
-            //    };
-        }
+			//MyListView.ItemsSource = Items;
+			////    MyListView.ItemsSource = new ObservableCollection<Address>()
+			//    {
+			//        new Address()
+			//        {
+			//            Address1 = "Activity Name", Address2 = "Location"
+			//        }
+			//    };
+		}
 
         //    async void Handle_ItemTapped(object sender, ItemTappedEventArgs e)
         //{

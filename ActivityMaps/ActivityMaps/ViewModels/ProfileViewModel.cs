@@ -18,7 +18,7 @@ namespace ActivityMaps.ViewModels
 		private string gender;
 		private string email;
 		private string country;
-		private string phone;
+		private string count;
 		private bool isRunning;
 		private ImageSource image = null;
 		#endregion
@@ -43,12 +43,12 @@ namespace ActivityMaps.ViewModels
 			}
 		}
 
-		public string Phone
+		public string Count
 		{
-			get { return this.phone; }
+			get { return this.count; }
 			set
 			{
-				SetValue(ref this.phone, value);
+				SetValue(ref this.count, value);
 			}
 		}
 
@@ -134,8 +134,23 @@ namespace ActivityMaps.ViewModels
 			try
 			{
 				var querry = await App.MobileService.GetTable<Address>().Where(p => p.Id == user[0].Address_Id_FK).ToListAsync();
-				this.Phone = querry[0].Phone;
 				this.Country = querry[0].Country;
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
+			try
+			{
+				var querry = await App.MobileService.GetTable<Entered_History>().Where(p => (p.UserCreator == user[0].Id || p.UserJoin == user[0].Id) && p.Status == "Out").ToListAsync();
+				if(querry.Count == 0)
+				{
+					this.Count = 0.ToString() ;
+				}
+				else
+				{
+					this.Count = (querry.Count).ToString();
+				}
 			}
 			catch (Exception ex)
 			{

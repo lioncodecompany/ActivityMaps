@@ -127,7 +127,7 @@ namespace ActivityMaps.ViewModels
 			this.userCreatorActivity = userJoining;
 			this.selectedActivity = selectedActivity;
 			this.name = selectedActivity.Name;
-			this.categoryName = "Category: "+selectedActivity.CategoryName;
+			this.categoryName = selectedActivity.CategoryName;
 			this.description = selectedActivity.Description;
 			this.UserName = userJoining[0].Nickname;
 			getFile();
@@ -174,6 +174,7 @@ namespace ActivityMaps.ViewModels
 
 			var queue = await App.MobileService.GetTable<User_Entered>().Where(p => p.Activity_Code_FK2 == selectedActivity.Id).ToListAsync();
 
+			var userStr = await App.MobileService.GetTable<Entered_History>().Where(p => p.Activity_Code_FK2 == selectedActivity.Id).ToListAsync();
 			if (queue.Count > 0)
 			{
 
@@ -202,12 +203,26 @@ namespace ActivityMaps.ViewModels
 
 			if (!isNotEntered)
 			{
+				Entered_History entered = null;
 				try
 				{
 					if (!queue[userQuit].IsCreator)
 					{
 						await App.MobileService.GetTable<User_Log>().UpdateAsync(current);
+						entered = new Entered_History
+						{
+							Id = queue[userQuit].Id,
+							Activity_Code_FK2 = queue[userQuit].Activity_Code_FK2,
+							Status = "Aborting",
+							IsCreator = queue[userQuit].IsCreator,
+							UserJoin = userJoining[0].Id,
+							UserCreator = userCreatorActivity[0].Id,
+							
+
+						};
+						await App.MobileService.GetTable<Entered_History>().UpdateAsync(entered);
 						await App.MobileService.GetTable<User_Entered>().DeleteAsync(queue[userQuit]);
+						entered = null;
 						await Application.Current.MainPage.DisplayAlert("Success", " You are now out of the activity", "Ok");
 						getFileUserEntry();
 					}
@@ -215,13 +230,41 @@ namespace ActivityMaps.ViewModels
 					{
 						await App.MobileService.GetTable<User_Log>().UpdateAsync(current);
 
-						if(queue.Count > 1)
+						if (queue.Count > 1)
 							for (int i = 0; i < queue.Count; i++)
 							{
+								entered = new Entered_History
+								{
+									Id = queue[i].Id,
+									Activity_Code_FK2 = queue[i].Activity_Code_FK2,
+									Status = "Out",
+									IsCreator = queue[i].IsCreator,
+									UserJoin = userStr[i].UserJoin,
+									UserCreator = userCreatorActivity[0].Id,
+									
+
+
+								};
+								await App.MobileService.GetTable<Entered_History>().UpdateAsync(entered);
 								await App.MobileService.GetTable<User_Entered>().DeleteAsync(queue[i]);
+								entered = null;
 							}
 						else
+						{
+							 entered = new Entered_History
+							{
+								Id = queue[0].Id,
+								Activity_Code_FK2 = queue[0].Activity_Code_FK2,
+								Status = "Out",
+								IsCreator = queue[0].IsCreator,
+								UserJoin = userJoining[0].Id,
+								UserCreator = userCreatorActivity[0].Id,
+
+							};
+							await App.MobileService.GetTable<Entered_History>().UpdateAsync(entered);
 							await App.MobileService.GetTable<User_Entered>().DeleteAsync(queue[0]);
+							entered = null;
+						}
 
 
 
@@ -292,10 +335,9 @@ namespace ActivityMaps.ViewModels
 			};
 			Entered_History entryHistory = new Entered_History()
 			{
-				Id = RandomId.RandomString(len),
+				Id = entry.Id,
 				Status = "in",
 				IsCreator = false,
-				User_Log_Id_FK1 = userLog.Id,
 				Activity_Code_FK2 = selectedActivity.Id,
 				UserJoin = userJoining[0].Id,
 				UserCreator = userCreatorActivity[0].Id

@@ -9,12 +9,12 @@ using Xamarin.Forms.Xaml;
 
 namespace ActivityMaps.Views
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class StatisticsPage : ContentPage
-	{
-		public StatisticsPage ()
-		{
-			InitializeComponent ();
-		}
-	}
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class StatisticsPage : TabbedPage
+    {
+        public StatisticsPage ()
+        {
+            InitializeComponent();
+        }
+    }
 }

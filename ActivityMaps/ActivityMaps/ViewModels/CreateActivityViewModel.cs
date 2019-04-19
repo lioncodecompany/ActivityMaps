@@ -227,10 +227,9 @@ namespace ActivityMaps.ViewModels
 			};
 			Entered_History entryHistory = new Entered_History()
 			{
-				Id = RandomId.RandomString(len),
+				Id = entry.Id,
 				Status = "in",
-				IsCreator = false,
-				User_Log_Id_FK1 = userLog.Id,
+				IsCreator = true,
 				Activity_Code_FK2 = activityHistory.Activity_Code_Id,
 				UserJoin = userQuery[0].Id,
 				UserCreator = userQuery[0].Id

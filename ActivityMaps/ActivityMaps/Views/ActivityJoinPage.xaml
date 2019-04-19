@@ -8,21 +8,15 @@
              Title="Join Activity">
     <ContentPage.Content>
         <ScrollView BindingContext="{Binding ActivityJoin}">
-            <StackLayout Padding="10,20,10,5">
+            <StackLayout Padding= "5">
                 <Label 
                     FontAttributes="Bold"
                     FontSize="Large"
                     HorizontalOptions="Center"
                     Text="{Binding Name, Mode=TwoWay}"/>
                 <StackLayout Orientation="Horizontal">
-
-                    <Label 
-                    FontAttributes="Bold"
-                    FontSize="Large"
-                    HorizontalOptions="Start"
-                    Text="{Binding UserName, Mode=TwoWay}"/>
-
                     <controls:CircleImage Source="{Binding Image}"  Aspect="AspectFill">
+
                         <controls:CircleImage.WidthRequest>
                             <OnPlatform x:TypeArguments="x:Double">
                                 <On Platform="Android, iOS">50</On>
@@ -34,49 +28,72 @@
                             </OnPlatform>
                         </controls:CircleImage.HeightRequest>
                     </controls:CircleImage>
-
+                    <Label 
+                    FontAttributes="Bold"
+                    FontSize="Large"
+                    HorizontalOptions="Start"
+                    Text="{Binding UserName, Mode=TwoWay}"
+                        TranslationY="10"/>
                 </StackLayout>
 
+                <StackLayout>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
 
 
-                <Label 
+                        <Label 
                     FontAttributes="Bold"
-                    FontSize="Large"
                     HorizontalOptions="Start"
-                    Text="{Binding CategoryName, Mode=TwoWay}"/>
-                <Label 
+                    Text="Category: "
+                        Grid.Column="0"
+                        Grid.Row="0"
+                            TranslationY="10"/>
+                        
+                        <Entry 
                     FontAttributes="Bold"
-                    FontSize="Large"
                     HorizontalOptions="Start"
-                    Text="{Binding Description, Mode=TwoWay}"/>
+                    Text="{Binding CategoryName, Mode=TwoWay}"
+                    IsReadOnly="True"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                            TranslationX="-20"/>
+                        <Label 
+                         Grid.Column="0"
+                        Grid.Row="1"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Start"
+                    Text="Description: "
+                            TranslationY="10"/>
+                        <Editor
+                         Grid.Column="1"
+                        Grid.Row="1"
+                    FontAttributes="Bold"
+                    AutoSize="TextChanges"
+                    HorizontalOptions="Start"
+                    Text="{Binding Description, Mode=TwoWay}"
+                    IsReadOnly="True"
+                    TranslationX="-20"/>
+                    </Grid>
+   
+                </StackLayout>
 
                 <StackLayout Orientation="Horizontal">
-                    <Button
-                            
-                            BackgroundColor="Navy"
-                            BorderRadius="23"
-                            HeightRequest="46"
-                            WidthRequest="140"
-                            AnchorX="50"
-                            IsEnabled="{Binding isEnabled, Mode=TwoWay}"
-                            Command="{Binding JoinCommand}"
-                            Text="Join"
-                            TextColor="White"
-                            >
-                    </Button>
-                    <Button
-                            IsVisible="{Binding IsVisible, Mode=TwoWay}"
-                            BackgroundColor="Red"
-                            BorderRadius="23"
-                            HeightRequest="46"
-                            WidthRequest="140"
-                            AnchorX="50"
-                            IsEnabled="{Binding isEnabled, Mode=TwoWay}"
-                            Command="{Binding QuitCommand}"
-                            Text="Quit"
-                            TextColor="White"
-                            >
-                    </Button>
+                    <Label 
+                    FontAttributes="Bold"
+                    HorizontalOptions="Start"
+                    Text="Location: "
+                     TranslationY="10"/>
+
+                    <ImageButton Source="location"
+                      HeightRequest="50"
+                      WidthRequest="50"
+                       BackgroundColor="Transparent"
+                      
+                    >
+                    </ImageButton>
                 </StackLayout>
                 <StackLayout>
                     <Label Text="{Binding Participantes}" 
@@ -121,6 +138,35 @@
                     Color="Navy"
                     >
                 </ActivityIndicator>
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Center">
+                    <Button
+                            
+                            BackgroundColor="Navy"
+                            BorderRadius="23"
+                            HeightRequest="46"
+                            WidthRequest="140"
+                            AnchorX="50"
+                            IsEnabled="{Binding isEnabled, Mode=TwoWay}"
+                            Command="{Binding JoinCommand}"
+                            Text="Join"
+                            TextColor="White"
+                            >
+                    </Button>
+                    <Button
+                            IsVisible="{Binding IsVisible, Mode=TwoWay}"
+                            BackgroundColor="Red"
+                            BorderRadius="23"
+                            HeightRequest="46"
+                            WidthRequest="140"
+                            AnchorX="50"
+                            IsEnabled="{Binding isEnabled, Mode=TwoWay}"
+                            Command="{Binding QuitCommand}"
+                            Text="Quit"
+                            TextColor="White"
+                            >
+                    </Button>
+                </StackLayout>
             </StackLayout>
             
             
