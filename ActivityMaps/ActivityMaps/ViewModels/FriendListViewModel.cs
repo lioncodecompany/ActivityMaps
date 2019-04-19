@@ -128,7 +128,8 @@ namespace ActivityMaps.ViewModels
 		{
 			get
 			{
-				return new RelayCommand(Assign);
+                //return new RelayCommand(Assign);
+                return new RelayCommand<string>((user_Id_FK1) => Assign(user_Id_FK1));
 			}
 
 		}
@@ -145,7 +146,7 @@ namespace ActivityMaps.ViewModels
 		{
 			get
 			{
-				return new RelayCommand(Delete);
+				return new RelayCommand< string > ((user_Id_FK1) => Delete(user_Id_FK1));
 			}
 
 		}
@@ -221,11 +222,11 @@ namespace ActivityMaps.ViewModels
 
 			this.IsRefreshing = false;
 		}
-		public async void Assign()
+		public async void Assign(string user_Id_FK1)
 		{
 			this.IsRunning = true;
-			CheckConnectionInternet.checkConnectivity();
-			var querry = await App.MobileService.GetTable<User>().Where(p => p.Id == SelectedUser.User_Id_FK1).ToListAsync();
+			CheckConnectionInternet.checkConnectivity();                            //SelectedUser.User_Id_FK1
+            var querry = await App.MobileService.GetTable<User>().Where(p => p.Id == user_Id_FK1).ToListAsync();
 			MainViewModel.GetInstance().Profile = new ProfileViewModel(querry);
 			await Application.Current.MainPage.Navigation.PushAsync(new ProfilePage());
 			//SetValue(ref this.selectedActivity, null);
@@ -277,17 +278,20 @@ namespace ActivityMaps.ViewModels
 
 			// note name is property in my model (say : GeneralDataModel )
 		}
-		public async void Delete()
+		public async void Delete(string user_Id_FK1)
 		{
 			this.IsRunning = true;
 			CheckConnectionInternet.checkConnectivity();
-			
-		
-			try
+
+            
+
+
+            try
 				{
 
-				var query = await App.MobileService.GetTable<Friend>().Where(p => p.User_Friend_Id_FK2 == SelectedUser.User_Id_FK1 && p.User_Id_FK1 == user[0].Id).ToListAsync();
-				Friend delete = new Friend
+				var query = await App.MobileService.GetTable<Friend>().Where(p => p.User_Friend_Id_FK2 == user_Id_FK1 && p.User_Id_FK1 == user[0].Id).ToListAsync();
+                var queryOther = await App.MobileService.GetTable<Friend>().Where(p => p.User_Id_FK1 == user_Id_FK1 && p.User_Friend_Id_FK2 == user[0].Id).ToListAsync();
+                Friend delete = new Friend
 				{
 					Id = query[0].Id,
 					User_Id_FK1 = query[0].User_Id_FK1,
@@ -295,8 +299,20 @@ namespace ActivityMaps.ViewModels
 					Type = query[0].Type
 					
 				};
-				await App.MobileService.GetTable<Friend>().DeleteAsync(delete);//me
-					await App.MobileService.GetTable<Friend>().DeleteAsync(SelectedUser);//other user
+
+                Friend deleteOther = new Friend
+                {
+                    Id = queryOther[0].Id,
+                    User_Id_FK1 = queryOther[0].User_Id_FK1,
+                    User_Friend_Id_FK2 = queryOther[0].User_Friend_Id_FK2,
+                    Type = queryOther[0].Type,
+                    
+
+                };
+                //await Application.Current.MainPage.DisplayAlert("Succesfuly!", queryOther[0].Nickname, "ok");
+                //return;
+                await App.MobileService.GetTable<Friend>().DeleteAsync(delete);//me
+					await App.MobileService.GetTable<Friend>().DeleteAsync(deleteOther);//other user
 					await Application.Current.MainPage.DisplayAlert("Succesfuly!", "DONE!", "ok");
 					LoadFriends();
 

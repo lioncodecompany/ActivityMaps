@@ -95,9 +95,9 @@
                         <DataTemplate>
                             <ViewCell>
                                 <ViewCell.ContextActions >
-                                    <MenuItem  Command="{Binding Path=BindingContext.ViewProfileCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}"
+                                    <MenuItem  Command="{Binding Path=BindingContext.ViewProfileCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding User_Id_FK1}"
                Text="View Profile" />
-                                    <MenuItem  Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding .}"
+                                    <MenuItem  Command="{Binding Path=BindingContext.DeleteCommand, Source={x:Reference Name=MyListView}}" CommandParameter="{Binding User_Id_FK1}"
                Text="Delete" IsDestructive="True" />
                                 </ViewCell.ContextActions>
                                 <ContentView Padding="5">
