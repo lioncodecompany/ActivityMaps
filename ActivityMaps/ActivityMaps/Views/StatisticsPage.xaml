@@ -2,6 +2,7 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ActivityMaps.Views.StatisticsPage"
+             BindingContext="{Binding Main,Source={StaticResource Locator}}"
              Title="Statistics">
   <!--Pages can be added as references or inline-->
     <ContentPage Title="Personal">
@@ -41,7 +42,7 @@
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="1" 
-                        Text="Category: " 
+                        Text="Most Category Played: " 
                         TextColor="Black" 
                         VerticalOptions="Center"
                        >
@@ -51,13 +52,13 @@
                         Grid.Row="1" 
                         TextColor="Black" 
                         Text="{Binding Category, Mode=TwoWay}"
-                        IsEnabled="False">
+                         IsReadOnly="True">
                     </Entry>
 
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="2" 
-                        Text="Location: " 
+                        Text="Most Location Visited: " 
                         TextColor="Black" 
                         VerticalOptions="Center">
                     </Label>
@@ -67,12 +68,12 @@
                         Grid.Row="2" 
                         TextColor="Black" 
                         Text="{Binding Location, Mode=TwoWay}"
-                        IsEnabled="False">
+                         IsReadOnly="True">
                     </Entry>
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="3" 
-                        Text="Average Age: " 
+                        Text="Average Age You Playres: " 
                         TextColor="Black" 
                         VerticalOptions="Center">
                     </Label>
@@ -81,7 +82,7 @@
                         Grid.Row="3" 
                         TextColor="Black" 
                         Text="{Binding AvgAge, Mode=TwoWay}"
-                        IsEnabled="False">
+                         IsReadOnly="True">
                     </Entry>
                     
                 </Grid>
@@ -118,5 +119,117 @@
         </ScrollView>
     </ContentPage>
 
-    <ContentPage Title="Global" />
+    <ContentPage Title="Global">
+        <ScrollView  
+            BindingContext="{Binding GlobalStatistics}">
+            <StackLayout
+                HorizontalOptions="CenterAndExpand"
+                
+                Padding="5">
+                <Label
+                    
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="Stats"
+                    >
+                </Label>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="0" 
+                        Text="Total Created Activities: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Column="1" 
+                        Grid.Row="0" 
+                        TextColor="Black" 
+                        Text="{Binding Count, Mode=TwoWay}"
+                        IsReadOnly="True">
+                    </Entry>
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="1" 
+                        Text="Activity Most Played: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center"
+                       >
+                    </Label>
+                    <Entry 
+                        Grid.Column="1" 
+                        Grid.Row="1" 
+                        TextColor="Black" 
+                        Text="{Binding Category, Mode=TwoWay}"
+                         IsReadOnly="True">
+                    </Entry>
+
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="2" 
+                        Text="Location Most Visited: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Keyboard="Email" 
+                        Grid.Column="1" 
+                        Grid.Row="2" 
+                        TextColor="Black" 
+                        Text="{Binding Location, Mode=TwoWay}"
+                         IsReadOnly="True">
+                    </Entry>
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="3" 
+                        Text="Average Age: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Column="1" 
+                        Grid.Row="3" 
+                        TextColor="Black" 
+                        Text="{Binding AvgAge, Mode=TwoWay}"
+                         IsReadOnly="True">
+                    </Entry>
+
+                </Grid>
+                <ActivityIndicator
+                    IsRunning="{Binding IsRunning, Mode=TwoWay}"
+                    VerticalOptions="CenterAndExpand">
+                </ActivityIndicator>
+                <!--<StackLayout
+                    Margin="40,0"
+                    Orientation="Horizontal"
+                    VerticalOptions="End">
+                    <Button
+                        BackgroundColor="Navy"
+                        BorderRadius="23"
+                        Command="{Binding SaveCommand}"
+                        HeightRequest="46"
+                        HorizontalOptions="FillAndExpand"
+                        IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                        Text="{i18n:Translate Save}"
+                        TextColor="White">
+                    </Button>
+                    <Button
+                        BackgroundColor="Purple"
+                        BorderRadius="23"
+                        Command="{Binding ChangePasswordCommand}"
+                        HeightRequest="46"
+                        HorizontalOptions="FillAndExpand"
+                        IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                        Text="{i18n:Translate ChangePassword}"
+                        TextColor="White">
+                    </Button>
+                </StackLayout>-->
+            </StackLayout>
+        </ScrollView>
+    </ContentPage>
 </TabbedPage>

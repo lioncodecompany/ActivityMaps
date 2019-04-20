@@ -158,7 +158,8 @@ namespace ActivityMaps.ViewModels
 		private async void Statistics()
 		{
 			CheckConnectionInternet.checkConnectivity();
-			MainViewModel.GetInstance().Statistics = new StatisticsViewModel();
+			MainViewModel.GetInstance().Statistics = new StatisticsViewModel(user);
+			MainViewModel.GetInstance().GlobalStatistics = new GlobalStatisticsViewModel(user);
 			await Application.Current.MainPage.Navigation.PushAsync(new StatisticsPage());
 		}
 
