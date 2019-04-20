@@ -11,8 +11,9 @@ using Xamarin.Forms.Maps;
 namespace ActivityMaps.Views
 {
     using ViewModels;
+    using Xamarin.Essentials;
 
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class LocationPage : ContentPage
     {
         private bool MovePinAllowed;
@@ -89,6 +90,11 @@ namespace ActivityMaps.Views
                 MyMap.Pins[0].Position = MyMap.VisibleRegion.Center;
                 Console.WriteLine(MyMap.VisibleRegion.Center.Latitude + "    ****TEST CLICKED*****");
                 Console.WriteLine(MyMap.VisibleRegion.Center.Longitude + "    ****TEST CLICKED*****");
+                var locationVM = LocationViewModel.GetInstance();
+                locationVM.Loc.Latitude = MyMap.Pins[0].Position.Latitude;
+                locationVM.Loc.Longitude = MyMap.Pins[0].Position.Longitude;
+                //MyMap.Pins[0].Position.Latitude;
+                // MyMap.Pins[0].Position.Longitude;
             }
             else
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ActivityMaps.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,16 @@ namespace ActivityMaps.Views
 		public CreateActivityPage ()
 		{
 			InitializeComponent ();
-		}
-	}
+            //var createActivityVM = CreateActivityViewModel.GetInstance();
+             //createActivityVM.PickerEvent += (someParameter) => PickerIndex(someParameter);
+            
+
+
+        }
+
+        private void PickerIndex(int pickerIndex)
+        {
+            PickerCat.SelectedIndex = pickerIndex;
+        }
+    }
 }

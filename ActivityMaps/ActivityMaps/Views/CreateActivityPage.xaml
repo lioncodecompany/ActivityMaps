@@ -23,7 +23,7 @@
                         VerticalOptions="Center">
                     </Label>
                     <Picker
-                        x:Name ="Activities"
+                        x:Name ="PickerCat"
                         Grid.Row="0"
                         Grid.Column="1"
                         Title="Select Category..."

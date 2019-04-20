@@ -12,6 +12,9 @@ namespace ActivityMaps.ViewModels
     using System.Windows.Input;
     using GalaSoft.MvvmLight.Command;
     using Views;
+    using Xamarin.Forms;
+    using System.Collections.ObjectModel;
+    using ActivityMaps.Models;
 
     public class LocationViewModel:BaseViewModel
     {
@@ -22,10 +25,16 @@ namespace ActivityMaps.ViewModels
         public delegate void MovePinEvent(bool AllowMovePin);
         public event MovePinEvent movePinEvent;
         private Pin creatorPin;
-        private Location loc;
+        private Location loc; //Activity Location
         private string locationtxt;
         private bool movePinAllowed;
         private string movePinButtonText;
+        private Location origLoc; //Original Creator Locatoin
+        private List<User> userQuery;
+        private User_Log userLog;
+        private ObservableCollection<Activity_Category> categories;
+        private Activity activity;
+        
 
 
         #endregion
@@ -49,6 +58,11 @@ namespace ActivityMaps.ViewModels
             get { return this.loc; }
             set { SetValue(ref this.loc, value); }
         }
+        public Location OrigLoc
+        {
+            get { return this.origLoc; }
+            set { SetValue(ref this.origLoc, value); }
+        }
 
         public bool MovePinAllowed
         {
@@ -71,6 +85,14 @@ namespace ActivityMaps.ViewModels
         #endregion
 
         #region Commando
+        public ICommand SavePinCommand
+        {
+            get
+            {
+                return new RelayCommand(SavePin);
+            }
+
+        }
         public ICommand SearchCommand
         {
             get
@@ -91,6 +113,18 @@ namespace ActivityMaps.ViewModels
         #endregion
 
         #region Constructors
+        public LocationViewModel(List<User> userQuery, User_Log userLog, ObservableCollection<Activity_Category> categories, Activity act)
+        {
+            instance = this;
+            this.Locationtxt = "";
+            this.MovePinAllowed = false;
+            this.MovePinButtonText = "Allow Move Pin";
+
+            this.userQuery = userQuery;
+            this.userLog = userLog;
+            this.categories = categories;
+            this.activity = act;
+        }
         public LocationViewModel()
         {
             instance = this;
@@ -116,11 +150,18 @@ namespace ActivityMaps.ViewModels
 
 
         #region Methods
+        public async void SavePin()
+        {
+
+            MainViewModel.GetInstance().CreateActivity = new CreateActivityViewModel(userQuery, userLog,categories,this.activity, this.Loc, this.OrigLoc);
+            await Application.Current.MainPage.Navigation.PushAsync(new CreateActivityPage());
+        }
         public async Task LoadPin()
         {
            
             var request = new GeolocationRequest(GeolocationAccuracy.Medium);
             this.Loc = await Geolocation.GetLocationAsync(request);
+            this.OrigLoc = this.Loc;
 
             var position = new Position(this.Loc.Latitude, this.Loc.Longitude); // Latitude, Longitude
             this.CreatorPin = new Pin

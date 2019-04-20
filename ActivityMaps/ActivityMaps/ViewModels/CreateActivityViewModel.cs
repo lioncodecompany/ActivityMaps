@@ -8,6 +8,9 @@ using ActivityMaps.Models;
 using ActivityMaps.Views;
 using GalaSoft.MvvmLight.Command;
 using Xamarin.Forms;
+using Xamarin.Essentials;
+using Xamarin.Forms.Maps;
+using System.Linq;
 
 namespace ActivityMaps.ViewModels
 {
@@ -29,16 +32,30 @@ namespace ActivityMaps.ViewModels
 		public static User_Log userCreating;
 		private string usLog = "3"; //Create activity
 		private ObservableCollection<Activity_Category> categories;
-		#endregion
-		#region Propieades
+        private Location loc;
+        private Location origLoc;
+        private string placename;
+        Geocoder geoCoder;
 
-		public string ButtonText
+
+        //public delegate void PickerCatEvent(int PickerIndex);
+        //public event PickerCatEvent PickerEvent;
+        #endregion
+        #region Propieades
+
+        public string ButtonText
 		{
 			get { return this.buttonText; }
 			set { SetValue(ref this.buttonText, value); }
 		}
 
-		public string ButtonColor
+        public string Placename
+        {
+            get { return this.placename; }
+            set { SetValue(ref this.placename, value); }
+        }
+
+        public string ButtonColor
 		{
 			get { return this.colorButton; }
 			set { SetValue(ref this.colorButton, value); }
@@ -104,9 +121,22 @@ namespace ActivityMaps.ViewModels
 			set { SetValue(ref this.finishDay, value); }
 		}
 
-		#endregion
-		#region Contrusctores
-		public CreateActivityViewModel()
+        #endregion
+
+        #region SignLeton
+        private static CreateActivityViewModel instance;
+
+        public static CreateActivityViewModel GetInstance()
+        {
+            if (instance == null)
+            {
+                return new CreateActivityViewModel();
+            }
+            return instance;
+        }
+        #endregion
+        #region Contrusctores
+        public CreateActivityViewModel()
 		{
 			this.ButtonText = "Select Location";
 			this.ButtonColor = "Red";
@@ -124,9 +154,40 @@ namespace ActivityMaps.ViewModels
 			
 
 		}
-		#endregion
+        public CreateActivityViewModel(List<User> userQuery, User_Log userLog, ObservableCollection<Activity_Category> categories,Activity act, Location loc, Location origLoc)
+        {
 
-		public ICommand Create
+            this.ButtonText = "Select Location";
+            this.ButtonColor = "Red";
+
+
+            this.userQuery = userQuery;
+            this.userLog = userLog;
+            this.Categories = categories;
+            this.ActivityName = act.Name;
+            this.StartDay = act.Start_Act_Datetime;
+            this.FinishDay = act.End_Act_Datetime;
+            this.Description = act.Description;
+            
+            //this.SelectedCategory.Id = "1";
+            //this.SelectedCategory.Name = this.SelectedCategory.Id;
+            this.loc = loc; //Location
+            this.origLoc = origLoc;
+            getPlacename();
+
+            if (this.loc != null)
+            {
+                this.IsVisible = true;
+                this.ButtonColor = "Green";
+                this.ButtonText = "Modify Location";
+            }
+
+
+
+        }
+        #endregion
+
+        public ICommand Create
 		{
 			get
 			{
@@ -144,12 +205,47 @@ namespace ActivityMaps.ViewModels
 		private async void Location()
 		{
 			CheckConnectionInternet.checkConnectivity();
-			MainViewModel.GetInstance().Location = new LocationViewModel();
+            if (string.IsNullOrEmpty(this.ActivityName))
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "You must enter an Activity Name.",
+                    "Accept");
+                return;
+            }
+            if (string.IsNullOrEmpty(this.Description))
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "You must enter a description.",
+                    "Accept");
+                return;
+            }
+            if (SelectedCategory == null)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "You must select a Category.",
+                    "Accept");
+                return;
+            }
+
+
+
+            Activity act = new Activity()
+            {
+                
+                Name = this.ActivityName,
+                Start_Act_Datetime = this.StartDay.Date,
+                End_Act_Datetime = this.FinishDay.Date,
+                Description = this.Description,
+                Activity_Cat_Code = SelectedCategory.Id
+
+            };
+            MainViewModel.GetInstance().Location = new LocationViewModel(userQuery,userLog,categories,act);
 			await Application.Current.MainPage.Navigation.PushAsync(new LocationPage());
 
-			this.IsVisible = true;
-			this.ButtonColor = "Green";
-			this.ButtonText = "Modify Location";
+
 
 
 		}
@@ -157,34 +253,44 @@ namespace ActivityMaps.ViewModels
 		private async void CreateActivity()
 		{
 			CheckConnectionInternet.checkConnectivity();
-			
-			
 
-			if (string.IsNullOrEmpty(this.ActivityName))
-			{
-				await Application.Current.MainPage.DisplayAlert(
-					"Error",
-					"You must enter an Activity Name.",
-					"Accept");
-				return;
-			}
-			if (string.IsNullOrEmpty(this.Description))
-			{
-				await Application.Current.MainPage.DisplayAlert(
-					"Error",
-					"You must enter a description.",
-					"Accept");
-				return;
-			}
-			if (SelectedCategory == null)
-			{
-				await Application.Current.MainPage.DisplayAlert(
-					"Error",
-					"You must select an Category.",
-					"Accept");
-				return;
-			}
-			int len = RandomId.length.Next(5, 10);
+
+            if (string.IsNullOrEmpty(this.ActivityName))
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "You must enter an Activity Name.",
+                    "Accept");
+                return;
+            }
+            if (string.IsNullOrEmpty(this.Description))
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "You must enter a description.",
+                    "Accept");
+                return;
+            }
+            if (SelectedCategory == null)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "You must select a Category.",
+                    "Accept");
+                return;
+            }
+
+
+            if (loc == null)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "You must select a Location.",
+                    "Accept");
+                return;
+            }
+
+            int len = RandomId.length.Next(5, 10);
 			Activity activity = new Activity()
 			{
 				Id = RandomId.RandomString(len),
@@ -234,6 +340,21 @@ namespace ActivityMaps.ViewModels
 				UserJoin = userQuery[0].Id,
 				UserCreator = userQuery[0].Id
 			};
+            Activity_Location activity_location = new Activity_Location()
+            {
+                Id = RandomId.RandomString(len),
+                Nameplace = this.Placename,
+                City = "",
+                State = "",
+                Country = "",
+                Latitude = (decimal)this.loc.Latitude,
+                Longitude = (decimal)this.loc.Longitude,
+                CreatorOriginalPinLatitude = (decimal)this.origLoc.Latitude,
+                CreatorOriginalPinLongitude = (decimal)this.origLoc.Longitude
+
+
+            };
+
 			try
 			{
 				await App.MobileService.GetTable<Activity>().InsertAsync(activity);
@@ -241,9 +362,10 @@ namespace ActivityMaps.ViewModels
 				await App.MobileService.GetTable<User_Log>().InsertAsync(userCreating);
 				await App.MobileService.GetTable<User_Entered>().InsertAsync(entry);
 				await App.MobileService.GetTable<Entered_History>().InsertAsync(entryHistory);
+                await App.MobileService.GetTable<Activity_Location>().InsertAsync(activity_location);
 
 
-			}
+            }
 			catch (Exception ex)
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
@@ -252,6 +374,20 @@ namespace ActivityMaps.ViewModels
 			MainViewModel.GetInstance().Activity_Child = new ActivityViewModel(userQuery, entry);
 			await Application.Current.MainPage.Navigation.PushAsync(new ActivityPage());
 		}
+
+        private async void ValidateFields()
+        {
+            
+        }
+
+        private async void getPlacename()
+        {
+            geoCoder = new Geocoder();
+            var fortMasonPosition = new Position(this.loc.Latitude, this.loc.Longitude);
+            var possibleAddresses = await geoCoder.GetAddressesForPositionAsync(fortMasonPosition);
+            this.Placename = possibleAddresses?.FirstOrDefault();
+
+         }
 
 		
 		
