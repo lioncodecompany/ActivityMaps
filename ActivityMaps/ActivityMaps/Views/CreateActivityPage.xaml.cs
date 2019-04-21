@@ -20,25 +20,46 @@ namespace ActivityMaps.Views
 			InitializeComponent ();
             var createActivityVM = CreateActivityViewModel.GetInstance();
             createActivityVM.PickerEvent += (someParameter) => PickerIndex(someParameter);
-            
 
 
         }
+        
 
         private void PickerIndex(int pickerIndex)
         {
-            Console.WriteLine("****$@$#TEST: "+ pickerIndex.ToString());
-           // await LoadPicketCat(); 
+            //Application.Current.MainPage.DisplayAlert(
+            //            "Error",
+            //            pickerIndex.ToString() + " Test2",
+            //            "Accept");
+
+            PickerCat.SelectedIndex = pickerIndex;
+
+            //await Test(pickerIndex);
+            //Console.WriteLine("****$@$#TEST$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$: "+ pickerIndex.ToString());
+
         }
 
-        async Task LoadPicketCat()
+        async Task Test(int pickerCatIndex)
         {
-            //PickerCat.SelectedIndex = pickerIndex;
+            await Application.Current.MainPage.DisplayAlert(
+                         "Error",
+                         pickerCatIndex.ToString() + " Test2",
+                         "Accept");
         }
 
-            private void PickerCat_SelectedIndexChanged(object sender, EventArgs e)
+        //async Task LoadPicketCat(int pickerIndex)
+        //{
+        //    await Application.Current.MainPage.DisplayAlert(
+        //            "Error",
+        //            pickerIndex.ToString() + " Test2",
+        //            "Accept");
+        //    //PickerCat.SelectedIndex = pickerIndex;
+        //}
+
+        private void PickerCat_SelectedIndexChanged(object sender, EventArgs e)
         {
-            setPickCatIndex();
+            var createActivityVM = CreateActivityViewModel.GetInstance();
+            createActivityVM.PickerCatIndex = PickerCat.SelectedIndex;
         }
 
         void setPickCatIndex()

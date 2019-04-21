@@ -15,6 +15,20 @@ using System.Threading.Tasks;
 
 namespace ActivityMaps.ViewModels
 {
+
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Xamarin.Forms.Maps;
+    using Xamarin.Essentials;
+    using System.Linq;
+    using System.Windows.Input;
+    using GalaSoft.MvvmLight.Command;
+    using Views;
+    using Xamarin.Forms;
+    using System.Collections.ObjectModel;
+    using ActivityMaps.Models;
     public class CreateActivityViewModel : BaseViewModel
     {
         #region Atributos
@@ -154,7 +168,7 @@ namespace ActivityMaps.ViewModels
         public CreateActivityViewModel(List<User> userQuery, User_Log userLog, ObservableCollection<Activity_Category> categories, 
             Activity act, Location loc, Location origLoc,int pickerCatIndex)
         {
-            instance = this;
+            
             this.ButtonText = "Select Location";
             this.ButtonColor = "Red";
 
@@ -181,10 +195,12 @@ namespace ActivityMaps.ViewModels
                 this.ButtonColor = "Green";
                 this.ButtonText = "Modify Location";
             }
-
+            instance = this;
 
 
         }
+
+
         #endregion
         #region SignLeton
         private static CreateActivityViewModel instance;
@@ -198,7 +214,6 @@ namespace ActivityMaps.ViewModels
             return instance;
         }
         #endregion
-
 
         public ICommand Create
         {
@@ -408,7 +423,24 @@ namespace ActivityMaps.ViewModels
 
         public async void PickerIndex()
         {
+            //await Application.Current.MainPage.DisplayAlert(
+            //        "Error",
+            //        this.PickerCatIndex.ToString()+" test1",
+            //        "Accept");
 
+            //this.PickerCatIndex = pickerCatIndex;
+            //await Test();
+            await Application.Current.MainPage.DisplayAlert(
+                    "Message",
+                    "Pin has been saved.",
+                    "Ok");
+            PickerEvent?.Invoke(this.PickerCatIndex);
+
+
+        }
+
+        public async Task Test()
+        {
             PickerEvent?.Invoke(this.PickerCatIndex);
 
         }
