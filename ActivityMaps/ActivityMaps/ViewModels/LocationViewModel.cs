@@ -34,6 +34,7 @@ namespace ActivityMaps.ViewModels
         private User_Log userLog;
         private ObservableCollection<Activity_Category> categories;
         private Activity activity;
+        private int pickerCatIndex;
         
 
 
@@ -113,7 +114,7 @@ namespace ActivityMaps.ViewModels
         #endregion
 
         #region Constructors
-        public LocationViewModel(List<User> userQuery, User_Log userLog, ObservableCollection<Activity_Category> categories, Activity act)
+        public LocationViewModel(List<User> userQuery, User_Log userLog, ObservableCollection<Activity_Category> categories, Activity act, int pickerCatIndex)
         {
             instance = this;
             this.Locationtxt = "";
@@ -124,6 +125,7 @@ namespace ActivityMaps.ViewModels
             this.userLog = userLog;
             this.categories = categories;
             this.activity = act;
+            this.pickerCatIndex = pickerCatIndex;
         }
         public LocationViewModel()
         {
@@ -153,7 +155,8 @@ namespace ActivityMaps.ViewModels
         public async void SavePin()
         {
 
-            MainViewModel.GetInstance().CreateActivity = new CreateActivityViewModel(userQuery, userLog,categories,this.activity, this.Loc, this.OrigLoc);
+            MainViewModel.GetInstance().CreateActivity = 
+                new CreateActivityViewModel(userQuery, userLog,categories,this.activity, this.Loc, this.OrigLoc, this.pickerCatIndex);
             await Application.Current.MainPage.Navigation.PushAsync(new CreateActivityPage());
         }
         public async Task LoadPin()

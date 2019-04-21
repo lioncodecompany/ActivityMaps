@@ -29,7 +29,8 @@
                         Title="Select Category..."
                         ItemsSource="{Binding Categories}" 
                         ItemDisplayBinding="{Binding Name}" 
-                        SelectedItem="{Binding SelectedCategory}">
+                        SelectedItem="{Binding SelectedCategory}"
+                        SelectedIndexChanged="PickerCat_SelectedIndexChanged">
                     </Picker>
                     <Label 
                             Grid.Row="1"
