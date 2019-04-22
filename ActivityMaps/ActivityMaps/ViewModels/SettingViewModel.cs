@@ -16,9 +16,15 @@ namespace ActivityMaps.ViewModels
 		private bool isVisible;
 		Activity_Category selectedCategory;
 		private ObservableCollection<Activity_Category> categories;
+		private bool isNotification;
 		#endregion
 
 		#region Propiedades
+		public bool IsNotification
+		{
+			get { return this.isNotification; }
+			set { SetValue(ref this.isNotification, value); }
+		}
 		public bool IsVisible
 		{
 			get { return this.isVisible; }
@@ -59,6 +65,37 @@ namespace ActivityMaps.ViewModels
 			get
 			{
 				return new RelayCommand(enablePass);
+			}
+		}
+		public ICommand SaveCommand
+		{
+			get
+			{
+				return new RelayCommand(save);
+			}
+		}
+		private async void load()
+		{
+			try
+			{
+				var query = await App.MobileService.GetTable<User_Setting>().ToListAsync();
+				if (query.Count > 0)
+				{
+					this.isNotification = query[0].SendNotification;
+					//aqui me quede
+				}
+					
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
+		}
+		private async void save()
+		{
+			if (!this.isVisible)
+			{
+				
 			}
 		}
 
