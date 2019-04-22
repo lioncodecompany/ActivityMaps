@@ -17,6 +17,7 @@ namespace ActivityMaps.ViewModels
 	using System;
 	using System.Collections.Generic;
 	using System.Text;
+	using Plugin.LocalNotifications;
 
 	public class ActivityViewModel : BaseViewModel
 	{
@@ -222,7 +223,7 @@ namespace ActivityMaps.ViewModels
 		public ActivityViewModel()
 		{
 
-			this.Activitytxt = "";
+			//this.Activitytxt = "";
 			this.IsRefreshing = false;
 			this.IsFilterEmpty = true;
 			// LoadActivity();
@@ -238,6 +239,7 @@ namespace ActivityMaps.ViewModels
 			LoadActivity();
 			this.userQuery = userQuerry;
 			fillEquipment();
+			//notification();
 
 
 		}
@@ -251,7 +253,7 @@ namespace ActivityMaps.ViewModels
 			this.userQuery = userQuerry;
 			this.entryUser = entry;
 			fillEquipment();
-
+			//notification();
 
 		}
 		#endregion
@@ -293,7 +295,8 @@ namespace ActivityMaps.ViewModels
 							Description = arr[idx].Description,
 							Name = arr[idx].Name,
 							Activity_Loc_Id = "1",
-							Activity_Cat_Code = arr[idx].Activity_Cat_Code
+							Activity_Cat_Code = arr[idx].Activity_Cat_Code,
+							Created_Date = arr[idx].Created_Date
 						});
 					}
 
@@ -346,8 +349,10 @@ namespace ActivityMaps.ViewModels
 								Id = act.Id,
 								Name = act.Name,
 								CategoryName = cat.Name,
-								Description = act.Description
-
+								Description = act.Description,
+								LocationTown = loc.City,
+								Created_Date = act.Created_Date
+								
 							};
 				this.ActivityResult = query.ToList();
 			}
@@ -369,11 +374,14 @@ namespace ActivityMaps.ViewModels
 								Id = act.Id,
 								Name = act.Name,
 								CategoryName = cat.Name,
-								Description = act.Description
+								Description = act.Description,
+								LocationTown = loc.City
 							};
 
 				this.ActivityResult = query.ToList();
 			}
+			if(ActivityResult.Count > 0 )
+				notification(ActivityResult);
 
 
 
@@ -444,6 +452,27 @@ namespace ActivityMaps.ViewModels
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 			}
 
+		}
+		private async void notification(List<Activity_Child> activities)
+		{
+			//CrossLocalNotifications.Current.Show("Welcome", "TEST");
+			var querry = await App.MobileService.GetTable<Address>().Where(p => p.Id == userQuery[0].Address_Id_FK).ToListAsync();
+			bool alert = false;
+			
+			for (int i = 0; i < activities.Count; i++)
+			{
+				double hour = DateTime.Now.Hour - activities[i].Created_Date.Hour;
+				if (querry[0].City.ToUpper().Equals(activities[i].LocationTown.ToUpper()) && (hour <= 1 && hour >=0))
+				{
+					alert = true;
+				}
+
+			}
+
+			if (alert)
+			{
+				CrossLocalNotifications.Current.Show("Welcome", "TEST");
+			}
 		}
 		#endregion
 

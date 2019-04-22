@@ -1,6 +1,10 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.AppCenter.Push;
 
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -40,9 +44,9 @@ namespace ActivityMaps
 
 		protected override void OnStart()
 		{
-            // Handle when your app starts
-            
-        }
+			AppCenter.Start("android=e028cdf2-7933-4798-8592-f0c197108e22;" , typeof(Analytics), typeof(Crashes), typeof(Push));
+
+		}
 
 		protected override void OnSleep()
 		{

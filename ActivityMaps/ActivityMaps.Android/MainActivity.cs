@@ -10,6 +10,7 @@ using System.IO;
 using Microsoft.WindowsAzure.MobileServices;
 using Android.Support.V4.App;
 using Android;
+using Plugin.LocalNotifications;
 
 namespace ActivityMaps.Droid
 {
@@ -23,8 +24,9 @@ namespace ActivityMaps.Droid
 			
 			TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
+			
 
-            base.OnCreate(savedInstanceState);
+			base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 			CurrentPlatform.Init();
 
@@ -43,7 +45,7 @@ namespace ActivityMaps.Droid
         protected override void OnStart()
         {
             base.OnStart();
-			
+			LocalNotificationsImplementation.NotificationIconId = Resource.Drawable.Logo;
 			//Ponerlo en otra clase
 			//if (ActivityCompat.CheckSelfPermission(this, "ACCESS_FINE_LOCATION") != Permission.Granted
 			//    && ActivityCompat.CheckSelfPermission(this, "ACCESS_COARSE_LOCATION") != Permission.Granted)

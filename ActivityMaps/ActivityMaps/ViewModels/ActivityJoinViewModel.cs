@@ -49,7 +49,7 @@ namespace ActivityMaps.ViewModels
 
 		}
 
-		private User userListView;
+		
 
 		[Xamarin.Forms.TypeConverter(typeof(Xamarin.Forms.ImageSourceConverter))]
 		public Xamarin.Forms.ImageSource Image

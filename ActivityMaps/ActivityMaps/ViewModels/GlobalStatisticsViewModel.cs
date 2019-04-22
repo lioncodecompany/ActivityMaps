@@ -109,7 +109,7 @@ namespace ActivityMaps.ViewModels
 					age.Add((DateTime.Now.Year - res[i].Birthdate.Year));
 				}
 
-				AvgAge = age.Average().ToString();
+				AvgAge = String.Format("{0:0.00}", age.Average());
 
 			}
 			catch (Exception ex)

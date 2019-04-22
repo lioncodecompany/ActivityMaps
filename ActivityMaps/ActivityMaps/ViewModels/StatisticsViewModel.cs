@@ -75,19 +75,23 @@ namespace ActivityMaps.ViewModels
 			this.user = user;
 			IsRunning = true;
 			getCount();
-			getCategory();
-			getLocation();
-			getAverageAge();
+			
 			IsRunning = false;
 		}
 		#endregion
 
 		#region Methods
-		private async void getAverageAge()
+		private async void getAverageAge(string count)
 		{
+			if (count.Equals("0"))
+			{
+				AvgAge = "Non activities played";
+				return;
+
+			}
 			try
 			{
-				var querry = await App.MobileService.GetTable<Entered_History>().ToListAsync();
+				var querry = await App.MobileService.GetTable<Entered_History>().Where(ent => ent.UserCreator == user[0].Id || ent.UserJoin == user[0].Id).ToListAsync();
 				ObservableCollection<Entered_History> entered = new ObservableCollection<Entered_History>();
 				var arr = querry.ToArray();
 				for (int idx = 0; idx < arr.Length; idx++)
@@ -139,7 +143,7 @@ namespace ActivityMaps.ViewModels
 									  in entered
 							join act in activity on ent.Activity_Code_FK2 equals act.Activity_Code_Id
 
-							where (ent.UserCreator != user[0].Id && ent.UserJoin != user[0].Id)
+							//where (ent.UserCreator != user[0].Id && ent.UserJoin != user[0].Id)
 							//group cat.Name by cat.Name into g
 							select new Entered_History
 
@@ -150,7 +154,7 @@ namespace ActivityMaps.ViewModels
 
 							};
 				List<Entered_History> userResult = query.ToList();
-
+				
 				var userResultArr = userResult.ToArray();
 				List<User> userList = new List<User>();
 
@@ -158,7 +162,7 @@ namespace ActivityMaps.ViewModels
 				for (int i = 0; i < userResultArr.Length; i++)
 				{
 					userList.Add(new User { Id = userResultArr[i].UserCreator });
-					userList.Add(new User { Id = userResultArr[i].UserCreator });
+					userList.Add(new User { Id = userResultArr[i].UserJoin});
 				}
 
 				List<User> distinctUser = userList
@@ -185,7 +189,7 @@ namespace ActivityMaps.ViewModels
 				}
 				age.Add(DateTime.Now.Year - user[0].Birthdate.Year);
 
-				AvgAge = age.Average().ToString();
+				AvgAge = String.Format("{0:0.00}", age.Average()); 
 
 			}
 			catch (Exception ex)
@@ -194,8 +198,14 @@ namespace ActivityMaps.ViewModels
 			}
 		}
 
-		private async void getLocation()
+		private async void getLocation(string count)
 		{
+			if (count.Equals("0"))
+			{
+				Location = "Non activities played";
+				return;
+
+			}
 			try
 			{
 				var querry = await App.MobileService.GetTable<Entered_History>().Where(p => (p.UserJoin == user[0].Id || p.UserCreator == user[0].Id) && p.Status != "Aborting").ToListAsync();
@@ -298,8 +308,14 @@ namespace ActivityMaps.ViewModels
 			}
 		}
 
-		private async void getCategory()
+		private async void getCategory(string count)
 		{
+			if (count.Equals("0"))
+			{
+				Category = "Non activities played";
+				return;
+
+			}
 			try
 			{
 				var querry = await App.MobileService.GetTable<Entered_History>().Where(p => p.UserJoin == user[0].Id || p.UserCreator == user[0].Id).ToListAsync();
@@ -418,6 +434,10 @@ namespace ActivityMaps.ViewModels
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 			}
+			getAverageAge(this.Count);
+			getCategory(this.Count);
+			getLocation(this.Count);
+
 		}
 		#endregion
 	} 

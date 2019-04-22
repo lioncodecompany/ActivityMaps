@@ -19,11 +19,7 @@ namespace ActivityMaps.Models
                 Nameplace = "April Garden",
                 City = "Las Piedras"
             });
-
-            
-
-
-
+			
         }
     }
 }
