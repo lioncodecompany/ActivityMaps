@@ -46,7 +46,7 @@
                         x:Name ="PickerCat"
                         Grid.Row="0"
                         Grid.Column="1"
-                        Title="Select Activity..."
+                        Title="{Binding CatPlaceHolder}"
                         ItemsSource="{Binding Categories}" 
                         ItemDisplayBinding="{Binding Name}" 
                         SelectedItem="{Binding SelectedCategory}"
@@ -118,8 +118,20 @@
                         </Entry>
                     </Grid>
 
+
                 </StackLayout>
 
+                <StackLayout VerticalOptions="CenterAndExpand">
+                    <Image
+                    Aspect="AspectFit"
+                    HeightRequest="150"
+                    TranslationY="15"
+                    Source="Done"
+                    IsVisible="{Binding IsSave, Mode=TwoWay}">
+
+                    </Image>
+                </StackLayout>
+         
                 <ActivityIndicator
                     IsRunning="{Binding IsRunning, Mode=TwoWay}"
                     VerticalOptions="CenterAndExpand">
