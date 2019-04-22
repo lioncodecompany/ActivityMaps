@@ -265,7 +265,7 @@ namespace ActivityMaps.ViewModels
 			CheckConnectionInternet.checkConnectivity();
 			MainViewModel.GetInstance().Menu = new MenuViewModel(userQuery, userLog);
 			await Application.Current.MainPage.Navigation.PushAsync(new MenuPage());
-			LoadActivity();
+			//LoadActivity();
 
 
 		}
@@ -274,7 +274,7 @@ namespace ActivityMaps.ViewModels
 			CheckConnectionInternet.checkConnectivity();
 			MainViewModel.GetInstance().CreateActivity = new CreateActivityViewModel(userQuery, userLog, Categories);
 			await Application.Current.MainPage.Navigation.PushAsync(new CreateActivityPage());
-			LoadActivity();
+			//LoadActivity();
 		}
 		public async void LoadActivity()
 		{
@@ -396,7 +396,7 @@ namespace ActivityMaps.ViewModels
 			string actName = this.SelectedActivity.Name;
 
 			//SetValue(ref this.selectedActivity, null);
-			LoadActivity();
+			//LoadActivity();
 
 			var user = await App.MobileService.GetTable<User_Entered>().Where(p => p.Activity_Code_FK2 == selectedActivity.Id && p.IsCreator).ToListAsync();
 			var userCreator = await App.MobileService.GetTable<User_Log>().Where(p => p.Id == user[0].User_Log_Id_FK1).ToListAsync();
@@ -468,8 +468,11 @@ namespace ActivityMaps.ViewModels
 
 				for (int i = 0; i < activities.Count; i++)
 				{
+
+					double day = DateTime.Now.Day - activities[i].Created_Date.Day;
 					double hour = DateTime.Now.Hour - activities[i].Created_Date.Hour;
-					if (querry[0].City.ToUpper().Equals(activities[i].LocationTown.ToUpper()) && (hour <= 1 && hour >= 0) && catCode[0].Name == activities[i].CategoryName)
+					if (querry[0].City.ToUpper().Equals(activities[i].LocationTown.ToUpper()) && (hour <= 1 && hour >= 0) 
+						&& (day < 1 && day >= 0) && catCode[0].Name == activities[i].CategoryName)
 					{
 						alert = true;
 						count = i;

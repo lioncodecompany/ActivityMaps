@@ -52,14 +52,19 @@ namespace ActivityMaps.ViewModels
         private string placename;
         Geocoder geoCoder;
         private int pickerCatIndex;
+		private bool isService;
 
 
         public delegate void PickerCatEvent(int PickerIndex);
         public event PickerCatEvent PickerEvent;
-        #endregion
-        #region Propieades
-
-        public int PickerCatIndex
+		#endregion
+		#region Propieades
+		public bool IsService
+		{
+			get { return this.isService; }
+			set { SetValue(ref this.isService, value); }
+		}
+		public int PickerCatIndex
         {
             get { return this.pickerCatIndex; }
             set { SetValue(ref this.pickerCatIndex, value); }
@@ -348,7 +353,7 @@ namespace ActivityMaps.ViewModels
                 End_Act_Datetime = this.FinishDay.Date,
                 Description = this.Description,
                 Status = 1,//check
-                IsService = false,//todo
+                IsService = this.IsService,
                 Activity_Cat_Code = SelectedCategory.Id,
                 Activity_Loc_Id = activity_location.Id 
             };
@@ -365,7 +370,7 @@ namespace ActivityMaps.ViewModels
                 End_Act_Date = this.FinishDay.Date,
                 Description = this.Description,
                 Status = 1,//check
-                IsService = false,//todo
+                IsService = this.IsService,
                 Activity_Cat_code = SelectedCategory.Id,
                 Activity_Loc_Id_FK = activity_location.Id
 			};

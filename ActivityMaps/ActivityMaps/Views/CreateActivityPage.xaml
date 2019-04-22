@@ -120,6 +120,22 @@
 
                 </Grid>
 
+                <StackLayout 
+                  
+                    Orientation="Horizontal"
+                    VerticalOptions="Start">
+                    <Label
+                        HorizontalOptions="StartAndExpand"
+                        VerticalOptions="Start"
+                        Text="This activity will be a service?">
+                    </Label>
+
+                    <Switch 
+                        HorizontalOptions="End"
+                        IsToggled="{Binding IsSService, Mode=TwoWay}">
+                    </Switch>
+
+                </StackLayout>
 
                 <StackLayout 
                         Margin="40,15"
