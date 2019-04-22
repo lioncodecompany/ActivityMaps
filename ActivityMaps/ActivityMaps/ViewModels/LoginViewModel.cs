@@ -100,6 +100,15 @@ namespace ActivityMaps.ViewModels
 		#endregion
 		#region Comandos
 
+		public ICommand ResetPasswordCommand
+		{
+			get
+			{
+				return new RelayCommand(resetPass);
+			}
+		}
+
+
 		public ICommand LoginCommand
 		{
 			get
@@ -115,7 +124,16 @@ namespace ActivityMaps.ViewModels
 				return new RelayCommand(Register);
 			}
 		}
+		private async void resetPass()
+		{
+			MainViewModel.GetInstance().ResetPass = new ResetPasswordViewModel(this.Email);
+			await Application.Current.MainPage.Navigation.PushAsync(new ResetPasswordPage());
+			this.IsRunning = false;
+			this.IsEnabled = true;
 
+			//this.Email = string.Empty;
+			this.Password = string.Empty;
+		} 
 		private async void Register()
 		{
 

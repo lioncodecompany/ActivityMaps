@@ -72,13 +72,15 @@
 
 
 
-                <Label 
+                <Button 
+                    BackgroundColor="Transparent"
                     HorizontalOptions="Center"
                     Text="Forgot your password?"
                     TextColor="Blue"
-                    VerticalOptions="CenterAndExpand">
+                    VerticalOptions="CenterAndExpand"
+                    Command="{Binding ResetPasswordCommand}">
 
-                </Label>
+                </Button>
 
                 <ActivityIndicator 
                     IsRunning="{Binding IsRunning, Mode=TwoWay}"
