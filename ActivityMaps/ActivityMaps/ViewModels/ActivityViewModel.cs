@@ -456,23 +456,36 @@ namespace ActivityMaps.ViewModels
 		private async void notification(List<Activity_Child> activities)
 		{
 			//CrossLocalNotifications.Current.Show("Welcome", "TEST");
-			var querry = await App.MobileService.GetTable<Address>().Where(p => p.Id == userQuery[0].Address_Id_FK).ToListAsync();
-			bool alert = false;
-			
-			for (int i = 0; i < activities.Count; i++)
+			int count = 0;
+			List<Activity_Category> catCode = new List<Activity_Category>();
+			var isNotification = await App.MobileService.GetTable<User_Setting>().Where(p => p.User_Id_FK2 == userQuery[0].Id).ToListAsync();
+			var fav = await App.MobileService.GetTable<Activity_Preference>().Where(p => p.User_Id_FK == userQuery[0].Id).ToListAsync();
+			if(fav.Count > 0 && isNotification[0].SendNotification)
 			{
-				double hour = DateTime.Now.Hour - activities[i].Created_Date.Hour;
-				if (querry[0].City.ToUpper().Equals(activities[i].LocationTown.ToUpper()) && (hour <= 1 && hour >=0))
+				catCode = await App.MobileService.GetTable<Activity_Category>().Where(p => p.Id == fav[0].Activity_Cat_code).ToListAsync();
+				var querry = await App.MobileService.GetTable<Address>().Where(p => p.Id == userQuery[0].Address_Id_FK).ToListAsync();
+				bool alert = false;
+
+				for (int i = 0; i < activities.Count; i++)
 				{
-					alert = true;
+					double hour = DateTime.Now.Hour - activities[i].Created_Date.Hour;
+					if (querry[0].City.ToUpper().Equals(activities[i].LocationTown.ToUpper()) && (hour <= 1 && hour >= 0) && catCode[0].Name == activities[i].CategoryName)
+					{
+						alert = true;
+						count = i;
+					}
+
 				}
 
+				if (alert)
+				{
+					CrossLocalNotifications.Current.Show("Activity Found", "Antoher user has been created your favorite activity\n" +
+						"Name: " + activities[count].Name +
+						"\nCategory: " + activities[count].CategoryName);
+				
+				}
 			}
-
-			if (alert)
-			{
-				CrossLocalNotifications.Current.Show("Welcome", "TEST");
-			}
+			
 		}
 		#endregion
 

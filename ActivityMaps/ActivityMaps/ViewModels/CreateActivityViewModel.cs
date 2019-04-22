@@ -323,7 +323,22 @@ namespace ActivityMaps.ViewModels
             }
 
             int len = RandomId.length.Next(5, 10);
-            Activity activity = new Activity()
+			Activity_Location activity_location = new Activity_Location()
+			{
+				Id = RandomId.RandomString(len),
+				Nameplace = this.Placename,
+				City = "",
+				State = "",
+				Country = "",
+				Latitude = (decimal)this.loc.Latitude,
+				Longitude = (decimal)this.loc.Longitude,
+				CreatorOriginalPinLatitude = (decimal)this.origLoc.Latitude,
+				CreatorOriginalPinLongitude = (decimal)this.origLoc.Longitude
+
+
+			};
+
+			Activity activity = new Activity()
             {
                 Id = RandomId.RandomString(len),
                 Name = this.ActivityName,
@@ -335,7 +350,7 @@ namespace ActivityMaps.ViewModels
                 Status = 1,//check
                 IsService = false,//todo
                 Activity_Cat_Code = SelectedCategory.Id,
-                Activity_Loc_Id = "1" //todo
+                Activity_Loc_Id = activity_location.Id 
             };
 
             //ctivity history
@@ -352,8 +367,8 @@ namespace ActivityMaps.ViewModels
                 Status = 1,//check
                 IsService = false,//todo
                 Activity_Cat_code = SelectedCategory.Id,
-                Activity_Loc_Id_FK = "1" //todo
-            };
+                Activity_Loc_Id_FK = activity_location.Id
+			};
             userCreating = User_LogType.userLogTypesAsync(userQuery[0].Id, usLog);
             User_Entered entry = new User_Entered()
             {
@@ -372,29 +387,16 @@ namespace ActivityMaps.ViewModels
                 UserJoin = userQuery[0].Id,
                 UserCreator = userQuery[0].Id
             };
-            Activity_Location activity_location = new Activity_Location()
-            {
-                Id = RandomId.RandomString(len),
-                Nameplace = this.Placename,
-                City = "",
-                State = "",
-                Country = "",
-                Latitude = (decimal)this.loc.Latitude,
-                Longitude = (decimal)this.loc.Longitude,
-                CreatorOriginalPinLatitude = (decimal)this.origLoc.Latitude,
-                CreatorOriginalPinLongitude = (decimal)this.origLoc.Longitude
-
-
-            };
-
+           
             try
             {
-                await App.MobileService.GetTable<Activity>().InsertAsync(activity);
+				await App.MobileService.GetTable<Activity_Location>().InsertAsync(activity_location);
+				await App.MobileService.GetTable<Activity>().InsertAsync(activity);
                 await App.MobileService.GetTable<Activity_History>().InsertAsync(activityHistory);
                 await App.MobileService.GetTable<User_Log>().InsertAsync(userCreating);
                 await App.MobileService.GetTable<User_Entered>().InsertAsync(entry);
                 await App.MobileService.GetTable<Entered_History>().InsertAsync(entryHistory);
-                await App.MobileService.GetTable<Activity_Location>().InsertAsync(activity_location);
+            
 
 
             }
