@@ -207,7 +207,14 @@ namespace ActivityMaps.ViewModels
 					"Accept");
 				return;
 			}
-
+			if (this.NewPassword.Length < 7)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"Your Password length must be greather than 6.",
+					"Accept");
+				return;
+			}
 			if (!(NewPassword.Equals(ReEnterPassword)))
 			{
 				await Application.Current.MainPage.DisplayAlert(

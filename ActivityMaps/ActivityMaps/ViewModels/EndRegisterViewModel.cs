@@ -16,6 +16,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.DataMovement;
 using System.Threading;
 using System.IO;
+using System.Net.Mail;
 
 namespace ActivityMaps.ViewModels
 {
@@ -157,10 +158,11 @@ namespace ActivityMaps.ViewModels
 			if (storageStatus == PermissionStatus.Granted)
 			{
 				var file = await CrossMedia.Current.PickPhotoAsync();
-
+				
 				if (file == null)
 					return;
 				source = file.Path;
+				
 				Image = ImageSource.FromStream(() => file.GetStream());
 			}
 			else
@@ -202,6 +204,7 @@ namespace ActivityMaps.ViewModels
 				var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
 				{
 					DefaultCamera = Plugin.Media.Abstractions.CameraDevice.Front,
+					CompressionQuality = 92,
 					SaveMetaData = true,
 					Name = "test.jpg"
 				});
@@ -234,12 +237,39 @@ namespace ActivityMaps.ViewModels
 					"Accept");
 				return;
 			}
+			if (!IsValid(this.Email))
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"You must enter a real Email.",
+					"Accept");
+				return;
+			}
+
+			var checkEmail = await App.MobileService.GetTable<User>().Where(p => p.Email == this.Email).ToListAsync();
+			if (checkEmail.Count > 0)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"This email has been registered.",
+					"Try Another");
+				return;
+			}
 
 			if (string.IsNullOrEmpty(this.Password))
 			{
 				await Application.Current.MainPage.DisplayAlert(
 					"Error",
 					"You must enter an Password.",
+					"Accept");
+				return;
+			}
+
+			if (this.Password.Length < 7)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"Your Password length must be greather than 6.",
 					"Accept");
 				return;
 			}
@@ -367,6 +397,19 @@ namespace ActivityMaps.ViewModels
 			MainViewModel.GetInstance().Login = new LoginViewModel(CurrentUser.Email);
 			await Application.Current.MainPage.Navigation.PushAsync(new LoginPage());
 
+		}
+		public bool IsValid(string emailaddress)
+		{
+			try
+			{
+				MailAddress m = new MailAddress(emailaddress);
+
+				return true;
+			}
+			catch (FormatException)
+			{
+				return false;
+			}
 		}
 		#endregion
 	}

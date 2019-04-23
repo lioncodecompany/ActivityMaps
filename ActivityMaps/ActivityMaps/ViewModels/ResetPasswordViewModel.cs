@@ -130,7 +130,7 @@ namespace ActivityMaps.ViewModels
 		private async void setPassword()
 		{
 			this.IsRunning = true;
-			this.ThirdButton = false;
+			
 			var passwordQuerry = await App.MobileService.GetTable<User_Password>().Where(p => p.User_Id_FK == userQuery[0].Id).ToListAsync();
 
 			if (string.IsNullOrEmpty(this.Password))
@@ -139,15 +139,25 @@ namespace ActivityMaps.ViewModels
 					"Error",
 					"You must enter an Password.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
-
+			if (this.Password.Length < 7)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"Your Password length must be greather than 6.",
+					"Accept");
+				this.IsRunning = false;
+				return;
+			}
 			if (!(Password.Equals(RePassword)))
 			{
 				await Application.Current.MainPage.DisplayAlert(
 					"Error",
 					"Passwords not match.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
 
@@ -167,6 +177,7 @@ namespace ActivityMaps.ViewModels
 					"Done",
 					"Password has been changed.",
 					"Accept");
+			this.ThirdButton = false;
 			this.IsRunning= false;
 
 			MainViewModel.GetInstance().Login = new LoginViewModel(this.Email);
@@ -176,7 +187,7 @@ namespace ActivityMaps.ViewModels
 		private async void getToken()
 		{
 			this.IsRunning = true;
-			this.SecondButton = false;
+			
 
 			if (this.Code.TrimEnd().Equals(token.TrimEnd()))
 			{
@@ -199,13 +210,16 @@ namespace ActivityMaps.ViewModels
 					"Error",
 					"Invalid Token.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
+			this.IsRunning = false;
+			this.SecondButton = false;
 		}
 		private async void sendCode()
 		{
 			this.IsRunning = true;
-			this.FirstButton = false;
+			
 			int len = RandomId.length.Next(5, 10);
 			token = RandomId.RandomString(len);
 			 userQuery = await App.MobileService.GetTable<User>().Where(p => p.Email == Email).ToListAsync();
@@ -247,9 +261,11 @@ namespace ActivityMaps.ViewModels
 					"Error",
 					"Invalid Email.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
-			
+			this.FirstButton = false;
+
 
 		}
 	}

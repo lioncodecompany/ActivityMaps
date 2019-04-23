@@ -154,12 +154,39 @@ namespace ActivityMaps.ViewModels
 					"Accept");
 				return;
 			}
+			if (this.Nickname.Length < 4)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"The length of Nickname most be greather than 3 letters.",
+					"Accept");
+				return;
+			}
+
+			var nick = await App.MobileService.GetTable<User>().Where(p => p.Nickname == this.Nickname ).ToListAsync();
+			if(nick.Count > 0)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"This nickname has been taken.",
+					"Try Another");
+				return;
+			}
+
 
 			if (string.IsNullOrEmpty(this.Phone))
 			{
 				await Application.Current.MainPage.DisplayAlert(
 					"Error",
 					"You must enter an Phone.",
+					"Accept");
+				return;
+			}
+			if (this.Phone.Length < 10)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"You must enter a Phone with 10 digits.",
 					"Accept");
 				return;
 			}
