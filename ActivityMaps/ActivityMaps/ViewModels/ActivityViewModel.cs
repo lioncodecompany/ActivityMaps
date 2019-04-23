@@ -26,7 +26,8 @@ namespace ActivityMaps.ViewModels
 		private string activitytxt;
 		private bool isRefreshing;
 		private Activity_Child selectedActivity;
-		private List<Activity_Child> activityResult;
+        private Activity_Child pselectedActivity;
+        private List<Activity_Child> activityResult;
 		//private IEnumerable<Activity_Category> activityCatResult;
 		private ObservableCollection<Activity> activities;
 		private ObservableCollection<Activity_Location> locations;
@@ -449,17 +450,17 @@ namespace ActivityMaps.ViewModels
 			this.IsRunning = true;
 			var actID = this.SelectedActivity.Id;
 			string actName = this.SelectedActivity.Name;
+            pselectedActivity = this.SelectedActivity;
+            SetValue(ref this.selectedActivity, null);
+            //LoadActivity();
 
-			//SetValue(ref this.selectedActivity, null);
-			//LoadActivity();
-
-			var user = await App.MobileService.GetTable<User_Entered>().Where(p => p.Activity_Code_FK2 == selectedActivity.Id && p.IsCreator).ToListAsync();
+            var user = await App.MobileService.GetTable<User_Entered>().Where(p => p.Activity_Code_FK2 == pselectedActivity.Id && p.IsCreator).ToListAsync();
 			var userCreator = await App.MobileService.GetTable<User_Log>().Where(p => p.Id == user[0].User_Log_Id_FK1).ToListAsync();
 			var userName = await App.MobileService.GetTable<User>().Where(p => p.Id == userCreator[0].User_Id_FK2).ToListAsync();
 
 
 			this.IsRunning = false;
-			MainViewModel.GetInstance().ActivityJoin = new ActivityJoinViewModel(this.SelectedActivity, this.userQuery, userName, userCreator, equipment);
+			MainViewModel.GetInstance().ActivityJoin = new ActivityJoinViewModel(pselectedActivity, this.userQuery, userName, userCreator, equipment);
 			await Application.Current.MainPage.Navigation.PushAsync(new ActivityJoinPage());
 
 
