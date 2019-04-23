@@ -12,6 +12,7 @@ using ActivityMaps.Models;
 using ActivityMaps.Views;
 using GalaSoft.MvvmLight.Command;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace ActivityMaps.ViewModels
 {
@@ -21,7 +22,8 @@ namespace ActivityMaps.ViewModels
 		private Activity selectedActivity;
 		private string userName;
 		private string name;
-		private string categoryName;
+        private string locationCode;
+        private string categoryName;
 		private string description;
 		private ImageSource image;
 		private ImageSource imageUser;
@@ -119,7 +121,18 @@ namespace ActivityMaps.ViewModels
 
 			}
 		}
-		public ActivityJoinViewModel(Activity_Child selectedActivity, List<User> userQuery, List<User> userJoining, List<User_Log> userCreator, User_Equipment equipment)
+
+        public string LocationCode
+        {
+            get { return this.locationCode; }
+            set
+            {
+
+                SetValue(ref this.locationCode, value);
+
+            }
+        }
+        public ActivityJoinViewModel(Activity_Child selectedActivity, List<User> userQuery, List<User> userJoining, List<User_Log> userCreator, User_Equipment equipment)
 		{
 			this.userJoining = userQuery;
 			this.equipment = equipment;
@@ -127,7 +140,8 @@ namespace ActivityMaps.ViewModels
 			this.userCreatorActivity = userJoining;
 			this.selectedActivity = selectedActivity;
 			this.name = selectedActivity.Name;
-			this.categoryName = selectedActivity.CategoryName;
+            this.LocationCode = selectedActivity.Activity_Loc_Id;         
+            this.categoryName = selectedActivity.CategoryName;
 			this.description = selectedActivity.Description;
 			this.UserName = userJoining[0].Nickname;
 			getFile();
@@ -149,7 +163,17 @@ namespace ActivityMaps.ViewModels
 			}
 		}
 
-		public ICommand QuitCommand
+        public ICommand LocationMapCommand
+        {
+            get
+            {
+                return new RelayCommand(LaunchLocation);
+            }
+
+        }
+
+
+        public ICommand QuitCommand
 		{
 			get
 			{
@@ -161,9 +185,10 @@ namespace ActivityMaps.ViewModels
 		public ObservableCollection<User> User { get; private set; }
 		public ObservableCollection<File_Path> FilePath { get; private set; }
 		public ObservableCollection<User_Entered> UserEntry { get; private set; }
-		
+        //public ObservableCollection<Activity_Location> ActivityLocation { get; private set; }
 
-		private async void Quit()
+
+        private async void Quit()
 		{
 
 
@@ -565,5 +590,41 @@ namespace ActivityMaps.ViewModels
 
 		}
 
-	}
+        private async void LaunchLocation()
+        {
+
+
+            try
+            {
+                var query = await App.MobileService.GetTable<Activity_Location>().Where(p => p.Id == this.LocationCode).ToListAsync();
+                //ActivityLocation = new ObservableCollection<Activity_Location>();
+                var arr = query.ToArray();
+                //for (int idx = 0; idx < arr.Length; idx++)
+                //{
+
+                //    ActivityLocation.Add(new Activity_Location
+                //    {
+                //        Id = arr[idx].Id,
+                //        Latitude = arr[idx].Latitude,
+                //        Longitude = arr[idx].Longitude
+                //    });
+
+
+                //}
+
+                var location = new Location((double)arr[0].Latitude, (double)arr[0].Longitude);
+                var options = new MapLaunchOptions { NavigationMode = NavigationMode.Driving };
+
+                await Map.OpenAsync(location, options);
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+            }
+
+
+        }
+
+
+    }
 }

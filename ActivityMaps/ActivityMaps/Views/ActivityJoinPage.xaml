@@ -88,11 +88,14 @@
                      TranslationY="10"/>
 
                     <ImageButton Source="location"
-                      HeightRequest="50"
-                      WidthRequest="50"
-                       BackgroundColor="Transparent"
-                      
-                    >
+                                 Command="{Binding LocationMapCommand, Mode=TwoWay}"
+                                 BackgroundColor="Transparent">
+                        <ImageButton.HeightRequest>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="iOS, Android" Value="30" />
+                        </OnPlatform>
+                        </ImageButton.HeightRequest>
+                        
                     </ImageButton>
                 </StackLayout>
                 <StackLayout>

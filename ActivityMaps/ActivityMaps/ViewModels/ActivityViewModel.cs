@@ -283,8 +283,10 @@ namespace ActivityMaps.ViewModels
 			try
 			{
 				var querry = await App.MobileService.GetTable<Activity>().ToListAsync();
-				Activities = new ObservableCollection<Activity>();
-				var arr = querry.ToArray();
+                var query2 = await App.MobileService.GetTable<Activity_Location>().ToListAsync();
+                Activities = new ObservableCollection<Activity>();
+                Locations = new ObservableCollection<Activity_Location>();
+                var arr = querry.ToArray();
 				for (int idx = 0; idx < arr.Length; idx++)
 				{
 					if (!arr[idx].deleted)
@@ -294,21 +296,72 @@ namespace ActivityMaps.ViewModels
 							Id = arr[idx].Id,
 							Description = arr[idx].Description,
 							Name = arr[idx].Name,
-							Activity_Loc_Id = "1",
+							Activity_Loc_Id = arr[idx].Activity_Loc_Id,
 							Activity_Cat_Code = arr[idx].Activity_Cat_Code,
 							Created_Date = arr[idx].Created_Date
 						});
 					}
 
 				}
-			}
+
+                var arr2 = query2.ToArray();
+                for (int idx = 0; idx < arr2.Length; idx++)
+                {
+
+                        Locations.Add(new Activity_Location
+                        {
+                            Id = arr2[idx].Id,
+                            Nameplace = arr2[idx].Nameplace,
+                            City = arr2[idx].City,
+                            State = arr2[idx].State,
+                            Country = arr2[idx].Country,
+                            Latitude = arr2[idx].Latitude,
+                            Longitude = arr2[idx].Longitude
+                        });
+                    }
+            
+
+
+            }
 			catch (Exception ex)
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 			}
-			Locations = Activity_LocationData.Locations;
+            //Locations = Activity_LocationData.Locations;
+            try
+            {
 
-			try
+                var query2 = await App.MobileService.GetTable<Activity_Location>().ToListAsync();
+
+                Locations = new ObservableCollection<Activity_Location>();
+
+
+                var arr2 = query2.ToArray();
+                for (int idx = 0; idx < arr2.Length; idx++)
+                {
+
+                    Locations.Add(new Activity_Location
+                    {
+                        Id = arr2[idx].Id,
+                        Nameplace = arr2[idx].Nameplace,
+                        City = arr2[idx].City,
+                        State = arr2[idx].State,
+                        Country = arr2[idx].Country,
+                        Latitude = arr2[idx].Latitude,
+                        Longitude = arr2[idx].Longitude
+                    });
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+            }
+
+
+            try
 			{
 				var querry = await App.MobileService.GetTable<Activity_Category>().ToListAsync();
 				Categories = new ObservableCollection<Activity_Category>();
@@ -351,7 +404,8 @@ namespace ActivityMaps.ViewModels
 								CategoryName = cat.Name,
 								Description = act.Description,
 								LocationTown = loc.City,
-								Created_Date = act.Created_Date
+								Created_Date = act.Created_Date,
+                                Activity_Loc_Id = act.Activity_Loc_Id
 								
 							};
 				this.ActivityResult = query.ToList();
@@ -375,8 +429,9 @@ namespace ActivityMaps.ViewModels
 								Name = act.Name,
 								CategoryName = cat.Name,
 								Description = act.Description,
-								LocationTown = loc.City
-							};
+								LocationTown = loc.City,
+                                Activity_Loc_Id = act.Activity_Loc_Id
+                            };
 
 				this.ActivityResult = query.ToList();
 			}
