@@ -29,6 +29,9 @@ namespace ActivityMaps.ViewModels
     using Xamarin.Forms;
     using System.Collections.ObjectModel;
     using ActivityMaps.Models;
+    using Plugin.Permissions;
+    using Plugin.Permissions.Abstractions;
+
     public class CreateActivityViewModel : BaseViewModel
     {
         #region Atributos
@@ -263,6 +266,21 @@ namespace ActivityMaps.ViewModels
                     "You must select a Category.",
                     "Accept");
                 return;
+            }
+
+            //Permiso para usar el Mapa y GPS
+            var LocationStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+
+            if (LocationStatus != PermissionStatus.Granted)
+            {
+                var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Location });
+                LocationStatus = results[Permission.Location];
+            }
+
+            if (LocationStatus != PermissionStatus.Granted)
+            {
+                await Application.Current.MainPage.DisplayAlert("Permissions Denied", "Unable to choose Location.", "OK");
+                
             }
 
 
