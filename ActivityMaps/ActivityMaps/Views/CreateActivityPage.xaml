@@ -57,6 +57,7 @@
                 <Editor 
                     AutoSize="TextChanges"
                     MaxLength="150"
+                    Keyboard="Chat"
                     Text="{Binding Description, Mode=TwoWay}"
                     Placeholder="Description...">
                 </Editor>
@@ -132,7 +133,7 @@
 
                     <Switch 
                         HorizontalOptions="End"
-                        IsToggled="{Binding IsSService, Mode=TwoWay}">
+                        IsToggled="{Binding IsService, Mode=TwoWay}">
                     </Switch>
 
                 </StackLayout>

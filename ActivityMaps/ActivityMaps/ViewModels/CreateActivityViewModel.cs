@@ -56,6 +56,7 @@ namespace ActivityMaps.ViewModels
         Geocoder geoCoder;
         private int pickerCatIndex;
 		private bool isService;
+		
 
 
         public delegate void PickerCatEvent(int PickerIndex);
@@ -369,7 +370,7 @@ namespace ActivityMaps.ViewModels
                 IsPrivate = false,//todo
                 Start_Act_Datetime = this.StartDay.Date,
                 End_Act_Datetime = this.FinishDay.Date,
-                Description = this.Description,
+                Description = this.Description.TrimEnd().TrimStart(),
                 Status = 1,//check
                 IsService = this.IsService,
                 Activity_Cat_Code = SelectedCategory.Id,

@@ -98,6 +98,22 @@
                         
                     </ImageButton>
                 </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                        HorizontalOptions="StartAndExpand"
+                        VerticalOptions="Start"
+                        Text="This activity is a service?">
+                    </Label>
+
+                    <Switch 
+                        IsEnabled="False"
+                        OnColor="{Binding Color}"
+                        HorizontalOptions="End"
+                        IsToggled="{Binding IsService, Mode=TwoWay}">
+                    </Switch>
+
+                </StackLayout>
+                
                 <StackLayout>
                     <Label Text="{Binding Participantes}" 
                            HorizontalOptions="Center"/>

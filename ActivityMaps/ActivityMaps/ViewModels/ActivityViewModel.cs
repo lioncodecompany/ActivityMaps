@@ -299,7 +299,8 @@ namespace ActivityMaps.ViewModels
 							Name = arr[idx].Name,
 							Activity_Loc_Id = arr[idx].Activity_Loc_Id,
 							Activity_Cat_Code = arr[idx].Activity_Cat_Code,
-							Created_Date = arr[idx].Created_Date
+							Created_Date = arr[idx].Created_Date,
+							IsService = arr[idx].IsService
 						});
 					}
 
@@ -406,7 +407,9 @@ namespace ActivityMaps.ViewModels
 								Description = act.Description,
 								LocationTown = loc.City,
 								Created_Date = act.Created_Date,
-                                Activity_Loc_Id = act.Activity_Loc_Id
+                                Activity_Loc_Id = act.Activity_Loc_Id,
+								IsService = act.IsService
+								
 								
 							};
 				this.ActivityResult = query.ToList();
@@ -431,8 +434,11 @@ namespace ActivityMaps.ViewModels
 								CategoryName = cat.Name,
 								Description = act.Description,
 								LocationTown = loc.City,
-                                Activity_Loc_Id = act.Activity_Loc_Id
-                            };
+								Created_Date = act.Created_Date,
+								Activity_Loc_Id = act.Activity_Loc_Id,
+								IsService = act.IsService
+
+							};
 
 				this.ActivityResult = query.ToList();
 			}
