@@ -43,7 +43,7 @@ namespace ActivityMaps.ViewModels
         private TimeSpan startHour;
         private TimeSpan finishHour;
         private DateTime startDay = DateTime.Today;
-        private DateTime finishDay;
+        private DateTime finishDay = DateTime.Today;
         private bool isVisible = false;
         private List<User> userQuery;
         private User_Log userLog;
@@ -393,7 +393,11 @@ namespace ActivityMaps.ViewModels
                 Activity_Cat_code = SelectedCategory.Id,
                 Activity_Loc_Id_FK = activity_location.Id
 			};
-            userCreating = User_LogType.userLogTypesAsync(userQuery[0].Id, usLog);
+			await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					activity.End_Act_Datetime.ToString(),
+					"Accept");
+			userCreating = User_LogType.userLogTypesAsync(userQuery[0].Id, usLog);
             User_Entered entry = new User_Entered()
             {
                 Id = RandomId.RandomString(len),
