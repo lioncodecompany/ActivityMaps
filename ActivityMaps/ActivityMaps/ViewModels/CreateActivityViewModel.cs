@@ -393,10 +393,7 @@ namespace ActivityMaps.ViewModels
                 Activity_Cat_code = SelectedCategory.Id,
                 Activity_Loc_Id_FK = activity_location.Id
 			};
-			await Application.Current.MainPage.DisplayAlert(
-					"Error",
-					activity.End_Act_Datetime.ToString(),
-					"Accept");
+			
 			userCreating = User_LogType.userLogTypesAsync(userQuery[0].Id, usLog);
             User_Entered entry = new User_Entered()
             {

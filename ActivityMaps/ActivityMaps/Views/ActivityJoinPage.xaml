@@ -89,19 +89,22 @@
 
                     <ImageButton Source="location"
                                  Command="{Binding LocationMapCommand, Mode=TwoWay}"
-                                 BackgroundColor="Transparent">
+                                 BackgroundColor="Transparent"
+                                 TranslationX="30">
                         <ImageButton.HeightRequest>
                         <OnPlatform x:TypeArguments="x:Double">
-                            <On Platform="iOS, Android" Value="30" />
+                            <On Platform="iOS, Android" Value="43" />
                         </OnPlatform>
                         </ImageButton.HeightRequest>
                         
                     </ImageButton>
                 </StackLayout>
-                <StackLayout Orientation="Horizontal">
+                <StackLayout Orientation="Horizontal" TranslationY="15">
                     <Label
+                        
                         HorizontalOptions="StartAndExpand"
                         VerticalOptions="Start"
+                        FontAttributes="Bold"
                         Text="This activity is a service?">
                     </Label>
 
@@ -115,48 +118,92 @@
                 </StackLayout>
                 
                 <StackLayout>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+
+
+                        <Label 
+                    FontAttributes="Bold"
+                    
+                    Text="Activity Start: "
+                        Grid.Column="0"
+                        Grid.Row="0"
+                            TranslationY="24"
+                            />
+
+                        <Entry 
+                    FontAttributes="Bold"
+                    
+                    Text="{Binding Start, Mode=TwoWay}"
+                    IsReadOnly="True"
+                            HorizontalOptions="End"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                            TranslationY="7"
+                            />
+                        <Label 
+                         Grid.Column="0"
+                        Grid.Row="1"
+                    FontAttributes="Bold"
+             
+                    Text="Activity End: "
+                            TranslationY="24"/>
+                        <Entry
+                         Grid.Column="1"
+                         Grid.Row="1"
+                         FontAttributes="Bold"
+                         HorizontalOptions="End"
+                    Text="{Binding End, Mode=TwoWay}"
+                    IsReadOnly="True"
+                            TranslationY="7"
+                    />
+                    </Grid>
                     <Label Text="{Binding Participantes}" 
-                           HorizontalOptions="Center"/>
+                           HorizontalOptions="Center"
+                           TranslationY="15"/>
                 </StackLayout>
-
-
-                <control:HorizontalList
+                <StackLayout TranslationY="15">
+                    <control:HorizontalList
         ItemsSource="{Binding UserList}"
         ListOrientation="Horizontal" >
-                    <control:HorizontalList.ItemTemplate >
-                        <DataTemplate>
-                            <Grid>
-                                
-                                <controls:CircleImage Source="{Binding ImageUser}"  Aspect="AspectFill"
+                        <control:HorizontalList.ItemTemplate >
+                            <DataTemplate>
+                                <Grid>
+
+                                    <controls:CircleImage Source="{Binding ImageUser}"  Aspect="AspectFill"
                                                       Grid.Column="0"
                                                       Grid.Row="0">
-                                    <controls:CircleImage.WidthRequest>
-                                        <OnPlatform x:TypeArguments="x:Double">
-                                            <On Platform="Android, iOS">50</On>
-                                        </OnPlatform>
-                                    </controls:CircleImage.WidthRequest>
-                                    <controls:CircleImage.HeightRequest>
-                                        <OnPlatform x:TypeArguments="x:Double">
-                                            <On Platform="Android, iOS">50</On>
-                                        </OnPlatform>
-                                    </controls:CircleImage.HeightRequest>
-                                </controls:CircleImage>
-                                <Label Text="{Binding Nickname}"
+                                        <controls:CircleImage.WidthRequest>
+                                            <OnPlatform x:TypeArguments="x:Double">
+                                                <On Platform="Android, iOS">50</On>
+                                            </OnPlatform>
+                                        </controls:CircleImage.WidthRequest>
+                                        <controls:CircleImage.HeightRequest>
+                                            <OnPlatform x:TypeArguments="x:Double">
+                                                <On Platform="Android, iOS">50</On>
+                                            </OnPlatform>
+                                        </controls:CircleImage.HeightRequest>
+                                    </controls:CircleImage>
+                                    <Label Text="{Binding Nickname}"
                                        HorizontalOptions="Center"
                                        Grid.Column="0"
                                        Grid.Row="1"/>
-                            </Grid>
-                        </DataTemplate>
-                    </control:HorizontalList.ItemTemplate>
-                </control:HorizontalList>
-
-                <ActivityIndicator 
+                                </Grid>
+                            </DataTemplate>
+                        </control:HorizontalList.ItemTemplate>
+                    </control:HorizontalList>
+                    <ActivityIndicator 
                     IsRunning="{Binding IsRunning, Mode=TwoWay}"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
                     Color="Navy"
                     >
-                </ActivityIndicator>
+                    </ActivityIndicator>
+                </StackLayout>
+                
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="Center">
                     <Button

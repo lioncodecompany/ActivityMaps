@@ -38,9 +38,12 @@ namespace ActivityMaps.ViewModels
 		private string participantes;
 		private bool isService;
 		private string color;
+		private string start;
+		private string end;
 
 		public string Participantes { get { return this.participantes; } set { SetValue(ref this.participantes, value); } }
-
+		public string Start { get { return this.start; } set { SetValue(ref this.start, value); } }
+		public string End { get { return this.end; } set { SetValue(ref this.end, value); } }
 
 		public List<User> UserList { get { return this.userList; }  set { SetValue(ref this.userList, value); } }
 		public ObservableCollection<User> UserFoto
@@ -162,6 +165,8 @@ namespace ActivityMaps.ViewModels
 			this.description = selectedActivity.Description;
 			this.UserName = userJoining[0].Nickname;
 			this.IsService = selectedActivity.IsService;
+			this.Start = selectedActivity.Start_Act_Datetime.ToString();
+			this.End = selectedActivity.End_Act_Datetime.ToString();
 			if (this.IsService)
 				this.Color = "Pink";
 			getFile();

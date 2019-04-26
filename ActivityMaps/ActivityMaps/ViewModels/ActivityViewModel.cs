@@ -301,6 +301,7 @@ namespace ActivityMaps.ViewModels
 							Activity_Cat_Code = arr[idx].Activity_Cat_Code,
 							Created_Date = arr[idx].Created_Date,
 							IsService = arr[idx].IsService,
+							Start_Act_Datetime = arr[idx].Start_Act_Datetime,
 							End_Act_Datetime = arr[idx].End_Act_Datetime
 						});
 					}
@@ -409,7 +410,9 @@ namespace ActivityMaps.ViewModels
 								LocationTown = loc.City,
 								Created_Date = act.Created_Date,
                                 Activity_Loc_Id = act.Activity_Loc_Id,
-								IsService = act.IsService
+								IsService = act.IsService,
+								Start_Act_Datetime = act.Start_Act_Datetime,
+								End_Act_Datetime = act.End_Act_Datetime
 								
 								
 							};
@@ -437,7 +440,10 @@ namespace ActivityMaps.ViewModels
 								LocationTown = loc.City,
 								Created_Date = act.Created_Date,
 								Activity_Loc_Id = act.Activity_Loc_Id,
-								IsService = act.IsService
+								IsService = act.IsService,
+								Start_Act_Datetime = act.Start_Act_Datetime,
+								End_Act_Datetime = act.End_Act_Datetime
+
 
 							};
 
