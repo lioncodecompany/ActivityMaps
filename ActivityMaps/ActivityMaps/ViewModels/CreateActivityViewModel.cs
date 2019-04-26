@@ -290,8 +290,8 @@ namespace ActivityMaps.ViewModels
             {
 
                 Name = this.ActivityName,
-                Start_Act_Datetime = this.StartDay.Date,
-                End_Act_Datetime = this.FinishDay.Date,
+                Start_Act_Datetime = this.StartDay + this.StartHour,
+                End_Act_Datetime = this.FinishDay + this.FinishHour,
                 Description = this.Description,
                 Activity_Cat_Code = SelectedCategory.Id
 
@@ -385,8 +385,8 @@ namespace ActivityMaps.ViewModels
                 Name = this.ActivityName,
                 Created_Date = DateTime.Now,
                 IsPrivate = false,//todo
-                Start_Act_Date = this.StartDay.Date + this.StartHour,
-                End_Act_Date = this.FinishDay.Date + this.FinishHour,
+                Start_Act_Date = this.StartDay + this.StartHour,
+                End_Act_Date = this.FinishDay + this.FinishHour,
                 Description = this.Description,
                 Status = 1,//check
                 IsService = this.IsService,
