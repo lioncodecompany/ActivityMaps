@@ -283,7 +283,7 @@ namespace ActivityMaps.ViewModels
 			//Activities = ActivityData.Activities;
 			try
 			{
-				var querry = await App.MobileService.GetTable<Activity>().ToListAsync();
+				var querry = await App.MobileService.GetTable<Activity>().Where(p => p.End_Act_Datetime > DateTime.Now).ToListAsync();
                 var query2 = await App.MobileService.GetTable<Activity_Location>().ToListAsync();
                 Activities = new ObservableCollection<Activity>();
                 Locations = new ObservableCollection<Activity_Location>();
@@ -300,7 +300,8 @@ namespace ActivityMaps.ViewModels
 							Activity_Loc_Id = arr[idx].Activity_Loc_Id,
 							Activity_Cat_Code = arr[idx].Activity_Cat_Code,
 							Created_Date = arr[idx].Created_Date,
-							IsService = arr[idx].IsService
+							IsService = arr[idx].IsService,
+							End_Act_Datetime = arr[idx].End_Act_Datetime
 						});
 					}
 
