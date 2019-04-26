@@ -42,7 +42,7 @@ namespace ActivityMaps.ViewModels
         private string description;
         private TimeSpan startHour;
         private TimeSpan finishHour;
-        private DateTime startDay;
+        private DateTime startDay = DateTime.Today;
         private DateTime finishDay;
         private bool isVisible = false;
         private List<User> userQuery;
@@ -368,8 +368,8 @@ namespace ActivityMaps.ViewModels
                 Name = this.ActivityName,
                 Created_Date = DateTime.Now,
                 IsPrivate = false,//todo
-                Start_Act_Datetime = this.StartDay.Date + this.StartHour,
-                End_Act_Datetime = this.FinishDay.Date + this.FinishHour,
+                Start_Act_Datetime = this.StartDay + this.StartHour,
+                End_Act_Datetime = this.FinishDay + this.FinishHour,
                 Description = this.Description.TrimEnd().TrimStart(),
                 Status = 1,//check
                 IsService = this.IsService,
