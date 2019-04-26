@@ -43,7 +43,19 @@
             ItemDisplayBinding="{Binding Name}" 
             SelectedItem="{Binding SelectedFilter}">
         </Picker>
+        <Label IsVisible="{Binding IsActivityFound,Mode=TwoWay}"
+                Margin="10"
+               TextColor="DimGray"
+                FontAttributes="Bold"
+                FontSize="Medium"
+                HorizontalOptions="StartAndExpand"
+                >
+        <Label.Text>
+        No Activity Created Yet. Please try again later or create a new Activity!!
+        </Label.Text>
 
+
+        </Label>
         <ListView 
             SeparatorVisibility="None"
             HasUnevenRows="True"

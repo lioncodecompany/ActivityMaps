@@ -10,6 +10,8 @@ namespace ActivityMaps.Models
          public string CategoryName { get; set; }
          public string LocationPlaceName { get; set; }
 		public string LocationTown { get; set; }
+       // public bool IsActivityFound { get; set; }
 
-	}
+
+    }
 }

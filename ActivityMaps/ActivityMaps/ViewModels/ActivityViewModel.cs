@@ -40,8 +40,10 @@ namespace ActivityMaps.ViewModels
 		private bool isRunning;
 		Filter selectedFilter;
 		User_Equipment equipment;
+        private bool isActivityFound;
 
-		private List<User> userQuery;
+
+        private List<User> userQuery;
 		private User_Entered entryUser;
 		#endregion
 
@@ -118,7 +120,14 @@ namespace ActivityMaps.ViewModels
 			set { SetValue(ref this.isRunning, value); }
 		}
 
-		public bool IsFilterEmpty
+        public bool IsActivityFound
+        {
+
+            get { return this.isActivityFound; }
+            set { SetValue(ref this.isActivityFound, value); }
+        }
+
+        public bool IsFilterEmpty
 		{
 			get { return this.isFilterEmpty; }
 			set { SetValue(ref this.isFilterEmpty, value); }
@@ -227,17 +236,19 @@ namespace ActivityMaps.ViewModels
 			//this.Activitytxt = "";
 			this.IsRefreshing = false;
 			this.IsFilterEmpty = true;
-			// LoadActivity();
-			// fillEquipment();
+            this.IsActivityFound = false;
+            // LoadActivity();
+            // fillEquipment();
 
 
-		}
+        }
 		public ActivityViewModel(List<User> userQuerry)
 		{
 
 			this.Activitytxt = "";
 			this.IsRefreshing = false;
-			LoadActivity();
+            this.IsActivityFound = false;
+            LoadActivity();
 			this.userQuery = userQuerry;
 			fillEquipment();
 			//notification();
@@ -250,7 +261,8 @@ namespace ActivityMaps.ViewModels
 
 			this.Activitytxt = "";
 			this.IsRefreshing = false;
-			LoadActivity();
+            this.IsActivityFound = false;
+            LoadActivity();
 			this.userQuery = userQuerry;
 			this.entryUser = entry;
 			fillEquipment();
@@ -385,11 +397,12 @@ namespace ActivityMaps.ViewModels
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 			}
 			this.IsRefreshing = true;
-			//Categories = Activity_CategoryData.Categories;
+            this.IsActivityFound = false;
+            //Categories = Activity_CategoryData.Categories;
 
-			//this.ActivityResult;
-			//var query
-			if (this.IsFilterEmpty)
+            //this.ActivityResult;
+            //var query
+            if (this.IsFilterEmpty)
 			{
 				var query = from act
 									  in Activities
@@ -451,10 +464,12 @@ namespace ActivityMaps.ViewModels
 			}
 			if(ActivityResult.Count > 0 )
 				notification(ActivityResult);
+            else
+                this.IsActivityFound = true; // si no hay actividades aparece el label
 
 
 
-			this.IsRefreshing = false;
+            this.IsRefreshing = false;
 		}
 
 

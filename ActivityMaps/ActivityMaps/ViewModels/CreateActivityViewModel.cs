@@ -112,13 +112,33 @@ namespace ActivityMaps.ViewModels
         public TimeSpan StartHour
         {
             get { return this.startHour; }
-            set { SetValue(ref this.startHour, value); }
+            set {
+                if (this.startHour != value)
+                {
+                    
+                    SetValue(ref this.startHour, value);
+                    
+                    TimeSpan time1 = TimeSpan.FromHours(1);
+                    this.FinishHour = this.startHour.Add(time1);
+                    //ValidateDatetime();
+                }
+
+            }
         }
+
+
 
         public TimeSpan FinishHour
         {
             get { return this.finishHour; }
-            set { SetValue(ref this.finishHour, value); }
+            set {
+                if (this.finishHour != value)
+                {
+                    
+                    SetValue(ref this.finishHour, value);
+                    ValidateDatetime();
+                }
+            }
         }
 
 
@@ -142,13 +162,31 @@ namespace ActivityMaps.ViewModels
         public DateTime StartDay
         {
             get { return this.startDay; }
-            set { SetValue(ref this.startDay, value); }
+            set
+            {
+                if (this.startDay != value)
+                {
+                    
+                    SetValue(ref this.startDay, value);
+                    //DateTime date1 = DateTime.FromDays(1);
+                    this.FinishDay = this.startDay;
+                    //ValidateDatetime();
+                }
+            }
         }
 
         public DateTime FinishDay
         {
             get { return this.finishDay; }
-            set { SetValue(ref this.finishDay, value); }
+            set
+            {
+                if (this.finishDay != value)
+                {
+                    
+                    SetValue(ref this.finishDay, value);
+                    ValidateDatetime();
+                }
+            }
         }
 
         #endregion
@@ -160,6 +198,10 @@ namespace ActivityMaps.ViewModels
             instance = this;
             this.ButtonText = "Select Location";
             this.ButtonColor = "Red";
+            this.StartDay = DateTime.Now;
+            this.FinishDay = DateTime.Now;
+            this.StartHour = DateTime.Now.TimeOfDay;
+            this.FinishHour = DateTime.Now.TimeOfDay;
         }
 
         public CreateActivityViewModel(List<User> userQuery, User_Log userLog, ObservableCollection<Activity_Category> categories)
@@ -167,6 +209,10 @@ namespace ActivityMaps.ViewModels
             instance = this;
             this.ButtonText = "Select Location";
             this.ButtonColor = "Red";
+            this.StartDay = DateTime.Now;
+            this.FinishDay = DateTime.Now;
+            this.StartHour = DateTime.Now.TimeOfDay;
+            this.FinishHour = DateTime.Now.TimeOfDay;
 
             this.userQuery = userQuery;
             this.userLog = userLog;
@@ -188,7 +234,10 @@ namespace ActivityMaps.ViewModels
             this.ActivityName = act.Name;
             this.StartDay = act.Start_Act_Datetime;
             this.FinishDay = act.End_Act_Datetime;
+            this.StartHour = act.Start_Act_Datetime.TimeOfDay;
+            this.FinishHour = act.End_Act_Datetime.TimeOfDay;
             this.Description = act.Description;
+            this.IsService = act.IsService;
             //Console.WriteLine("***TEST: "+pickerCatIndex.ToString());
             this.PickerCatIndex = pickerCatIndex;
             PickerIndex();
@@ -293,6 +342,7 @@ namespace ActivityMaps.ViewModels
                 Start_Act_Datetime = this.StartDay + this.StartHour,
                 End_Act_Datetime = this.FinishDay + this.FinishHour,
                 Description = this.Description,
+                IsService = this.IsService,
                 Activity_Cat_Code = SelectedCategory.Id
 
 
@@ -470,6 +520,25 @@ namespace ActivityMaps.ViewModels
         {
             PickerEvent?.Invoke(this.PickerCatIndex);
 
+        }
+
+        private async void ValidateDatetime()
+        {
+            //if (this.StartDay != null && this.FinishDay != null
+            //  && this.StartHour != null && this.FinishHour != null) {
+            var DatetimeBegin = this.StartDay + this.StartHour;
+            var DatetimeEnd = this.FinishDay + this.FinishHour;
+            if (DatetimeBegin > DatetimeEnd)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Message",
+                    "The Start Date is greater than Finish Date",
+                    "Ok");
+                return;
+
+            }
+
+            //}
         }
     }
 }

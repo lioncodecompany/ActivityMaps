@@ -57,10 +57,27 @@ namespace ActivityMaps.Views
             await locationVM.LoadPin();
             var pin = locationVM.CreatorPin;
             var location = locationVM.Loc;
-            MyMap.Pins.Add(pin);
 
-            //move Screen
-            MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(
+
+            MyMap.Pins.Add(pin);
+            if (MyMap.Pins.Count == 0)
+            {
+                locationVM.CreatorPin = new Pin
+                {
+                    Type = PinType.Place,
+                    Position = new Position(18.2,-66 ),
+                    Label = "Activity Location"
+
+
+                };
+                var pin2 = locationVM.CreatorPin;
+                MyMap.Pins.Add(pin2);
+            }
+
+
+
+                //move Screen
+                MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(
                 new Position(location.Latitude, location.Longitude), Distance.FromMiles(3)));
 
         }

@@ -9,11 +9,11 @@
     <ContentPage.Content>
         <ScrollView BindingContext="{Binding ActivityJoin}">
             <StackLayout Padding= "5">
-                <Label 
+                <!--<Label 
                     FontAttributes="Bold"
                     FontSize="Large"
                     HorizontalOptions="Center"
-                    Text="{Binding Name, Mode=TwoWay}"/>
+                    Text="{Binding Name, Mode=TwoWay}"/>-->
                 <StackLayout Orientation="Horizontal">
                     <controls:CircleImage Source="{Binding Image}"  Aspect="AspectFill">
 
@@ -40,44 +40,48 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="3*" />
+
                         </Grid.ColumnDefinitions>
 
 
                         <Label 
                     FontAttributes="Bold"
                     HorizontalOptions="Start"
+                            VerticalOptions="Center"
                     Text="Category: "
                         Grid.Column="0"
                         Grid.Row="0"
-                            TranslationY="10"/>
+                            />
                         
                         <Entry 
                     FontAttributes="Bold"
-                    HorizontalOptions="Start"
+                    HorizontalOptions="StartAndExpand"
+                            VerticalOptions="Center"
                     Text="{Binding CategoryName, Mode=TwoWay}"
                     IsReadOnly="True"
                         Grid.Column="1"
                         Grid.Row="0"
-                            TranslationX="-20"/>
-                        <Label 
-                         Grid.Column="0"
-                        Grid.Row="1"
+                            />
+                    </Grid>
+                    <StackLayout>
+                    <Label 
+ 
                     FontAttributes="Bold"
                     HorizontalOptions="Start"
                     Text="Description: "
-                            TranslationY="10"/>
+                            />
                         <Editor
-                         Grid.Column="1"
-                        Grid.Row="1"
+
                     FontAttributes="Bold"
                     AutoSize="TextChanges"
-                    HorizontalOptions="Start"
+                    HorizontalOptions="StartAndExpand"
                     Text="{Binding Description, Mode=TwoWay}"
                     IsReadOnly="True"
-                    TranslationX="-20"/>
-                    </Grid>
-   
+                    />
+                    </StackLayout>
+
+
                 </StackLayout>
 
                 <StackLayout Orientation="Horizontal">
