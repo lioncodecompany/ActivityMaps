@@ -119,7 +119,11 @@ namespace ActivityMaps.ViewModels
                     SetValue(ref this.startHour, value);
                     
                     TimeSpan time1 = TimeSpan.FromHours(1);
-                    this.FinishHour = this.startHour.Add(time1);
+                    if (ChangeFinishHour())
+                    {
+                        this.FinishHour = this.startHour.Add(time1);//verificar cuando la suma de al otro dia
+                    }
+                    
                     //ValidateDatetime();
                 }
 
@@ -130,7 +134,8 @@ namespace ActivityMaps.ViewModels
 
         public TimeSpan FinishHour
         {
-            get { return this.finishHour; }
+            get { 
+                return this.finishHour; }
             set {
                 if (this.finishHour != value)
                 {
@@ -138,7 +143,9 @@ namespace ActivityMaps.ViewModels
                     SetValue(ref this.finishHour, value);
                     ValidateDatetime();
                 }
+                
             }
+
         }
 
 
@@ -522,7 +529,7 @@ namespace ActivityMaps.ViewModels
 
         }
 
-        private async void ValidateDatetime()
+        public async void ValidateDatetime()
         {
             //if (this.StartDay != null && this.FinishDay != null
             //  && this.StartHour != null && this.FinishHour != null) {
@@ -534,11 +541,23 @@ namespace ActivityMaps.ViewModels
                     "Message",
                     "The Start Date is greater than Finish Date",
                     "Ok");
+                this.FinishDay = this.StartDay;
+                this.FinishHour = this.StartHour;
                 return;
 
             }
 
+
+            
+
             //}
+        }
+        private bool ChangeFinishHour()
+        {
+            var DatetimeBegin = this.StartDay + this.StartHour;
+            var DatetimeEnd = this.FinishDay + this.FinishHour;
+            return (DatetimeBegin >= DatetimeEnd);
+
         }
     }
 }
