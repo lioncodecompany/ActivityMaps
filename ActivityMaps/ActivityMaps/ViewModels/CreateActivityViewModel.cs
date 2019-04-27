@@ -141,7 +141,7 @@ namespace ActivityMaps.ViewModels
                 {
                     
                     SetValue(ref this.finishHour, value);
-                    ValidateDatetime();
+                    //ValidateDatetime();
                 }
                 
             }
@@ -191,7 +191,7 @@ namespace ActivityMaps.ViewModels
                 {
                     
                     SetValue(ref this.finishDay, value);
-                    ValidateDatetime();
+                  //  ValidateDatetime();
                 }
             }
         }
@@ -205,10 +205,10 @@ namespace ActivityMaps.ViewModels
             instance = this;
             this.ButtonText = "Select Location";
             this.ButtonColor = "Red";
-            this.StartDay = DateTime.Today;
-            this.FinishDay = DateTime.Today;
-            this.StartHour = DateTime.Now.TimeOfDay;
-            this.FinishHour = DateTime.Now.TimeOfDay;
+            //this.StartDay = DateTime.Today;
+            //this.FinishDay = DateTime.Today;
+            //this.StartHour = DateTime.Now.TimeOfDay;
+            //this.FinishHour = DateTime.Now.TimeOfDay;
         }
 
         public CreateActivityViewModel(List<User> userQuery, User_Log userLog, ObservableCollection<Activity_Category> categories)
@@ -367,12 +367,13 @@ namespace ActivityMaps.ViewModels
         {
             CheckConnectionInternet.checkConnectivity();
 
+			ValidateDatetime();
 
-            if (string.IsNullOrEmpty(this.ActivityName))
+			if (string.IsNullOrEmpty(this.ActivityName))
             {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Error",
-                    "You must enter an Activity Name.",
+				await Application.Current.MainPage.DisplayAlert(
+					"Error",
+					"You must enter an Activity Name.", 
                     "Accept");
                 return;
             }
@@ -547,21 +548,21 @@ namespace ActivityMaps.ViewModels
                 return;
 
             }
-            //else if (DatetimeBegin < TodayNow)
-            //{
-            //    await Application.Current.MainPage.DisplayAlert(
-            //        "Message",
-            //        "Past date is not allowed.",
-            //        "Ok");
-            //    return;
-            //}
+			if(DatetimeBegin < DateTime.Now)
+			{
+				await Application.Current.MainPage.DisplayAlert(
+					"Message",
+					"Past date is not allowed.",
+					"Ok");
+				return;
+			}
 
 
-            
 
-            //}
-        }
-        private bool ChangeFinishHour()
+
+			//}
+		}
+		private bool ChangeFinishHour()
         {
             var DatetimeBegin = this.StartDay + this.StartHour;
             var DatetimeEnd = this.FinishDay + this.FinishHour;
