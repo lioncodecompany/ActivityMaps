@@ -56,14 +56,21 @@ namespace ActivityMaps.ViewModels
         Geocoder geoCoder;
         private int pickerCatIndex;
 		private bool isService;
-		
+        private DateTime todayNow;
+
+
 
 
         public delegate void PickerCatEvent(int PickerIndex);
         public event PickerCatEvent PickerEvent;
-		#endregion
-		#region Propieades
-		public bool IsService
+        #endregion
+        #region Propieades
+        public DateTime TodayNow
+        {
+            get { return this.todayNow; }
+            set { SetValue(ref this.todayNow, value); }
+        }
+        public bool IsService
 		{
 			get { return this.isService; }
 			set { SetValue(ref this.isService, value); }
@@ -124,7 +131,7 @@ namespace ActivityMaps.ViewModels
                         this.FinishHour = this.startHour.Add(time1);//verificar cuando la suma de al otro dia
                     }
                     
-                    //ValidateDatetime();
+                    ValidateDatetime();
                 }
 
             }
@@ -141,7 +148,7 @@ namespace ActivityMaps.ViewModels
                 {
                     
                     SetValue(ref this.finishHour, value);
-                    //ValidateDatetime();
+                    ValidateDatetime();
                 }
                 
             }
@@ -177,7 +184,7 @@ namespace ActivityMaps.ViewModels
                     SetValue(ref this.startDay, value);
                     //DateTime date1 = DateTime.FromDays(1);
                     this.FinishDay = this.startDay;
-                    //ValidateDatetime();
+                    ValidateDatetime();
                 }
             }
         }
@@ -191,7 +198,7 @@ namespace ActivityMaps.ViewModels
                 {
                     
                     SetValue(ref this.finishDay, value);
-                  //  ValidateDatetime();
+                    ValidateDatetime();
                 }
             }
         }
@@ -205,6 +212,7 @@ namespace ActivityMaps.ViewModels
             instance = this;
             this.ButtonText = "Select Location";
             this.ButtonColor = "Red";
+            this.TodayNow = DateTime.Now;
             //this.StartDay = DateTime.Today;
             //this.FinishDay = DateTime.Today;
             //this.StartHour = DateTime.Now.TimeOfDay;
@@ -220,6 +228,7 @@ namespace ActivityMaps.ViewModels
             this.FinishDay = DateTime.Today;
             this.StartHour = DateTime.Now.TimeOfDay;
             this.FinishHour = DateTime.Now.TimeOfDay;
+            this.TodayNow = DateTime.Now;
 
             this.userQuery = userQuery;
             this.userLog = userLog;
@@ -367,26 +376,27 @@ namespace ActivityMaps.ViewModels
         {
             CheckConnectionInternet.checkConnectivity();
 
-            if ((this.StartDay.Date + this.StartHour) < DateTime.Now)
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Message",
-                    "Past date is not allowed.",
-                    "Ok");
-                return;
-            }
+            //if ((this.StartDay.Date + this.StartHour) < DateTime.Now)
+            //{
+            //    await Application.Current.MainPage.DisplayAlert(
+            //        "Message",
+            //        "Past date is not allowed.",
+            //        "Ok");
+            //    return;
+            //}
 
-            if (this.StartDay.Date + this.StartHour > this.FinishDay.Date + this.FinishHour)
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Message",
-                    "The Start Date is greater than Finish Date",
-                    "Ok");
-                this.FinishDay = this.StartDay;
-                this.FinishHour = this.StartHour;
-                return;
+            //if (this.StartDay.Date + this.StartHour > this.FinishDay.Date + this.FinishHour)
+            //{
+            //    await Application.Current.MainPage.DisplayAlert(
+            //        "Message",
+            //        "The Start Date is greater than Finish Date",
+            //        "Ok");
+            //    this.FinishDay = this.StartDay;
+            //    this.FinishHour = this.StartHour;
+            //    return;
 
-            }
+            //}
+            ValidateDatetime();
 
             if (string.IsNullOrEmpty(this.ActivityName))
             {
@@ -549,39 +559,65 @@ namespace ActivityMaps.ViewModels
 
         }
 
-        //public async void ValidateDatetime()
-        //{
-        //    //if (this.StartDay != null && this.FinishDay != null
-        //    //  && this.StartHour != null && this.FinishHour != null) {
-        //    var TodayNow = DateTime.Today + DateTime.Now.TimeOfDay;
-        //    var DatetimeBegin = this.StartDay + this.StartHour;
-        //    var DatetimeEnd = this.FinishDay + this.FinishHour;
-        //    if (DatetimeBegin > DatetimeEnd)
-        //    {
-        //        await Application.Current.MainPage.DisplayAlert(
-        //            "Message",
-        //            "The Start Date is greater than Finish Date",
-        //            "Ok");
-        //        this.FinishDay = this.StartDay;
-        //        this.FinishHour = this.StartHour;
-        //        return;
+        public async void ValidateDatetime()
+        {
+            //if (this.StartDay != null && this.FinishDay != null
+            //  && this.StartHour != null && this.FinishHour != null) {
+            var myTodayNow = this.TodayNow;
+            var DatetimeBegin = this.StartDay.Date + this.StartHour;
+            var DatetimeEnd = this.FinishDay.Date + this.FinishHour;
+            if (DatetimeBegin > DatetimeEnd)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Message",
+                    "The Start Date is greater than Finish Date",
+                    "Ok");
+                this.FinishDay = this.StartDay;
+                this.FinishHour = this.StartHour;
+                return;
 
-        //    }
-		//	if(DatetimeBegin < DateTime.Now)
-		//	{
-		//		await Application.Current.MainPage.DisplayAlert(
-		//			"Message",
-		//			"Past date is not allowed.",
-		//			"Ok");
-		//		return;
-		//	}
+            }
+            if (DatetimeBegin < myTodayNow)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Message",
+                    "Past date is not allowed.",
+                    "Ok");
+               this.StartHour = DateTime.Now.TimeOfDay;
+                return;
+            }
+        }
+
+            //public async void ValidateDatetime()
+            //{
+            //    if ((this.StartDay.Date + this.StartHour) < DateTime.Now)
+            //    {
+            //        await Application.Current.MainPage.DisplayAlert(
+            //            "Message",
+            //            "Past date is not allowed.",
+            //            "Ok");
+            //        return;
+            //    }
+
+            //    if (this.StartDay.Date + this.StartHour > this.FinishDay.Date + this.FinishHour)
+            //    {
+            //        await Application.Current.MainPage.DisplayAlert(
+            //            "Message",
+            //            "The Start Date is greater than Finish Date",
+            //            "Ok");
+            //        this.FinishDay = this.StartDay;
+            //        this.FinishHour = this.StartHour;
+            //        return;
+
+            //    }
+            //}
 
 
 
 
-		//	//}
-		//}
-		private bool ChangeFinishHour()
+            //	//}
+            //}
+            private bool ChangeFinishHour()
         {
             var DatetimeBegin = this.StartDay + this.StartHour;
             var DatetimeEnd = this.FinishDay + this.FinishHour;
