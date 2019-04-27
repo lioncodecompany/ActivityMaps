@@ -205,8 +205,8 @@ namespace ActivityMaps.ViewModels
             instance = this;
             this.ButtonText = "Select Location";
             this.ButtonColor = "Red";
-            this.StartDay = DateTime.Now;
-            this.FinishDay = DateTime.Now;
+            this.StartDay = DateTime.Today;
+            this.FinishDay = DateTime.Today;
             this.StartHour = DateTime.Now.TimeOfDay;
             this.FinishHour = DateTime.Now.TimeOfDay;
         }
@@ -216,8 +216,8 @@ namespace ActivityMaps.ViewModels
             instance = this;
             this.ButtonText = "Select Location";
             this.ButtonColor = "Red";
-            this.StartDay = DateTime.Now;
-            this.FinishDay = DateTime.Now;
+            this.StartDay = DateTime.Today;
+            this.FinishDay = DateTime.Today;
             this.StartHour = DateTime.Now.TimeOfDay;
             this.FinishHour = DateTime.Now.TimeOfDay;
 
@@ -533,6 +533,7 @@ namespace ActivityMaps.ViewModels
         {
             //if (this.StartDay != null && this.FinishDay != null
             //  && this.StartHour != null && this.FinishHour != null) {
+            var TodayNow = DateTime.Today + DateTime.Now.TimeOfDay;
             var DatetimeBegin = this.StartDay + this.StartHour;
             var DatetimeEnd = this.FinishDay + this.FinishHour;
             if (DatetimeBegin > DatetimeEnd)
@@ -546,6 +547,14 @@ namespace ActivityMaps.ViewModels
                 return;
 
             }
+            //else if (DatetimeBegin < TodayNow)
+            //{
+            //    await Application.Current.MainPage.DisplayAlert(
+            //        "Message",
+            //        "Past date is not allowed.",
+            //        "Ok");
+            //    return;
+            //}
 
 
             
