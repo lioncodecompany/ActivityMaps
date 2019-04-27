@@ -367,9 +367,28 @@ namespace ActivityMaps.ViewModels
         {
             CheckConnectionInternet.checkConnectivity();
 
-			ValidateDatetime();
+            if ((this.StartDay.Date + this.StartHour) < DateTime.Now)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Message",
+                    "Past date is not allowed.",
+                    "Ok");
+                return;
+            }
 
-			if (string.IsNullOrEmpty(this.ActivityName))
+            if (this.StartDay.Date + this.StartHour > this.FinishDay.Date + this.FinishHour)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Message",
+                    "The Start Date is greater than Finish Date",
+                    "Ok");
+                this.FinishDay = this.StartDay;
+                this.FinishHour = this.StartHour;
+                return;
+
+            }
+
+            if (string.IsNullOrEmpty(this.ActivityName))
             {
 				await Application.Current.MainPage.DisplayAlert(
 					"Error",
@@ -426,8 +445,8 @@ namespace ActivityMaps.ViewModels
                 Name = this.ActivityName,
                 Created_Date = DateTime.Now,
                 IsPrivate = false,//todo
-                Start_Act_Datetime = this.StartDay + this.StartHour,
-                End_Act_Datetime = this.FinishDay + this.FinishHour,
+                Start_Act_Datetime = this.StartDay.Date + this.StartHour,
+                End_Act_Datetime = this.FinishDay.Date + this.FinishHour,
                 Description = this.Description.TrimEnd().TrimStart(),
                 Status = 1,//check
                 IsService = this.IsService,
@@ -443,8 +462,8 @@ namespace ActivityMaps.ViewModels
                 Name = this.ActivityName,
                 Created_Date = DateTime.Now,
                 IsPrivate = false,//todo
-                Start_Act_Date = this.StartDay + this.StartHour,
-                End_Act_Date = this.FinishDay + this.FinishHour,
+                Start_Act_Date = this.StartDay.Date + this.StartHour,
+                End_Act_Date = this.FinishDay.Date + this.FinishHour,
                 Description = this.Description,
                 Status = 1,//check
                 IsService = this.IsService,
@@ -530,38 +549,38 @@ namespace ActivityMaps.ViewModels
 
         }
 
-        public async void ValidateDatetime()
-        {
-            //if (this.StartDay != null && this.FinishDay != null
-            //  && this.StartHour != null && this.FinishHour != null) {
-            var TodayNow = DateTime.Today + DateTime.Now.TimeOfDay;
-            var DatetimeBegin = this.StartDay + this.StartHour;
-            var DatetimeEnd = this.FinishDay + this.FinishHour;
-            if (DatetimeBegin > DatetimeEnd)
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Message",
-                    "The Start Date is greater than Finish Date",
-                    "Ok");
-                this.FinishDay = this.StartDay;
-                this.FinishHour = this.StartHour;
-                return;
+        //public async void ValidateDatetime()
+        //{
+        //    //if (this.StartDay != null && this.FinishDay != null
+        //    //  && this.StartHour != null && this.FinishHour != null) {
+        //    var TodayNow = DateTime.Today + DateTime.Now.TimeOfDay;
+        //    var DatetimeBegin = this.StartDay + this.StartHour;
+        //    var DatetimeEnd = this.FinishDay + this.FinishHour;
+        //    if (DatetimeBegin > DatetimeEnd)
+        //    {
+        //        await Application.Current.MainPage.DisplayAlert(
+        //            "Message",
+        //            "The Start Date is greater than Finish Date",
+        //            "Ok");
+        //        this.FinishDay = this.StartDay;
+        //        this.FinishHour = this.StartHour;
+        //        return;
 
-            }
-			if(DatetimeBegin < DateTime.Now)
-			{
-				await Application.Current.MainPage.DisplayAlert(
-					"Message",
-					"Past date is not allowed.",
-					"Ok");
-				return;
-			}
-
-
+        //    }
+		//	if(DatetimeBegin < DateTime.Now)
+		//	{
+		//		await Application.Current.MainPage.DisplayAlert(
+		//			"Message",
+		//			"Past date is not allowed.",
+		//			"Ok");
+		//		return;
+		//	}
 
 
-			//}
-		}
+
+
+		//	//}
+		//}
 		private bool ChangeFinishHour()
         {
             var DatetimeBegin = this.StartDay + this.StartHour;
