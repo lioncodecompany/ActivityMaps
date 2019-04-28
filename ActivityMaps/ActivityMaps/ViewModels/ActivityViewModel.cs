@@ -639,20 +639,6 @@ namespace ActivityMaps.ViewModels
                         });
                     }
 
-                    var query = from act
-										  in Activities
-								join ent in Entered on act.Id equals ent.Activity_Code_FK2
-
-								select new Activity
-
-								{
-									Id = act.Id,
-
-								};
-					List<Activity> ActivityResult = query.ToList();
-					var arrAct = ActivityResult.ToArray();
-
-
 					var queryEnt = from ent in Entered
 								   join act in Activities on ent.Activity_Code_FK2 equals act.Id
 
@@ -685,18 +671,20 @@ namespace ActivityMaps.ViewModels
                     List<Entered_History> entered_Histories = queryEnt.ToList();
 					var arrEnt = entered_Histories.ToArray();
 
+                    for (int j = 0; j < arrEnt.Length; j++)
+                    {
+                        await App.MobileService.GetTable<Entered_History>().UpdateAsync(arrEnt[j]);
+                    }
+
                     for (int x = 0; x < arrQueue.Length; x++)
                     {
                         await App.MobileService.GetTable<User_Entered>().DeleteAsync(arrQueue[x]);
                     }
-                    for (int i = 0; i < arrAct.Length; i++)
+                    for (int i = 0; i < querry.Count; i++)
 					{
-						await App.MobileService.GetTable<Activity>().DeleteAsync(arrAct[i]);
+						await App.MobileService.GetTable<Activity>().DeleteAsync(querry[i]);
 					}
-					for (int j = 0; j < arrEnt.Length; j++)
-					{
-						await App.MobileService.GetTable<Entered_History>().UpdateAsync(arrEnt[j]);
-					}
+					
 				}
 				else
 				{
