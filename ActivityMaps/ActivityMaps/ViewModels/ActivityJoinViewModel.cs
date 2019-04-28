@@ -70,7 +70,7 @@ namespace ActivityMaps.ViewModels
 				if (this.selectedUser != value)
 				{
 					SetValue(ref this.selectedUser, value);
-					Assign();
+					//Assign();
 				}
 
 			}

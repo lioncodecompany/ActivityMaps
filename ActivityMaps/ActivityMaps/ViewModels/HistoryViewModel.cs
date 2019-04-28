@@ -384,7 +384,6 @@ namespace ActivityMaps.ViewModels
 			}
 
 
-
 			this.IsRefreshing = false;
 		}
 
