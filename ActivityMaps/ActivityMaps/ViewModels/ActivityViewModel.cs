@@ -295,6 +295,7 @@ namespace ActivityMaps.ViewModels
 			//Activities = ActivityData.Activities;
 			try
 			{
+				UpadateListDB();
 				var querry = await App.MobileService.GetTable<Activity>().Where(p => p.End_Act_Datetime > DateTime.Now).ToListAsync();
                 var query2 = await App.MobileService.GetTable<Activity_Location>().ToListAsync();
                 Activities = new ObservableCollection<Activity>();
@@ -573,6 +574,106 @@ namespace ActivityMaps.ViewModels
 				}
 			}
 			
+		}
+		private async void UpadateListDB()
+		{
+			try
+			{
+				var querry = await App.MobileService.GetTable<Activity>().Where(p => p.End_Act_Datetime < DateTime.Now).ToListAsync();
+				var query2 = await App.MobileService.GetTable<Entered_History>().Where(p => p.Status == "in").ToListAsync();
+
+				if(querry.Count > 0 && query2.Count > 0)
+				{
+					ObservableCollection<Activity> Activities = new ObservableCollection<Activity>();
+					ObservableCollection<Entered_History> Entered = new ObservableCollection<Entered_History>();
+					var arr = querry.ToArray();
+					for (int idx = 0; idx < arr.Length; idx++)
+					{
+						if (!arr[idx].deleted && arr.Length > 0)
+						{
+							Activities.Add(new Activity
+							{
+								Id = arr[idx].Id,
+								Description = arr[idx].Description,
+								Name = arr[idx].Name,
+								Activity_Loc_Id = arr[idx].Activity_Loc_Id,
+								Activity_Cat_Code = arr[idx].Activity_Cat_Code,
+								Created_Date = arr[idx].Created_Date,
+								IsService = arr[idx].IsService,
+								Start_Act_Datetime = arr[idx].Start_Act_Datetime,
+								End_Act_Datetime = arr[idx].End_Act_Datetime
+							});
+						}
+
+					}
+
+					var arr2 = query2.ToArray();
+					for (int idx = 0; idx < arr2.Length; idx++)
+					{
+
+						Entered.Add(new Entered_History
+						{
+							Id = arr2[idx].Id,
+							Status = arr2[idx].Status,
+							IsCreator = arr2[idx].IsCreator,
+							Activity_Code_FK2 = arr2[idx].Activity_Code_FK2,
+							deleted = arr2[idx].deleted,
+							UserJoin = arr2[idx].UserJoin,
+							UserCreator = arr2[idx].UserCreator
+						});
+					}
+
+					var query = from act
+										  in Activities
+								join ent in Entered on act.Id equals ent.Activity_Code_FK2
+
+								select new Activity
+
+								{
+									Id = act.Id,
+
+								};
+					List<Activity> ActivityResult = query.ToList();
+					var arrAct = ActivityResult.ToArray();
+
+
+					var queryEnt = from ent in Entered
+								   join act in Activities on ent.Activity_Code_FK2 equals act.Id
+
+								   select new Entered_History
+
+								   {
+									   Id = ent.Id,
+									   Status = "Completed",
+									   IsCreator = ent.IsCreator,
+									   Activity_Code_FK2 = ent.Activity_Code_FK2,
+									   deleted = ent.deleted,
+									   UserJoin = ent.UserJoin,
+									   UserCreator = ent.UserCreator
+								   };
+
+					List<Entered_History> entered_Histories = queryEnt.ToList();
+					var arrEnt = entered_Histories.ToArray();
+
+					for (int i = 0; i < arrAct.Length; i++)
+					{
+						await App.MobileService.GetTable<Activity>().DeleteAsync(arrAct[i]);
+					}
+					for (int j = 0; j < arrEnt.Length; j++)
+					{
+						await App.MobileService.GetTable<Entered_History>().UpdateAsync(arrEnt[j]);
+					}
+				}
+				else
+				{
+					return;
+				}
+				
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
 		}
 		#endregion
 
