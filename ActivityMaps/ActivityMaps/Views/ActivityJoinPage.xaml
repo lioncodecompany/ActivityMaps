@@ -171,9 +171,11 @@
                 </StackLayout>
                 <StackLayout TranslationY="15">
                     <control:HorizontalList
-        ItemsSource="{Binding UserList}"
-        ListOrientation="Horizontal" >
+                        ItemsSource="{Binding UserList}"
+                        ListOrientation="Horizontal" 
+                        SelectedItem="{Binding SelectedUser,Mode=TwoWay}">
                         <control:HorizontalList.ItemTemplate >
+                            
                             <DataTemplate>
                                 <Grid>
 

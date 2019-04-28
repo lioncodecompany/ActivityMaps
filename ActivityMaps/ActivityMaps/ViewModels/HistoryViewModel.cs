@@ -248,7 +248,7 @@ namespace ActivityMaps.ViewModels
 
 			try
 			{
-				var querry = await App.MobileService.GetTable<Entered_History>().Where(use => use.UserCreator == user[0].Id || use.UserJoin == user[0].Id).ToListAsync();
+				var querry = await App.MobileService.GetTable<Entered_History>().Where(use => (use.UserCreator == user[0].Id || use.UserJoin == user[0].Id) && use.Status == "Completed").ToListAsync();
 				userQueue = new ObservableCollection<Entered_History>();
 				var arr = querry.ToArray();
 				for (int idx = 0; idx < arr.Length; idx++)
@@ -271,7 +271,38 @@ namespace ActivityMaps.ViewModels
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 			}
-			Locations = Activity_LocationData.Locations;
+
+			try
+			{
+
+				var query2 = await App.MobileService.GetTable<Activity_Location>().ToListAsync();
+
+				Locations = new ObservableCollection<Activity_Location>();
+
+
+				var arr2 = query2.ToArray();
+				for (int idx = 0; idx < arr2.Length; idx++)
+				{
+
+					Locations.Add(new Activity_Location
+					{
+						Id = arr2[idx].Id,
+						Nameplace = arr2[idx].Nameplace,
+						City = arr2[idx].City,
+						State = arr2[idx].State,
+						Country = arr2[idx].Country,
+						Latitude = arr2[idx].Latitude,
+						Longitude = arr2[idx].Longitude
+					});
+				}
+
+
+
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
 
 			try
 			{
@@ -317,6 +348,10 @@ namespace ActivityMaps.ViewModels
 
 							};
 				this.ActivityResult = query.ToList();
+				this.ActivityResult = ActivityResult
+					.GroupBy(p => p.Id)
+					.Select(g => g.First())
+					.ToList();
 			}
 			else
 			{
@@ -342,6 +377,10 @@ namespace ActivityMaps.ViewModels
 							};
 
 				this.ActivityResult = query.ToList();
+				this.ActivityResult = ActivityResult
+					.GroupBy(p => p.Id)
+					.Select(g => g.First())
+					.ToList();
 			}
 
 

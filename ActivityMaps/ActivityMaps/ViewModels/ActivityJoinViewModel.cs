@@ -20,6 +20,7 @@ namespace ActivityMaps.ViewModels
 	{
 
 		private Activity selectedActivity;
+		private User selectedUser;
 		private string userName;
 		private string name;
         private string locationCode;
@@ -55,10 +56,27 @@ namespace ActivityMaps.ViewModels
 
 
 		}
+		public User SelectedUser
+		{
 
-		
 
-		[Xamarin.Forms.TypeConverter(typeof(Xamarin.Forms.ImageSourceConverter))]
+			get
+			{
+				return this.selectedUser;
+			}
+			set
+			{
+
+				if (this.selectedUser != value)
+				{
+					SetValue(ref this.selectedUser, value);
+					Assign();
+				}
+
+			}
+
+		}
+			[Xamarin.Forms.TypeConverter(typeof(Xamarin.Forms.ImageSourceConverter))]
 		public Xamarin.Forms.ImageSource Image
 		{
 			get { return this.image; }
@@ -71,6 +89,7 @@ namespace ActivityMaps.ViewModels
 			get { return this.imageUser; }
 			set { SetValue(ref this.imageUser, value); }
 		}
+
 
 		public bool IsService
 		{
@@ -505,7 +524,12 @@ namespace ActivityMaps.ViewModels
 						User.Add(new User
 						{
 							Id = arr[idx].Id,
-							Nickname = arr[idx].Nickname
+							Nickname = arr[idx].Nickname,
+							Email = arr[idx].Email,
+							Name = arr[idx].Name,
+							Last_Name = arr[idx].Last_Name,
+							Gender = arr[idx].Gender,
+							Address_Id_FK = arr[idx].Address_Id_FK
 						});
 
 
@@ -549,10 +573,15 @@ namespace ActivityMaps.ViewModels
 							select new User
 
 							{
+								Id = user.Id,
 								Nickname = user.Nickname,
-								ImageUserPath = file.Path
-
-							
+								ImageUserPath = file.Path,
+								Email = user.Email,
+							    Name = user.Name,
+								Last_Name = user.Last_Name,
+								Gender = user.Gender,
+								Address_Id_FK = user.Address_Id_FK
+			
 
 							};
 				//	userEntry = query.ToList();
@@ -569,8 +598,14 @@ namespace ActivityMaps.ViewModels
 
 					UserFoto.Add(new User
 					{ 
+						Id = arr2[i].Id,
 						Nickname = arr2[i].Nickname,
-						ImageUser = this.ImageUser
+						ImageUser = this.ImageUser,
+						Email = arr2[i].Email,
+						Name = arr2[i].Name,
+						Last_Name = arr2[i].Last_Name,
+						Gender = arr2[i].Gender,
+						Address_Id_FK = arr2[i].Address_Id_FK
 					});
 					
 				}
@@ -649,7 +684,23 @@ namespace ActivityMaps.ViewModels
 
 
         }
+		private async void Assign()
+		{
+			List<User> user = new List<User>();
+			user.Add(new User
+			{
+				Id = SelectedUser.Id,
+				Nickname = SelectedUser.Nickname,
+				Email = SelectedUser.Email,
+				Name = SelectedUser.Name,
+				Last_Name = SelectedUser.Last_Name,
+				Gender = SelectedUser.Gender,
+				Address_Id_FK = SelectedUser.Address_Id_FK
+			});
+			MainViewModel.GetInstance().Profile= new ProfileViewModel(user);
+			await Application.Current.MainPage.Navigation.PushAsync(new ProfilePage());
+		}
 
 
-    }
+	}
 }
