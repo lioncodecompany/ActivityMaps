@@ -581,12 +581,14 @@ namespace ActivityMaps.ViewModels
 			{
 				var querry = await App.MobileService.GetTable<Activity>().Where(p => p.End_Act_Datetime < DateTime.Now).ToListAsync();
 				var query2 = await App.MobileService.GetTable<Entered_History>().Where(p => p.Status == "in").ToListAsync();
+                var query3 = await App.MobileService.GetTable<User_Entered>().Where(p => p.Status == "in").ToListAsync();
 
-				if(querry.Count > 0 && query2.Count > 0)
+                if (querry.Count > 0 && query2.Count > 0)
 				{
 					ObservableCollection<Activity> Activities = new ObservableCollection<Activity>();
 					ObservableCollection<Entered_History> Entered = new ObservableCollection<Entered_History>();
-					var arr = querry.ToArray();
+                    ObservableCollection<User_Entered> Queue = new ObservableCollection<User_Entered>();
+                    var arr = querry.ToArray();
 					for (int idx = 0; idx < arr.Length; idx++)
 					{
 						if (!arr[idx].deleted && arr.Length > 0)
@@ -622,8 +624,22 @@ namespace ActivityMaps.ViewModels
 							UserCreator = arr2[idx].UserCreator
 						});
 					}
+                    var queue = query3.ToArray();
+                    for (int idx = 0; idx < queue.Length; idx++)
+                    {
 
-					var query = from act
+                        Queue.Add(new User_Entered
+                        {
+                            Id = queue[idx].Id,
+                            Status = queue[idx].Status,
+                            IsCreator = queue[idx].IsCreator,
+                            Activity_Code_FK2 = queue[idx].Activity_Code_FK2,
+                            deleted = queue[idx].deleted
+                            
+                        });
+                    }
+
+                    var query = from act
 										  in Activities
 								join ent in Entered on act.Id equals ent.Activity_Code_FK2
 
@@ -652,10 +668,28 @@ namespace ActivityMaps.ViewModels
 									   UserCreator = ent.UserCreator
 								   };
 
-					List<Entered_History> entered_Histories = queryEnt.ToList();
+                    var queryQueue = from ent in Queue
+                                   join act in Activities on ent.Activity_Code_FK2 equals act.Id
+
+                                   select new User_Entered
+
+                                   {
+                                       Id = ent.Id,
+                                      
+                                   };
+
+                    List<User_Entered> user_Entereds = queryQueue.ToList();
+                    var arrQueue = user_Entereds.ToArray();
+
+
+                    List<Entered_History> entered_Histories = queryEnt.ToList();
 					var arrEnt = entered_Histories.ToArray();
 
-					for (int i = 0; i < arrAct.Length; i++)
+                    for (int x = 0; x < arrQueue.Length; x++)
+                    {
+                        await App.MobileService.GetTable<User_Entered>().DeleteAsync(arrQueue[x]);
+                    }
+                    for (int i = 0; i < arrAct.Length; i++)
 					{
 						await App.MobileService.GetTable<Activity>().DeleteAsync(arrAct[i]);
 					}
