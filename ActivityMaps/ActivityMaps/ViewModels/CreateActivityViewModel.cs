@@ -128,7 +128,8 @@ namespace ActivityMaps.ViewModels
                     TimeSpan time1 = TimeSpan.FromHours(1);
                     if (ChangeFinishHour())
                     {
-                        this.FinishHour = this.startHour.Add(time1);//verificar cuando la suma de al otro dia
+                                        //this.startHour.Add(time1);//verificar cuando la suma de al otro dia
+                        this.FinishHour = this.startHour;//Fix Error 11:00-11:59PM                     
                     }
                     
                     ValidateDatetime();
