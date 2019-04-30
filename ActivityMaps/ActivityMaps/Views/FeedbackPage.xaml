@@ -204,13 +204,15 @@
 
         <ScrollView BindingContext="{Binding Feedback}">
             <StackLayout Padding="10,20,10,5">
-                <SearchBar 
-            Placeholder="Search Location"
-            Text="{Binding Locationtxt,Mode=TwoWay}"
-            SearchCommand="{Binding SearchLocationCommand,Mode=TwoWay}" >
-                    <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}-->
-
-                </SearchBar>
+                <Picker
+                       
+                        
+                        Title="Select Location..."
+                        ItemsSource="{Binding Locations}" 
+                        ItemDisplayBinding="{Binding Nameplace}" 
+                        SelectedItem="{Binding SelectedLocation}"
+                      >
+                </Picker>
 
                 <Grid Margin="0,10">
                     <Grid.ColumnDefinitions>

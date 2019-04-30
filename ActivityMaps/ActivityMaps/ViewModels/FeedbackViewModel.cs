@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using ActivityMaps.Helpers;
@@ -37,6 +39,8 @@ namespace ActivityMaps.ViewModels
 		private bool isLocationEnable;
 		private List<Activity_Location> queryLocation;
 		private string locationNick;
+		private ObservableCollection<Activity_Location> locations;
+		private Activity_Location selectedLocation;
 
 		#region propiedades
 		public string Usertxt
@@ -176,6 +180,22 @@ namespace ActivityMaps.ViewModels
 
 			}
 		}
+		public ObservableCollection<Activity_Location> Locations
+		{
+
+
+			get { return this.locations; }
+			set { SetValue(ref this.locations, value); }
+
+
+		}
+		public Activity_Location SelectedLocation
+		{
+			get { return this.selectedLocation; }
+			set { SetValue(ref this.selectedLocation, value);
+				this.LocationNick = SelectedLocation.Nameplace;
+			}
+		}
 
 
 		#endregion
@@ -192,6 +212,7 @@ namespace ActivityMaps.ViewModels
 			this.IsFeedbackEnable = true;
 			this.Usertxt = "";
 			this.Locationtxt = "";
+			checkLocations();
 		}
 		
 		public FeedbackViewModel()
@@ -218,14 +239,14 @@ namespace ActivityMaps.ViewModels
 			}
 
 		}
-		public ICommand SearchLocationCommand
-		{
-			get
-			{
-				return new RelayCommand(getLocation);
-			}
+		//public ICommand SearchLocationCommand
+		//{
+		//	get
+		//	{
+		//		return new RelayCommand(getLocation);
+		//	}
 
-		}
+		//}
 		public ICommand UserNextCommand
 		{
 			get
@@ -258,11 +279,11 @@ namespace ActivityMaps.ViewModels
 				this.IsLocationEnable = true;
 				return;
 			}
-			if (string.IsNullOrEmpty(this.Locationtxt))
+			if (SelectedLocation == null)
 			{
 				await Application.Current.MainPage.DisplayAlert(
 					"Error",
-					"You must enter an Location in Search Bar.",
+					"You must select a Location.",
 					"Accept");
 				this.IsLocationRunning = false;
 				this.IsLocationEnable = true;
@@ -301,7 +322,7 @@ namespace ActivityMaps.ViewModels
 				Comment = this.LocationDescription.TrimEnd(),
 				Rating = this.SelectedLocationRating.FeedbackName,
 				User_Id = user[0].Id,
-				Activity_Loc_Id_FK = queryLocation[0].Id
+				Activity_Loc_Id_FK = SelectedLocation.Id
 			};
 
 			try
@@ -322,33 +343,34 @@ namespace ActivityMaps.ViewModels
 
 		}
 
-		private async void getLocation()
-		{
-			var txt = this.Locationtxt;
+		//private async void getLocation()
+		//{
+			
 
-			try
-			{
-				CheckConnectionInternet.checkConnectivity();
-				queryLocation = await App.MobileService.GetTable<Activity_Location>().Where(p => p.Nameplace == txt).ToListAsync();
-				if (queryLocation.Count == 0)
-				{
-					await Application.Current.MainPage.DisplayAlert("Warning", "The location was not found ", "Ok");
-					return;
-				}
+		//	try
+		//	{
+		//		CheckConnectionInternet.checkConnectivity();
+		//		queryLocation = await App.MobileService.GetTable<Activity_Location>().Where(p => p.Nameplace == SelectedLocation.Nameplace).ToListAsync();
+		//		if (queryLocation.Count == 0)
+		//		{
+		//			await Application.Current.MainPage.DisplayAlert("Warning", "The location was not found ", "Ok");
+		//			return;
+		//		}
 				
 
-				this.LocationNick = queryLocation[0].Nameplace;
+		//		this.LocationNick = queryLocation[0].Nameplace;
 
-			}
-			catch (Exception ex)
-			{
-				await Application.Current.MainPage.DisplayAlert("Error ", ex.Message, "Ok");
-			}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		await Application.Current.MainPage.DisplayAlert("Error ", ex.Message, "Ok");
+		//	}
 
-		}
+		//}
 
 		public async void sendFeedback()
 		{
+			
 			this.IsUserRunning = true;
 			this.IsUserEnable = false;
 			if (string.IsNullOrEmpty(this.UserNick))
@@ -512,6 +534,114 @@ namespace ActivityMaps.ViewModels
 			}
 
 			this.IsFeedbackRunning = false;
+		}
+		private async void checkLocations()
+		{
+			try
+			{
+				var querry = await App.MobileService.GetTable<Activity_History>().ToListAsync();
+				var query2 = await App.MobileService.GetTable<Entered_History>().Where(p => p.Status == "Completed" && ( p.UserCreator == user[0].Id || p.UserJoin == user[0].Id )).ToListAsync();
+				var query3 = await App.MobileService.GetTable<Activity_Location>().ToListAsync();
+
+
+
+				if (querry.Count > 0 && query2.Count > 0)
+				{
+					ObservableCollection<Activity_History> Activities = new ObservableCollection<Activity_History>();
+					ObservableCollection<Entered_History> Entered = new ObservableCollection<Entered_History>();
+					ObservableCollection<Activity_Location> Queue = new ObservableCollection<Activity_Location>();
+					var arr = querry.ToArray();
+					for (int idx = 0; idx < arr.Length; idx++)
+					{
+						if ( arr.Length > 0)
+						{
+							Activities.Add(new Activity_History
+							{
+								Id = arr[idx].Id,
+								Activity_Code_Id = arr[idx].Activity_Code_Id,
+								Description = arr[idx].Description,
+								Name = arr[idx].Name,
+								Activity_Loc_Id_FK = arr[idx].Activity_Loc_Id_FK,
+							
+							});
+						}
+
+					}
+
+					var arr2 = query2.ToArray();
+					for (int idx = 0; idx < arr2.Length; idx++)
+					{
+
+						Entered.Add(new Entered_History
+						{
+							Id = arr2[idx].Id,
+							Status = arr2[idx].Status,
+							IsCreator = arr2[idx].IsCreator,
+							Activity_Code_FK2 = arr2[idx].Activity_Code_FK2,
+							deleted = arr2[idx].deleted,
+							UserJoin = arr2[idx].UserJoin,
+							UserCreator = arr2[idx].UserCreator
+						});
+					}
+					var queue = query3.ToArray();
+					for (int idx = 0; idx < queue.Length; idx++)
+					{
+
+						Queue.Add(new Activity_Location
+						{
+							Id = queue[idx].Id,
+							Nameplace = queue[idx].Nameplace
+
+						});
+					}
+
+					var queryEnt = from loc in Queue
+								   join act in Activities on loc.Id equals act.Activity_Loc_Id_FK
+								   join ent in Entered on act.Activity_Code_Id equals ent.Activity_Code_FK2
+								   select new Activity_Location
+
+								   {
+									   Id = loc.Id,
+									   Nameplace = loc.Nameplace
+									   
+								   };
+
+					
+
+				
+
+
+					List<Activity_Location> locs = queryEnt.ToList();
+					locs = locs
+					.GroupBy(p => p.Nameplace)
+					.Select(g => g.First())
+					.ToList();
+					if(locs.Count > 0)
+					{
+						var arrLocs = locs.ToArray();
+						Locations = new ObservableCollection<Activity_Location>();
+						for (int i = 0; i < arrLocs.Length; i++)
+						{
+							Locations.Add(new Activity_Location
+					{
+						Id = arrLocs[i].Id,
+						Nameplace = arrLocs[i].Nameplace
+					});
+						}
+					}
+
+					
+				}
+				else
+				{
+					return;
+				}
+
+			}
+			catch (Exception ex)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
 		}
 		#endregion
 
