@@ -34,6 +34,12 @@
                     HorizontalOptions="Start"
                     Text="{Binding UserName, Mode=TwoWay}"
                         TranslationY="10"/>
+                    <Label 
+                    FontAttributes="Bold"
+                    
+                    HorizontalOptions="EndAndExpand"
+                    Text="{Binding UserRating, Mode=TwoWay}"
+                        TranslationY="10"/>
                 </StackLayout>
 
                 <StackLayout>
@@ -69,7 +75,7 @@
  
                     FontAttributes="Bold"
                     HorizontalOptions="Start"
-                    Text="Description: "
+                    Text="Description "
                             />
                         <Editor
 
@@ -102,6 +108,12 @@
                         </ImageButton.HeightRequest>
                         
                     </ImageButton>
+                    <Label 
+                    FontAttributes="Bold"
+                   
+                    HorizontalOptions="EndAndExpand"
+                    Text="{Binding LocationRating, Mode=TwoWay}"
+                        TranslationY="10"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" TranslationY="15">
                     <Label

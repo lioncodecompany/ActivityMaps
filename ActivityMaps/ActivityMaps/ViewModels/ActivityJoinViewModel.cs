@@ -41,6 +41,8 @@ namespace ActivityMaps.ViewModels
 		private string color;
 		private string start;
 		private string end;
+		private string userRating;
+		private string locationRating;
 
 		public string Participantes { get { return this.participantes; } set { SetValue(ref this.participantes, value); } }
 		public string Start { get { return this.start; } set { SetValue(ref this.start, value); } }
@@ -122,7 +124,26 @@ namespace ActivityMaps.ViewModels
 
 			}
 		}
+		public string UserRating
+		{
+			get { return this.userRating; }
+			set
+			{
 
+				SetValue(ref this.userRating, value);
+
+			}
+		}
+		public string LocationRating
+		{
+			get { return this.locationRating; }
+			set
+			{
+
+				SetValue(ref this.locationRating, value);
+
+			}
+		}
 		public string Description
 		{
 			get { return this.description; }
@@ -190,7 +211,8 @@ namespace ActivityMaps.ViewModels
 				this.Color = "Pink";
 			getFile();
 			getFileUserEntry();
-
+			getUserRating();
+			getLocationRating();
 			//this.UserName = "me " + userQuery[0].Nickname;
 		}
 
@@ -699,6 +721,59 @@ namespace ActivityMaps.ViewModels
 			});
 			MainViewModel.GetInstance().Profile= new ProfileViewModel(user);
 			await Application.Current.MainPage.Navigation.PushAsync(new ProfilePage());
+		}
+
+		private async void getUserRating()
+		{
+			try
+			{
+				var query = await App.MobileService.GetTable<User_Rating>().Where(p => p.User_IdReported_FK2 == userCreatorActivity[0].Id).ToListAsync();
+				if(query.Count > 0)
+				{
+					var arr = query.ToArray();
+					double avg = 0;
+					for (int i = 0; i < arr.Length; i++)
+					{
+						avg += System.Convert.ToInt32(arr[i].Rating);
+					}
+
+					UserRating = "User Rating: " + String.Format("{0:0.0}", (avg / arr.Length));
+				}
+				else
+				{
+					UserRating = "User Rating: 0.0";
+				}
+			}
+			catch (Exception e)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", e.Message, "Ok");
+			}
+		}
+		private async void getLocationRating()
+		{
+			try
+			{
+				var query = await App.MobileService.GetTable<Location_Rating>().Where(p => p.Activity_Loc_Id_FK == this.LocationCode).ToListAsync();
+				if (query.Count > 0)
+				{
+					var arr = query.ToArray();
+					double avg = 0;
+					for (int i = 0; i < arr.Length; i++)
+					{
+						avg += System.Convert.ToInt32(arr[i].Rating);
+					}
+
+					LocationRating = "Location Rating: " + String.Format("{0:0.0}", (avg / arr.Length));
+				}
+				else
+				{
+					LocationRating = "Location Rating: 0.0";
+				}
+			}
+			catch (Exception e)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", e.Message, "Ok");
+			}
 		}
 
 
