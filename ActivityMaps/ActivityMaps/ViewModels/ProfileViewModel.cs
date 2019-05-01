@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using ActivityMaps.AzureStorage;
 using ActivityMaps.Models;
@@ -142,13 +143,17 @@ namespace ActivityMaps.ViewModels
 			}
 			try
 			{
-				var querry = await App.MobileService.GetTable<Entered_History>().Where(p => (p.UserCreator == user[0].Id || p.UserJoin == user[0].Id) && p.Status == "Out").ToListAsync();
+				var querry = await App.MobileService.GetTable<Entered_History>().Where(p => (p.UserCreator == user[0].Id || p.UserJoin == user[0].Id) && p.Status == "Completed").ToListAsync();
 				if(querry.Count == 0)
 				{
 					this.Count = 0.ToString() ;
 				}
 				else
 				{
+					querry = querry
+					.GroupBy(p => p.Activity_Code_FK2)
+					.Select(g => g.First())
+					.ToList();
 					this.Count = (querry.Count).ToString();
 				}
 			}

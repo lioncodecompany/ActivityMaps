@@ -18,6 +18,6 @@ namespace ActivityMaps.Models
         public string Activity_Cat_Code { get; set; } 
         public bool deleted { get; set; }
         public string Activity_Loc_Id { get; set; }
-
+		public string Color{ get; set; }
     }
 }

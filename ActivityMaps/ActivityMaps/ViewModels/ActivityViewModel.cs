@@ -45,6 +45,7 @@ namespace ActivityMaps.ViewModels
 
         private List<User> userQuery;
 		private User_Entered entryUser;
+		private string color;
 		#endregion
 
 		#region Propiedades
@@ -92,6 +93,16 @@ namespace ActivityMaps.ViewModels
 			}
 		}
 
+		public string Color
+		{
+			get { return this.color; }
+			set
+			{
+
+				SetValue(ref this.color, value);
+
+			}
+		}
 
 		public string Activitytxt
 		{
@@ -272,7 +283,7 @@ namespace ActivityMaps.ViewModels
 		#endregion
 
 		#region Metodos
-
+		
 		private async void Menu()
 		{
 			CheckConnectionInternet.checkConnectivity();
@@ -397,6 +408,9 @@ namespace ActivityMaps.ViewModels
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 			}
+
+		
+
 			this.IsRefreshing = true;
             this.IsActivityFound = false;
             //Categories = Activity_CategoryData.Categories;
@@ -421,16 +435,18 @@ namespace ActivityMaps.ViewModels
 								Name = act.Name,
 								CategoryName = cat.Name,
 								Description = act.Description,
-								LocationTown = loc.City,
+								LocationTown = loc.City != "" ? "Location: " + loc.City : "Location: Unknow",
 								Created_Date = act.Created_Date,
                                 Activity_Loc_Id = act.Activity_Loc_Id,
 								IsService = act.IsService,
 								Start_Act_Datetime = act.Start_Act_Datetime,
-								End_Act_Datetime = act.End_Act_Datetime
-								
-								
+								End_Act_Datetime = act.End_Act_Datetime,
+								Color = act.IsService ? "Green" : "Gray"
+
+
 							};
 				this.ActivityResult = query.ToList();
+
 			}
 			else
 			{
@@ -451,12 +467,13 @@ namespace ActivityMaps.ViewModels
 								Name = act.Name,
 								CategoryName = cat.Name,
 								Description = act.Description,
-								LocationTown = loc.City,
+								LocationTown = loc.City != "" ? "Location: " + loc.City : "Location: Unknow",
 								Created_Date = act.Created_Date,
 								Activity_Loc_Id = act.Activity_Loc_Id,
 								IsService = act.IsService,
 								Start_Act_Datetime = act.Start_Act_Datetime,
-								End_Act_Datetime = act.End_Act_Datetime
+								End_Act_Datetime = act.End_Act_Datetime,
+								Color = act.IsService ? "Green" : "Gray"
 
 
 							};
@@ -694,7 +711,7 @@ namespace ActivityMaps.ViewModels
 			}
 			catch (Exception ex)
 			{
-				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+				//await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 			}
 		}
 		#endregion

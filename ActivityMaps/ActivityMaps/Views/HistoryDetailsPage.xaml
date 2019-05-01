@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ActivityMaps.Views.HistoryDetailsPage"
+             BindingContext="{Binding Main,Source={StaticResource Locator}}"
+            Title ="Details">
+  <!--Pages can be added as references or inline-->
+  <ContentPage Title="Activity Details">
+        <ScrollView BindingContext="{Binding HistoryDetails}">
+            <StackLayout Padding= "5">
+                <Label 
+                    FontAttributes="Bold"
+                    FontSize="Large"
+                    HorizontalOptions="Center"
+                    Text="{Binding ActivityName, Mode=TwoWay}"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label 
+                    FontAttributes="Bold"
+                    FontSize="Large"
+                    HorizontalOptions="Start"
+                    Text="Creator: "
+                        TranslationY="10"/>
+                    <Label 
+                    FontAttributes="Bold"
+                    FontSize="Large"
+                    HorizontalOptions="Start"
+                    Text="{Binding UserName, Mode=TwoWay}"
+                        TranslationY="10"/>
+        
+               
+                </StackLayout>
+
+                <StackLayout>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="3*" />
+
+                        </Grid.ColumnDefinitions>
+
+
+                        <Label 
+                    FontAttributes="Bold"
+                    HorizontalOptions="Start"
+                            VerticalOptions="Center"
+                    Text="Category: "
+                        Grid.Column="0"
+                        Grid.Row="0"
+                            />
+
+                        <Entry 
+                    FontAttributes="Bold"
+                    HorizontalOptions="StartAndExpand"
+                            VerticalOptions="Center"
+                    Text="{Binding CategoryName, Mode=TwoWay}"
+                    IsReadOnly="True"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                            />
+                    </Grid>
+                    <StackLayout>
+                        <Label 
+ 
+                    FontAttributes="Bold"
+                    HorizontalOptions="Start"
+                    Text="Description "
+                            />
+                        <Editor
+
+                    FontAttributes="Bold"
+                    AutoSize="TextChanges"
+                    HorizontalOptions="StartAndExpand"
+                    Text="{Binding Description, Mode=TwoWay}"
+                    IsReadOnly="True"
+                    />
+                    </StackLayout>
+
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label 
+                    FontAttributes="Bold"
+                    HorizontalOptions="Start"
+                    Text="Location: "
+                     TranslationY="10"/>
+
+                    <Label 
+                    FontAttributes="Bold"
+                    HorizontalOptions="Start"
+                    Text="{Binding LocationTown, Mode=TwoWay} "
+                     TranslationY="10"/>
+       
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" TranslationY="15">
+                    <Label
+                        
+                        HorizontalOptions="StartAndExpand"
+                        VerticalOptions="Start"
+                        FontAttributes="Bold"
+                        Text="This activity is a service?">
+                    </Label>
+
+                    <Switch 
+                        IsEnabled="False"
+                        OnColor="{Binding Color}"
+                        HorizontalOptions="End"
+                        IsToggled="{Binding IsService, Mode=TwoWay}">
+                    </Switch>
+
+                </StackLayout>
+
+                <StackLayout>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+
+
+                        <Label 
+                    FontAttributes="Bold"
+                    
+                    Text="Activity Start: "
+                        Grid.Column="0"
+                        Grid.Row="0"
+                            TranslationY="24"
+                            />
+
+                        <Entry 
+                    FontAttributes="Bold"
+                    
+                    Text="{Binding Start, Mode=TwoWay}"
+                    IsReadOnly="True"
+                            HorizontalOptions="End"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                            TranslationY="7"
+                            />
+                        <Label 
+                         Grid.Column="0"
+                        Grid.Row="1"
+                    FontAttributes="Bold"
+             
+                    Text="Activity End: "
+                            TranslationY="24"/>
+                        <Entry
+                         Grid.Column="1"
+                         Grid.Row="1"
+                         FontAttributes="Bold"
+                         HorizontalOptions="End"
+                    Text="{Binding End, Mode=TwoWay}"
+                    IsReadOnly="True"
+                            TranslationY="7"
+                    />
+                    </Grid>
+                    <Label Text="{Binding Participantes}" 
+                           HorizontalOptions="Center"
+                           TranslationY="15"/>
+                </StackLayout>
+                
+                    <ActivityIndicator 
+                    IsRunning="{Binding IsRunning, Mode=TwoWay}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Color="Navy"
+                    >
+                    </ActivityIndicator>
+
+            </StackLayout>
+
+
+        </ScrollView>
+    </ContentPage>
+  <ContentPage Title="Participants" >
+        <ScrollView BindingContext="{Binding HistoryDetails}">
+            <StackLayout Padding="10,20,10,5">
+                <Label 
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="List of Participants"/>
+                <ListView 
+            SeparatorVisibility="None"
+            HasUnevenRows="True"
+            IsRefreshing="{Binding IsRefreshing,Mode=TwoWay}"
+            IsPullToRefreshEnabled="true"           
+            RefreshCommand="{Binding RefreshCommand,Mode=TwoWay}"
+            ItemsSource="{Binding UserResult,Mode=TwoWay}"
+            SelectedItem="{Binding SelectedUser,Mode=TwoWay}"
+            IsVisible="True">
+                    <ListView.RowHeight>
+                        <OnPlatform x:TypeArguments="x:Int32">
+                            <On Platform="iOS, Android" Value="90" />
+                        </OnPlatform>
+                    </ListView.RowHeight>
+                    <!--Built in Cells-->
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ContentView Padding="5">
+                                    <Frame OutlineColor="AliceBlue" Padding="10">
+                                        <StackLayout>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="0.5*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label  
+                                             Grid.Row="0"
+                                             Grid.Column="0" 
+                                             Text="{Binding Nickname, Mode=TwoWay}"
+                                             FontSize="18"
+                                             VerticalOptions="StartAndExpand"/>
+                                            </Grid>
+                                        </StackLayout>
+                                    </Frame>
+                                </ContentView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage>
+ 
+</TabbedPage>

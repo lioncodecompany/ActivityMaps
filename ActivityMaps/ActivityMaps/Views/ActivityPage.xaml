@@ -98,7 +98,7 @@
                                              VerticalOptions="StartAndExpand"/>
                                         <BoxView Grid.Row="0"
                                             Grid.Column="2"
-                                                 BackgroundColor="Green"
+                                            BackgroundColor="{Binding Color, Mode=TwoWay}"
                                             Color="{Binding StatusColor, Mode=TwoWay}"
                                             CornerRadius="8"
                                             WidthRequest="15"
@@ -113,23 +113,26 @@
                                             HorizontalOptions="StartAndExpand"
                                             VerticalOptions="CenterAndExpand"/>
                                         <Label 
+                       
                                             Grid.Row="2"
                                             Grid.Column="1" 
                                             Grid.ColumnSpan="3"
-                                            Text="Location Name - Pueblo"
+                                            Text="{Binding LocationTown, Mode=TwoWay}"
                                             FontSize="12"
                                             HorizontalOptions="EndAndExpand"
                                             VerticalOptions="StartAndExpand"/>
                                         <Label
+                                             
                                             Grid.Row="0"
                                             Grid.Column="0" 
-                                            Text="Upcomming"
+                                            Text="{Binding Start_Act_Datetime, Mode=TwoWay}"
                                             FontSize="12"
                                             VerticalOptions="CenterAndExpand"/>
                                         <Label
+                                            IsVisible="False"
                                             Grid.Row="0"
                                             Grid.Column="1" 
-                                            Text="Count People"
+                                            Text="{Binding Count, Mode=TwoWay}"
                                             FontSize="12"
                                             VerticalOptions="CenterAndExpand"/>
                                     </Grid>

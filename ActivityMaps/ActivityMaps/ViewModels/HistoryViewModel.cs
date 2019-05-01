@@ -341,7 +341,7 @@ namespace ActivityMaps.ViewModels
 							select new Activity_Child
 
 							{
-								Id = act.Id,
+								Id = act.Activity_Code_Id,
 								Name = act.Name,
 								CategoryName = cat.Name,
 								Description = act.Description
@@ -370,10 +370,12 @@ namespace ActivityMaps.ViewModels
 							select new Activity_Child
 
 							{
-								Id = act.Id,
+								Id = act.Activity_Code_Id,
 								Name = act.Name,
 								CategoryName = cat.Name,
-								Description = act.Description
+								Description = act.Description,
+								
+								
 							};
 
 				this.ActivityResult = query.ToList();
@@ -397,8 +399,8 @@ namespace ActivityMaps.ViewModels
 			//SetValue(ref this.selectedActivity, null);
 			LoadActivity();
 
-
-
+			MainViewModel.GetInstance().HistoryDetails = new HistoryDetailsViewModel(user, SelectedActivity);
+			await Application.Current.MainPage.Navigation.PushAsync(new HistoryDetailsPage());
 			// note name is property in my model (say : GeneralDataModel )
 		}
 

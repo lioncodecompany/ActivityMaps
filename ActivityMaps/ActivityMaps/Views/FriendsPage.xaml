@@ -129,7 +129,11 @@
     <ContentPage Title="Pendings" >
         <ScrollView BindingContext="{Binding PendingFriends}">
             <StackLayout Padding="10,20,10,5">
-               
+                <Label 
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="Pending List"/>
                 <ListView 
             SeparatorVisibility="None"
             HasUnevenRows="True"

@@ -27,6 +27,7 @@ namespace ActivityMaps.ViewModels
 		public FriendListViewModel FriendList { get; set; }
 		public GlobalStatisticsViewModel GlobalStatistics { get; set; }
 		public ResetPasswordViewModel ResetPass { get; set; }
+		public HistoryDetailsViewModel HistoryDetails { get; set; }
 
 
 		#endregion
@@ -55,6 +56,7 @@ namespace ActivityMaps.ViewModels
 			this.FriendList = new FriendListViewModel();
 			this.GlobalStatistics = new GlobalStatisticsViewModel();
 			this.ResetPass = new ResetPasswordViewModel();
+			this.HistoryDetails = new HistoryDetailsViewModel();
 		}
 
 

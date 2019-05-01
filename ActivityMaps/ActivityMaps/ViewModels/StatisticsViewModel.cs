@@ -91,7 +91,7 @@ namespace ActivityMaps.ViewModels
 			}
 			try
 			{
-				var querry = await App.MobileService.GetTable<Entered_History>().Where(ent => ent.UserCreator == user[0].Id || ent.UserJoin == user[0].Id).ToListAsync();
+				var querry = await App.MobileService.GetTable<Entered_History>().Where(ent => (ent.UserCreator == user[0].Id || ent.UserJoin == user[0].Id) && ent.Status == "Completed").ToListAsync();
 				ObservableCollection<Entered_History> entered = new ObservableCollection<Entered_History>();
 				var arr = querry.ToArray();
 				for (int idx = 0; idx < arr.Length; idx++)
@@ -208,7 +208,7 @@ namespace ActivityMaps.ViewModels
 			}
 			try
 			{
-				var querry = await App.MobileService.GetTable<Entered_History>().Where(p => (p.UserJoin == user[0].Id || p.UserCreator == user[0].Id) && p.Status != "Aborting").ToListAsync();
+				var querry = await App.MobileService.GetTable<Entered_History>().Where(p => (p.UserJoin == user[0].Id || p.UserCreator == user[0].Id) && p.Status == "Completed").ToListAsync();
 				ObservableCollection<Entered_History> entered = new ObservableCollection<Entered_History>();
 				var arr = querry.ToArray();
 				for (int idx = 0; idx < arr.Length; idx++)
@@ -318,7 +318,7 @@ namespace ActivityMaps.ViewModels
 			}
 			try
 			{
-				var querry = await App.MobileService.GetTable<Entered_History>().Where(p => p.UserJoin == user[0].Id || p.UserCreator == user[0].Id).ToListAsync();
+				var querry = await App.MobileService.GetTable<Entered_History>().Where(p => (p.UserJoin == user[0].Id || p.UserCreator == user[0].Id) && p.Status == "Completed").ToListAsync();
 				ObservableCollection<Entered_History> entered = new ObservableCollection<Entered_History>();
 				var arr = querry.ToArray();
 				for (int idx = 0; idx < arr.Length; idx++)
@@ -420,7 +420,7 @@ namespace ActivityMaps.ViewModels
 		{
 			try
 			{
-				var querry = await App.MobileService.GetTable<Entered_History>().Where(p => (p.UserCreator == user[0].Id || p.UserJoin == user[0].Id) && p.Status == "Out").ToListAsync();
+				var querry = await App.MobileService.GetTable<Entered_History>().Where(p => (p.UserCreator == user[0].Id || p.UserJoin == user[0].Id) && p.Status == "Completed").ToListAsync();
 				if (querry.Count == 0)
 				{
 					this.Count = 0.ToString();

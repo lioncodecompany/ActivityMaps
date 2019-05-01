@@ -261,6 +261,22 @@ namespace ActivityMaps.ViewModels
 
 
 			}
+			else
+			{
+				try
+				{
+					await App.MobileService.GetTable<Pending_Friend>().DeleteAsync(SelectedUser);
+					await Application.Current.MainPage.DisplayAlert("Alert", "You have rejected the request", "ok");
+					LoadPendingFriends();
+					MainViewModel.GetInstance().FriendList = new FriendListViewModel(user);
+					await Application.Current.MainPage.Navigation.PushAsync(new FriendsPage());
+
+				}
+				catch (Exception ex)
+				{
+
+				}
+			}
 		
 			this.IsRunning = false;
 
