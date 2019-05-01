@@ -31,7 +31,8 @@ namespace ActivityMaps.ViewModels
 		//private IEnumerable<Activity_Category> activityCatResult;
 		private ObservableCollection<Activity> activities;
 		private ObservableCollection<Activity_Location> locations;
-		private ObservableCollection<Activity_Category> categories;
+        private ObservableCollection<User_Entered> users_entered;
+        private ObservableCollection<Activity_Category> categories;
 		private string categoryName;
 		private bool isFilterEmpty = true;
 		private string logType = "1"; //login
@@ -46,12 +47,13 @@ namespace ActivityMaps.ViewModels
         private List<User> userQuery;
 		private User_Entered entryUser;
 		private string color;
-		#endregion
+        private int countPeople;
+        #endregion
 
-		#region Propiedades
+        #region Propiedades
 
 
-		[Xamarin.Forms.TypeConverter(typeof(Xamarin.Forms.ImageSourceConverter))]
+        [Xamarin.Forms.TypeConverter(typeof(Xamarin.Forms.ImageSourceConverter))]
 		public Xamarin.Forms.ImageSource Image
 		{
 			get { return this.image; }
@@ -104,7 +106,18 @@ namespace ActivityMaps.ViewModels
 			}
 		}
 
-		public string Activitytxt
+        public int CountPeople
+        {
+            get { return this.countPeople; }
+            set
+            {
+
+                SetValue(ref this.countPeople, value);
+
+            }
+        }
+
+        public string Activitytxt
 		{
 
 			get { return this.activitytxt; }
@@ -162,7 +175,16 @@ namespace ActivityMaps.ViewModels
 
 
 		}
-		public ObservableCollection<Activity_Category> Categories
+        public ObservableCollection<User_Entered> Users_Entered
+        {
+
+
+            get { return this.users_entered; }
+            set { SetValue(ref this.users_entered, value); }
+
+
+        }
+        public ObservableCollection<Activity_Category> Categories
 		{
 
 
@@ -309,8 +331,10 @@ namespace ActivityMaps.ViewModels
 				UpadateListDB();
 				var querry = await App.MobileService.GetTable<Activity>().Where(p => p.End_Act_Datetime > DateTime.Now).ToListAsync();
                 var query2 = await App.MobileService.GetTable<Activity_Location>().ToListAsync();
+                var queryUsers = await App.MobileService.GetTable<User_Entered>().ToListAsync();
                 Activities = new ObservableCollection<Activity>();
                 Locations = new ObservableCollection<Activity_Location>();
+                Users_Entered = new ObservableCollection<User_Entered>();
                 var arr = querry.ToArray();
 				for (int idx = 0; idx < arr.Length; idx++)
 				{
@@ -347,9 +371,22 @@ namespace ActivityMaps.ViewModels
                             Longitude = arr2[idx].Longitude
                         });
                     }
-            
 
 
+                var arr3 = queryUsers.ToArray();
+                for (int idx = 0; idx < arr3.Length; idx++)
+                {
+                    Console.WriteLine("Show: "+arr3[idx].Activity_Code_FK2.ToString() +" ***");
+                    Users_Entered.Add(new User_Entered
+                    {
+                        Id = arr3[idx].Id,
+                        Status = arr3[idx].Status,
+                        IsCreator = arr3[idx].IsCreator,
+                        User_Log_Id_FK1 = arr3[idx].User_Log_Id_FK1,
+                        Activity_Code_FK2 = arr3[idx].Activity_Code_FK2,
+                        deleted = arr3[idx].deleted
+                    });
+                }
             }
 			catch (Exception ex)
 			{
@@ -419,29 +456,31 @@ namespace ActivityMaps.ViewModels
             //var query
             if (this.IsFilterEmpty)
 			{
-				var query = from act
-									  in Activities
-							join cat in Categories on act.Activity_Cat_Code equals cat.Id
-							join loc in Locations on act.Activity_Loc_Id equals loc.Id
-							where (act.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
-							||
-							(cat.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
-							//||
-							//(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
-							select new Activity_Child
+                var query = from act
+                                      in Activities
+                            join cat in Categories on act.Activity_Cat_Code equals cat.Id
+                            join loc in Locations on act.Activity_Loc_Id equals loc.Id
+                            where (act.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                            ||
+                            (cat.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                            //||
+                            //(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                            select new Activity_Child
 
-							{
-								Id = act.Id,
-								Name = act.Name,
-								CategoryName = cat.Name,
-								Description = act.Description,
-								LocationTown = loc.City != "" ? "Location: " + loc.City : "Location: Unknow",
-								Created_Date = act.Created_Date,
+                            {
+                                Id = act.Id,
+                                Name = act.Name,
+                                CategoryName = cat.Name,
+                                Description = act.Description,
+                                LocationTown = loc.City != "" ? "Location: " + loc.City : "Location: Unknown",
+                                Created_Date = act.Created_Date,
                                 Activity_Loc_Id = act.Activity_Loc_Id,
-								IsService = act.IsService,
-								Start_Act_Datetime = act.Start_Act_Datetime,
-								End_Act_Datetime = act.End_Act_Datetime,
-								Color = act.IsService ? "Green" : "Gray"
+                                IsService = act.IsService,
+                                Start_Act_Datetime = act.Start_Act_Datetime,
+                                End_Act_Datetime = act.End_Act_Datetime,
+                                Color = act.IsService ? "Green" : "Gray",
+                                CountPeople = (from users in users_entered
+                                               where (users.Activity_Code_FK2.Equals(act.Id)) select users).Count()
 
 
 							};

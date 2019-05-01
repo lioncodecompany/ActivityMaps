@@ -19,5 +19,6 @@ namespace ActivityMaps.Models
         public bool deleted { get; set; }
         public string Activity_Loc_Id { get; set; }
 		public string Color{ get; set; }
+        public int CountPeople { get; set; }
     }
 }
