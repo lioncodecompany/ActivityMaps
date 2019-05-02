@@ -14,7 +14,7 @@ using Plugin.LocalNotifications;
 
 namespace ActivityMaps.Droid
 {
-    [Activity(Label = "ActivityMaps", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "ActivityMaps", Icon = "@drawable/Logo", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : 
         global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
         
