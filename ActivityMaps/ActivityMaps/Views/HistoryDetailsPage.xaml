@@ -16,25 +16,27 @@
                 <StackLayout Orientation="Horizontal">
                     <Label 
                     FontAttributes="Bold"
-                    FontSize="Large"
+                    
                     HorizontalOptions="Start"
                     Text="Creator: "
                         TranslationY="10"/>
-                    <Label 
+                    <Editor
+
                     FontAttributes="Bold"
-                    FontSize="Large"
-                    HorizontalOptions="Start"
-                    Text="{Binding UserName, Mode=TwoWay}"
-                        TranslationY="10"/>
-        
-               
+                            TranslationX="61"
+                    AutoSize="TextChanges"
+                    HorizontalOptions="Center"
+                    Text="{Binding Creator, Mode=TwoWay}"
+                    IsReadOnly="True"
+                    />
+
                 </StackLayout>
 
                 <StackLayout>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="2*" />
 
                         </Grid.ColumnDefinitions>
 
@@ -58,18 +60,19 @@
                         Grid.Row="0"
                             />
                     </Grid>
-                    <StackLayout>
+                    <StackLayout Orientation="Horizontal">
                         <Label 
- 
+                            TranslationY="15"
                     FontAttributes="Bold"
                     HorizontalOptions="Start"
-                    Text="Description "
+                    Text="Description: "
                             />
                         <Editor
 
                     FontAttributes="Bold"
+                            TranslationX="34"
                     AutoSize="TextChanges"
-                    HorizontalOptions="StartAndExpand"
+                    HorizontalOptions="Center"
                     Text="{Binding Description, Mode=TwoWay}"
                     IsReadOnly="True"
                     />
@@ -78,18 +81,31 @@
 
                 </StackLayout>
 
-                <StackLayout Orientation="Horizontal">
-                    <Label 
+                <StackLayout >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label 
+                            Grid.Column ="0"
+                            Grid.Row="0"
                     FontAttributes="Bold"
                     HorizontalOptions="Start"
                     Text="Location: "
-                     TranslationY="10"/>
+                     TranslationY="15"/>
 
-                    <Label 
-                    FontAttributes="Bold"
+                        <Editor
+                            Grid.Column ="1"
+                            Grid.Row="0"
+                    IsReadOnly="True"
+                            FontAttributes="Bold"
                     HorizontalOptions="Start"
                     Text="{Binding LocationTown, Mode=TwoWay} "
                      TranslationY="10"/>
+                    </Grid>
+                    
        
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" TranslationY="15">
@@ -132,7 +148,7 @@
                     
                     Text="{Binding Start, Mode=TwoWay}"
                     IsReadOnly="True"
-                            HorizontalOptions="End"
+                            
                         Grid.Column="1"
                         Grid.Row="0"
                             TranslationY="7"
@@ -148,15 +164,13 @@
                          Grid.Column="1"
                          Grid.Row="1"
                          FontAttributes="Bold"
-                         HorizontalOptions="End"
+                         
                     Text="{Binding End, Mode=TwoWay}"
                     IsReadOnly="True"
                             TranslationY="7"
                     />
                     </Grid>
-                    <Label Text="{Binding Participantes}" 
-                           HorizontalOptions="Center"
-                           TranslationY="15"/>
+                    
                 </StackLayout>
                 
                     <ActivityIndicator 

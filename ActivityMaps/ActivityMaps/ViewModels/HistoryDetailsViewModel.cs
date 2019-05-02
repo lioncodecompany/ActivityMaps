@@ -23,10 +23,97 @@ namespace ActivityMaps.ViewModels
 		private string nickName;
 		private bool isRunning;
 		private ObservableCollection<User> userName;
-
+		private string activityName;
+		private string categoryName;
+		private string description;
+		private string locationTown;
+		private bool isService;
+		private string color;
+		private string start;
+		private string end;
+		private string creator;
 		#region property
 
+		public bool IsService
+		{
+			get { return this.isService; }
+			set
+			{
 
+				SetValue(ref this.isService, value);
+
+			}
+		}
+		public string End
+		{
+			get { return this.end; }
+			set
+			{
+
+				SetValue(ref this.end, value);
+
+			}
+		}
+		public string Start
+		{
+			get { return this.start; }
+			set
+			{
+
+				SetValue(ref this.start, value);
+
+			}
+		}
+		public string Color
+		{
+			get { return this.color; }
+			set
+			{
+
+				SetValue(ref this.color, value);
+
+			}
+		}
+		public string LocationTown
+		{
+			get { return this.locationTown; }
+			set
+			{
+
+				SetValue(ref this.locationTown, value);
+
+			}
+		}
+		public string Description
+		{
+			get { return this.description; }
+			set
+			{
+
+				SetValue(ref this.description, value);
+
+			}
+		}
+		public string Creator
+		{
+			get { return this.creator; }
+			set
+			{
+
+				SetValue(ref this.creator, value);
+
+			}
+		}
+		public string CategoryName
+		{
+			get { return this.categoryName; }
+			set
+			{
+
+				SetValue(ref this.categoryName, value);
+
+			}
+		}
 
 		public bool IsRefreshing
 		{
@@ -38,6 +125,12 @@ namespace ActivityMaps.ViewModels
 		{
 			get { return this.nickName; }
 			set { SetValue(ref this.nickName, value); }
+		}
+
+		public string ActivityName
+		{
+			get { return this.activityName; }
+			set { SetValue(ref this.activityName, value); }
 		}
 
 		public bool IsRunning
@@ -106,6 +199,17 @@ namespace ActivityMaps.ViewModels
 		{
 			this.user = user;
 			this.selectedActivity = selectedActivity;
+			this.ActivityName = selectedActivity.Name;
+			this.CategoryName = selectedActivity.CategoryName;
+			this.Description = selectedActivity.Description;
+			this.LocationTown = selectedActivity.LocationPlaceName;
+			this.IsService = selectedActivity.IsService;
+			this.Color = this.IsService ? "Red" : "Gray";
+			this.Start = selectedActivity.Start_Act_Datetime.ToString();
+			this.End = selectedActivity.End_Act_Datetime.ToString();
+			getCreator(selectedActivity.Creator);
+
+
 			LoadParticipants();
 		}
 		public HistoryDetailsViewModel()
@@ -223,6 +327,12 @@ namespace ActivityMaps.ViewModels
 
 
 			// note name is property in my model (say : GeneralDataModel )
+		}
+		private async void getCreator(string id)
+		{
+			var querry = await App.MobileService.GetTable<User>().Where(p => p.Id == id).ToListAsync();
+
+			this.Creator = querry[0].Nickname;
 		}
 		#endregion
 	}

@@ -84,7 +84,21 @@
                         Text="{Binding AvgAge, Mode=TwoWay}"
                          IsReadOnly="True">
                     </Entry>
-                    
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="4" 
+                        Text="Users Rate you: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Column="1" 
+                        Grid.Row="4" 
+                        TextColor="Black" 
+                        Text="{Binding UserRating, Mode=TwoWay}"
+                         IsReadOnly="True">
+                    </Entry>
+
                 </Grid>
                 <ActivityIndicator
                     IsRunning="{Binding IsRunning, Mode=TwoWay}"

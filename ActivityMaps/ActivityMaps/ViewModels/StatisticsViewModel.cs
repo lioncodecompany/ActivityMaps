@@ -17,6 +17,7 @@ namespace ActivityMaps.ViewModels
 		private string category;
 		private string location;
 		private string avgAge;
+		private string userRating;
 		#endregion
 
 		#region properties
@@ -26,6 +27,14 @@ namespace ActivityMaps.ViewModels
 			set
 			{
 				SetValue(ref this.avgAge, value);
+			}
+		}
+		public string UserRating
+		{
+			get { return this.userRating; }
+			set
+			{
+				SetValue(ref this.userRating, value);
 			}
 		}
 		public string Count
@@ -420,13 +429,16 @@ namespace ActivityMaps.ViewModels
 		{
 			try
 			{
-				var querry = await App.MobileService.GetTable<Entered_History>().Where(p => (p.UserCreator == user[0].Id || p.UserJoin == user[0].Id) && p.Status == "Completed").ToListAsync();
+				var querry = await App.MobileService.GetTable<Entered_History>().Where(p => ( p.UserJoin == user[0].Id) && p.Status == "Completed").ToListAsync();
+
 				if (querry.Count == 0)
 				{
 					this.Count = 0.ToString();
 				}
 				else
 				{
+
+					
 					this.Count = (querry.Count).ToString();
 				}
 			}
@@ -437,7 +449,34 @@ namespace ActivityMaps.ViewModels
 			getAverageAge(this.Count);
 			getCategory(this.Count);
 			getLocation(this.Count);
+			getUserRating();
 
+		}
+		private async void getUserRating()
+		{
+			try
+			{
+				var query = await App.MobileService.GetTable<User_Rating>().Where(p => p.User_IdReported_FK2 == user[0].Id).ToListAsync();
+				if (query.Count > 0)
+				{
+					var arr = query.ToArray();
+					double avg = 0;
+					for (int i = 0; i < arr.Length; i++)
+					{
+						avg += System.Convert.ToInt32(arr[i].Rating);
+					}
+
+					UserRating = "User Rating: " + String.Format("{0:0.0}", (avg / arr.Length));
+				}
+				else
+				{
+					UserRating = "User Rating: 0.0";
+				}
+			}
+			catch (Exception e)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", e.Message, "Ok");
+			}
 		}
 		#endregion
 	} 

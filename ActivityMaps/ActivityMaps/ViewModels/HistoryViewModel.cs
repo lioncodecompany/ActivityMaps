@@ -234,6 +234,9 @@ namespace ActivityMaps.ViewModels
 							Activity_Code_Id = arr[idx].Activity_Code_Id,
 							Description = arr[idx].Description,
 							Name = arr[idx].Name,
+							IsService = arr[idx].IsService,
+							Start_Act_Date = arr[idx].Start_Act_Date,
+							End_Act_Date = arr[idx].End_Act_Date,
 							Activity_Loc_Id_FK = arr[idx].Activity_Loc_Id_FK,
 							Activity_Cat_code = arr[idx].Activity_Cat_code
 						});
@@ -344,7 +347,12 @@ namespace ActivityMaps.ViewModels
 								Id = act.Activity_Code_Id,
 								Name = act.Name,
 								CategoryName = cat.Name,
-								Description = act.Description
+								Description = act.Description,
+								Creator = use.UserCreator,
+								Start_Act_Datetime = act.Start_Act_Date,
+								End_Act_Datetime = act.End_Act_Date,
+								LocationPlaceName = loc.Nameplace,
+								IsService = act.IsService
 
 							};
 				this.ActivityResult = query.ToList();
@@ -374,8 +382,13 @@ namespace ActivityMaps.ViewModels
 								Name = act.Name,
 								CategoryName = cat.Name,
 								Description = act.Description,
-								
-								
+								Creator = use.UserCreator,
+								Start_Act_Datetime = act.Start_Act_Date,
+								End_Act_Datetime = act.End_Act_Date,
+								LocationPlaceName = loc.Nameplace,
+								IsService = act.IsService
+
+
 							};
 
 				this.ActivityResult = query.ToList();
