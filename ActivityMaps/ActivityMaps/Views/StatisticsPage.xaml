@@ -212,6 +212,20 @@
                         Text="{Binding AvgAge, Mode=TwoWay}"
                          IsReadOnly="True">
                     </Entry>
+                    <Label 
+                        Grid.Column="0" 
+                        Grid.Row="4" 
+                        Text="Global Rate: " 
+                        TextColor="Black" 
+                        VerticalOptions="Center">
+                    </Label>
+                    <Entry 
+                        Grid.Column="1" 
+                        Grid.Row="4" 
+                        TextColor="Black" 
+                        Text="{Binding GlobalRating, Mode=TwoWay}"
+                         IsReadOnly="True">
+                    </Entry>
 
                 </Grid>
                 <ActivityIndicator

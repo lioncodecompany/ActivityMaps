@@ -29,6 +29,7 @@ namespace ActivityMaps.ViewModels
 				SetValue(ref this.avgAge, value);
 			}
 		}
+	
 		public string UserRating
 		{
 			get { return this.userRating; }
@@ -450,6 +451,7 @@ namespace ActivityMaps.ViewModels
 			getCategory(this.Count);
 			getLocation(this.Count);
 			getUserRating();
+		
 
 		}
 		private async void getUserRating()
@@ -466,11 +468,11 @@ namespace ActivityMaps.ViewModels
 						avg += System.Convert.ToInt32(arr[i].Rating);
 					}
 
-					UserRating = "User Rating: " + String.Format("{0:0.0}", (avg / arr.Length));
+					UserRating = String.Format("{0:0.0}", (avg / arr.Length));
 				}
 				else
 				{
-					UserRating = "User Rating: 0.0";
+					UserRating = "0.0";
 				}
 			}
 			catch (Exception e)
@@ -478,6 +480,7 @@ namespace ActivityMaps.ViewModels
 				await Application.Current.MainPage.DisplayAlert("Error", e.Message, "Ok");
 			}
 		}
+	
 		#endregion
 	} 
 }

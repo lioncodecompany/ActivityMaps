@@ -17,6 +17,7 @@ namespace ActivityMaps.ViewModels
 		private string category;
 		private string location;
 		private string avgAge;
+		private string globalRating;
 		#endregion
 
 		#region properties
@@ -62,6 +63,14 @@ namespace ActivityMaps.ViewModels
 
 			}
 		}
+		public string GlobalRating
+		{
+			get { return this.globalRating; }
+			set
+			{
+				SetValue(ref this.globalRating, value);
+			}
+		}
 		#endregion
 
 		#region Constructores
@@ -78,6 +87,7 @@ namespace ActivityMaps.ViewModels
 			getCategory();
 			getLocation();
 			getAverageAge();
+			getGlobalRating();
 			IsRunning = false;
 		}
 		#endregion
@@ -306,6 +316,32 @@ namespace ActivityMaps.ViewModels
 			catch (Exception ex)
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+			}
+		}
+		private async void getGlobalRating()
+		{
+			try
+			{
+				var query = await App.MobileService.GetTable<Feedback>().ToListAsync();
+				if (query.Count > 0)
+				{
+					var arr = query.ToArray();
+					double avg = 0;
+					for (int i = 0; i < arr.Length; i++)
+					{
+						avg += System.Convert.ToInt32(arr[i].Rating);
+					}
+
+					GlobalRating = String.Format("{0:0.0}", (avg / arr.Length));
+				}
+				else
+				{
+					GlobalRating = "0.0";
+				}
+			}
+			catch (Exception e)
+			{
+				await Application.Current.MainPage.DisplayAlert("Error", e.Message, "Ok");
 			}
 		}
 		#endregion
