@@ -35,7 +35,9 @@ namespace ActivityMaps.ViewModels
         private ObservableCollection<Activity_Category> categories;
         private Activity activity;
         private int pickerCatIndex;
-        
+        private bool savePinEnabled;
+
+
 
 
         #endregion
@@ -51,6 +53,19 @@ namespace ActivityMaps.ViewModels
                 SetValue(ref this.locationtxt, value);
 
               // SearchLocation();
+
+            }
+        }
+        public bool SavePinEnabled
+        {
+
+            get { return this.savePinEnabled; }
+            set
+            {
+
+                SetValue(ref this.savePinEnabled, value);
+
+                // SearchLocation();
 
             }
         }
@@ -118,6 +133,7 @@ namespace ActivityMaps.ViewModels
         {
             instance = this;
             this.Locationtxt = "";
+            this.SavePinEnabled = false;
             this.MovePinAllowed = false;
             this.MovePinButtonText = "Allow Move Pin";
 
@@ -131,6 +147,7 @@ namespace ActivityMaps.ViewModels
         {
             instance = this;
             this.Locationtxt = "";
+            this.SavePinEnabled = false;
             this.MovePinAllowed = false;
             this.MovePinButtonText = "Allow Move Pin";
            // this.CreatorPin = new Pin();
@@ -167,13 +184,28 @@ namespace ActivityMaps.ViewModels
             this.OrigLoc = this.Loc;
 
             var position = new Position(this.Loc.Latitude, this.Loc.Longitude); // Latitude, Longitude
-            this.CreatorPin = new Pin
+            if (position != null)
             {
-                Type = PinType.Place,
-                Position = position,
-                Label = "Activity Location"
-                
-            };
+                this.CreatorPin = new Pin
+                {
+                    Type = PinType.Place,
+                    Position = position,
+                    Label = "Activity Location"
+
+                };
+            }
+            else
+            {
+                var pos = new Position(18.2, -66); // Latitude, Longitude
+                this.CreatorPin = new Pin
+                {
+                    Type = PinType.Place,
+                    Position = pos,
+                    Label = "Activity Location"
+
+                };
+            }
+            
         }
 
         public async Task LoadSearchPin()
@@ -232,9 +264,17 @@ namespace ActivityMaps.ViewModels
                 var address = this.locationtxt + " Puerto Rico"; //Get Country from user address database
                 var locations = await Geocoding.GetLocationsAsync(address);
                 
-
-                var location = locations?.FirstOrDefault();
                 
+                var location = locations?.FirstOrDefault();
+
+                //test
+                //geoCoder = new Geocoder();
+                //var fortMasonPosition = new Position(location.Latitude, location.Longitude);
+                //var possibleAddresses = await geoCoder.GetAddressesForPositionAsync(fortMasonPosition);
+                //var placetest = possibleAddresses?.FirstOrDefault();
+                //await Application.Current.MainPage.DisplayAlert("Test", placetest, "Ok");
+                //return;
+
                 if (location != null)
                 {
                     // Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");

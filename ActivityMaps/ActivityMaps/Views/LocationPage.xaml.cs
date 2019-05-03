@@ -74,11 +74,13 @@ namespace ActivityMaps.Views
                 MyMap.Pins.Add(pin2);
             }
 
-
-
                 //move Screen
                 MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(
                 new Position(location.Latitude, location.Longitude), Distance.FromMiles(3)));
+
+            //Enable Save Pin Button
+            locationVM.SavePinEnabled = true;
+
 
         }
 

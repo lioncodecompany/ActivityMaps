@@ -434,15 +434,23 @@ namespace ActivityMaps.ViewModels
                 return;
             }
 
+
+            string[] addrSplit = this.Placename.Split(',');
+            for (int i = 0; i < addrSplit.Length; i++)
+            {
+                addrSplit[i] = addrSplit[i].Trim();
+            }
             int len = RandomId.length.Next(5, 10);
-			Activity_Location activity_location = new Activity_Location()
-			{
-				Id = RandomId.RandomString(len),
-				Nameplace = this.Placename,
-				City = "",
-				State = "",
-				Country = "",
-				Latitude = (decimal)this.loc.Latitude,
+            Activity_Location activity_location = new Activity_Location()
+            {
+                Id = RandomId.RandomString(len),
+                Nameplace = addrSplit[0],
+                City = addrSplit[1],
+                State = "PR",//Cambiarlo luego con IF dinamico
+                Country = addrSplit[3],
+                ZipCode = addrSplit[2],
+                IsSecure = false,
+                Latitude = (decimal)this.loc.Latitude,
 				Longitude = (decimal)this.loc.Longitude,
 				CreatorOriginalPinLatitude = (decimal)this.origLoc.Latitude,
 				CreatorOriginalPinLongitude = (decimal)this.origLoc.Longitude
@@ -533,6 +541,7 @@ namespace ActivityMaps.ViewModels
             var fortMasonPosition = new Position(this.loc.Latitude, this.loc.Longitude);
             var possibleAddresses = await geoCoder.GetAddressesForPositionAsync(fortMasonPosition);
             this.Placename = possibleAddresses?.FirstOrDefault();
+
 
         }
 
