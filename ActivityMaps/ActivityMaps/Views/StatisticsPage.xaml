@@ -73,7 +73,7 @@
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="3" 
-                        Text="Average Age You Playres: " 
+                        Text="Average Age:  " 
                         TextColor="Black" 
                         VerticalOptions="Center">
                     </Label>
