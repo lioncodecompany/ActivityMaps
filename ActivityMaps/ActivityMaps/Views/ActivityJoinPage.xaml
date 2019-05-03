@@ -70,17 +70,18 @@
                         Grid.Row="0"
                             />
                     </Grid>
-                    <StackLayout>
+                    <StackLayout Orientation="Horizontal">
                     <Label 
  
                     FontAttributes="Bold"
                     HorizontalOptions="Start"
-                    Text="Description "
-                            />
+                    Text="Description: "
+                           TranslationY="15" />
                         <Editor
 
                     FontAttributes="Bold"
                     AutoSize="TextChanges"
+                            TranslationX="7"
                     HorizontalOptions="StartAndExpand"
                     Text="{Binding Description, Mode=TwoWay}"
                     IsReadOnly="True"
@@ -155,10 +156,11 @@
                     
                     Text="{Binding Start, Mode=TwoWay}"
                     IsReadOnly="True"
-                            HorizontalOptions="End"
+                            
                         Grid.Column="1"
                         Grid.Row="0"
                             TranslationY="7"
+                            TranslationX="-25"
                             />
                         <Label 
                          Grid.Column="0"
@@ -171,10 +173,11 @@
                          Grid.Column="1"
                          Grid.Row="1"
                          FontAttributes="Bold"
-                         HorizontalOptions="End"
+                         
                     Text="{Binding End, Mode=TwoWay}"
                     IsReadOnly="True"
                             TranslationY="7"
+                            TranslationX="-25"
                     />
                     </Grid>
                     <Label Text="{Binding Participantes}" 

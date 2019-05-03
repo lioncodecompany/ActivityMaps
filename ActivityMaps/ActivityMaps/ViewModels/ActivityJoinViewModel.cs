@@ -737,11 +737,11 @@ namespace ActivityMaps.ViewModels
 						avg += System.Convert.ToInt32(arr[i].Rating);
 					}
 
-					UserRating = "User Rating: " + String.Format("{0:0.0}", (avg / arr.Length));
+					UserRating = "Creator Rating: " + String.Format("{0:0.0}", (avg / arr.Length));
 				}
 				else
 				{
-					UserRating = "User Rating: 0.0";
+					UserRating = "Creator Rating: 0.0";
 				}
 			}
 			catch (Exception e)
