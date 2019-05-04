@@ -30,6 +30,7 @@ namespace ActivityMaps.Views
 
             locationVM.MyEvent += (someParameter) => DoSomething(someParameter);
             locationVM.movePinEvent += (someParameter) => AllowMovePin(someParameter);
+            locationVM.SafeEvent += () => DoSafePlace();
 
 
 
@@ -43,6 +44,24 @@ namespace ActivityMaps.Views
         private async void DoSomething(string str)
         {
             await LoadSearchPin();
+        }
+        private async void DoSafePlace()
+        {
+            await LoadSafePin();
+        }
+
+        async Task LoadSafePin()
+        {
+            var locationVM = LocationViewModel.GetInstance();
+            await locationVM.LoadSafePin();
+            var pin = locationVM.CreatorPin;
+            var location = locationVM.Loc;
+            var position = new Position(location.Latitude, location.Longitude);
+            MyMap.Pins[0].Position = position;
+
+            //move Screen
+            MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(
+                new Position(location.Latitude, location.Longitude), Distance.FromMiles(3)));
         }
 
         async void MyPosition()

@@ -434,6 +434,16 @@ namespace ActivityMaps.ViewModels
                 return;
             }
 
+            if ((this.StartDay.Date + this.StartHour) < DateTime.Now)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                   "Message",
+                   "Past date is not allowed.",
+                   "Ok");
+                this.StartHour = DateTime.Now.TimeOfDay;
+                return;
+            }
+
 
             string[] addrSplit = this.Placename.Split(',');
             for (int i = 0; i < addrSplit.Length; i++)
@@ -445,10 +455,10 @@ namespace ActivityMaps.ViewModels
             {
                 Id = RandomId.RandomString(len),
                 Nameplace = addrSplit[0],
-                City = addrSplit[1],
+                City = addrSplit.Length == 5 ? addrSplit[2] : addrSplit[1],
                 State = "PR",//Cambiarlo luego con IF dinamico
-                Country = addrSplit[3],
-                ZipCode = addrSplit[2],
+                Country = addrSplit.Length == 5 ? addrSplit[4] : addrSplit[3],
+                ZipCode = addrSplit.Length == 5 ? addrSplit[3] : addrSplit[2],
                 IsSecure = false,
                 Latitude = (decimal)this.loc.Latitude,
 				Longitude = (decimal)this.loc.Longitude,
@@ -540,7 +550,14 @@ namespace ActivityMaps.ViewModels
             geoCoder = new Geocoder();
             var fortMasonPosition = new Position(this.loc.Latitude, this.loc.Longitude);
             var possibleAddresses = await geoCoder.GetAddressesForPositionAsync(fortMasonPosition);
+            
             this.Placename = possibleAddresses?.FirstOrDefault();
+            
+            //if (possibleAddresses.size() > 0)
+            //{
+            //    System.out.println(addresses.get(0).getLocality());
+            //    System.out.println(addresses.get(0).getCountryName());
+            //}
 
 
         }

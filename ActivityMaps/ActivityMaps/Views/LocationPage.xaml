@@ -17,10 +17,10 @@
             <Picker
             Title="Safe places"
             HorizontalOptions="EndAndExpand"
-            WidthRequest="150"
-            ItemsSource="{Binding Filters}" 
-            ItemDisplayBinding="{Binding Name}" 
-            SelectedItem="{Binding SelectedFilter}">
+            WidthRequest="250"
+            ItemsSource="{Binding Locations,Mode=TwoWay}" 
+            ItemDisplayBinding="{Binding Nameplace,Mode=TwoWay}" 
+            SelectedItem="{Binding SelectedSafeLoc,Mode=TwoWay}">
             </Picker>
             <maps:Map
                 x:Name="MyMap"

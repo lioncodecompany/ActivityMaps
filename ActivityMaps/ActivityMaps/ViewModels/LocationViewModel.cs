@@ -22,8 +22,12 @@ namespace ActivityMaps.ViewModels
         public delegate void MyEventAction(string someParameter);
         public event MyEventAction MyEvent;
 
+        public delegate void mySafeEvent();
+        public event mySafeEvent SafeEvent;
+
         public delegate void MovePinEvent(bool AllowMovePin);
         public event MovePinEvent movePinEvent;
+        private Activity_Location selectedFilter;
         private Pin creatorPin;
         private Location loc; //Activity Location
         private string locationtxt;
@@ -33,9 +37,12 @@ namespace ActivityMaps.ViewModels
         private List<User> userQuery;
         private User_Log userLog;
         private ObservableCollection<Activity_Category> categories;
+        private ObservableCollection<Activity_Location> filters; //pickers safe location
         private Activity activity;
         private int pickerCatIndex;
         private bool savePinEnabled;
+        private ObservableCollection<Activity_Location> locations; //pickers safe location
+        private Activity_Location selectedSafeLoc;
 
 
 
@@ -90,7 +97,51 @@ namespace ActivityMaps.ViewModels
             get { return this.movePinButtonText; }
             set { SetValue(ref this.movePinButtonText, value); }
         }
-        
+
+        public ObservableCollection<Activity_Location> Filters
+        {
+
+
+            get { return this.filters; }
+            set { SetValue(ref this.filters, value); }
+
+
+        }
+        public ObservableCollection<Activity_Location> Locations
+        {
+
+
+            get { return this.locations; }
+            set { SetValue(ref this.locations, value); }
+
+
+        }
+
+        public Activity_Location SelectedSafeLoc
+        {
+            get { return this.selectedSafeLoc; }
+            set
+            {
+                
+               SetValue(ref this.selectedSafeLoc, value);
+                this.Loc.Latitude = (double)this.selectedSafeLoc.Latitude;
+                this.Loc.Longitude = (double)this.selectedSafeLoc.Longitude;
+                SafeEvent?.Invoke();
+                //SafePin();
+
+            }
+        }
+
+        //private async void SafePin()
+        //{
+        //     LoadSafePin();
+        //}
+
+        public Activity_Location SelectedFilter
+        {
+            get { return this.selectedFilter; }
+            set { SetValue(ref this.selectedFilter, value); }
+        }
 
 
         public Pin CreatorPin
@@ -142,7 +193,72 @@ namespace ActivityMaps.ViewModels
             this.categories = categories;
             this.activity = act;
             this.pickerCatIndex = pickerCatIndex;
+
+            LoadSafeLocation();
         }
+
+        private async void LoadSafeLocation()
+        {
+            try
+            {
+                
+                var query = await App.MobileService.GetTable<Activity_Location>().Where(p => p.IsSecure == false).ToListAsync();
+                this.Locations = new ObservableCollection<Activity_Location>();
+
+                var arr2 = query.ToArray();
+                for (int idx = 0; idx < arr2.Length; idx++)
+                {
+
+                    this.Locations.Add(new Activity_Location
+                    {
+                        Id = arr2[idx].Id,
+                        Nameplace = arr2[idx].Nameplace,
+                        City = arr2[idx].City,
+                        State = arr2[idx].State,
+                        Country = arr2[idx].Country,
+                        Latitude = arr2[idx].Latitude,
+                        Longitude = arr2[idx].Longitude
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+            }
+
+            //var query = from act
+            //                         in Activities
+            //            join cat in Categories on act.Activity_Cat_Code equals cat.Id
+            //            join loc in Locations on act.Activity_Loc_Id equals loc.Id
+            //            where (act.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+            //            ||
+            //            (cat.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+            //            //||
+            //            //(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+            //            select new Activity_Location
+
+            //            {
+            //                Id = act.Id,
+            //                Name = act.Name,
+            //                CategoryName = cat.Name,
+            //                Description = act.Description,
+            //                LocationTown = loc.City != "" ? "Location: " + loc.City : "Location: Unknown",
+            //                Created_Date = act.Created_Date,
+            //                Activity_Loc_Id = act.Activity_Loc_Id,
+            //                IsService = act.IsService,
+            //                Start_Act_Datetime = act.Start_Act_Datetime,
+            //                End_Act_Datetime = act.End_Act_Datetime,
+            //                Color = act.IsService ? "Green" : "Gray",
+            //                CountPeople = (from users in users_entered
+            //                               where (users.Activity_Code_FK2.Equals(act.Id))
+            //                               select users).Count()
+
+
+            //            };
+            //this.ActivityResult = query.ToList();
+        }
+
         public LocationViewModel()
         {
             instance = this;
@@ -217,6 +333,16 @@ namespace ActivityMaps.ViewModels
 
         }
 
+        public async Task LoadSafePin()
+        {
+
+            
+            var position = new Position(this.Loc.Latitude, this.Loc.Longitude); // Latitude, Longitude
+            this.CreatorPin.Position = position;
+
+
+        }
+
         public async void CallSearchLocationPin()
         {
             
@@ -252,11 +378,14 @@ namespace ActivityMaps.ViewModels
 
 
 
+        //public async void SafeLocation()
+        //{
+
+        //}
 
 
 
-
-        public async void SearchLocation()
+            public async void SearchLocation()
         {
             //Search Location
             try
