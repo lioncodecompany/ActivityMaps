@@ -184,8 +184,11 @@ namespace ActivityMaps.ViewModels
                     
                     SetValue(ref this.startDay, value);
                     //DateTime date1 = DateTime.FromDays(1);
-                    this.FinishDay = this.startDay;
-                    ValidateDatetime();
+                    if (this.FinishDay < this.startDay){
+                        this.FinishDay = this.startDay;
+                        ValidateDatetime();
+                    }
+                    
                 }
             }
         }

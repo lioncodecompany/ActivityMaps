@@ -202,7 +202,7 @@ namespace ActivityMaps.ViewModels
             try
             {
                 
-                var query = await App.MobileService.GetTable<Activity_Location>().Where(p => p.IsSecure == false).ToListAsync();
+                var query = await App.MobileService.GetTable<Activity_Location>().Where(p => p.IsSecure == true).ToListAsync();
                 this.Locations = new ObservableCollection<Activity_Location>();
 
                 var arr2 = query.ToArray();
