@@ -473,6 +473,7 @@ namespace ActivityMaps.ViewModels
                                 CategoryName = cat.Name,
                                 Description = act.Description,
                                 LocationTown = loc.City != "" ? "Location: " + loc.City : "Location: Unknown",
+								Town = loc.City,
                                 Created_Date = act.Created_Date,
                                 Activity_Loc_Id = act.Activity_Loc_Id,
                                 IsService = act.IsService,
@@ -507,12 +508,16 @@ namespace ActivityMaps.ViewModels
 								CategoryName = cat.Name,
 								Description = act.Description,
 								LocationTown = loc.City != "" ? "Location: " + loc.City : "Location: Unknow",
+								Town = loc.City,
 								Created_Date = act.Created_Date,
 								Activity_Loc_Id = act.Activity_Loc_Id,
 								IsService = act.IsService,
 								Start_Act_Datetime = act.Start_Act_Datetime,
 								End_Act_Datetime = act.End_Act_Datetime,
-								Color = act.IsService ? "Green" : "Gray"
+								Color = act.IsService ? "Green" : "Gray",
+								CountPeople = (from users in users_entered
+											   where (users.Activity_Code_FK2.Equals(act.Id))
+											   select users).Count()
 
 
 							};
@@ -612,7 +617,7 @@ namespace ActivityMaps.ViewModels
 
 					double day = DateTime.Now.Day - activities[i].Created_Date.Day;
 					double hour = DateTime.Now.Hour - activities[i].Created_Date.Hour;
-					if (querry[0].City.ToUpper().Equals(activities[i].LocationTown.ToUpper()) && (hour <= 1 && hour >= 0) 
+					if (querry[0].City.ToUpper().Equals(activities[i].Town.ToUpper()) && (hour <= 1 && hour >= 0) 
 						&& (day < 1 && day >= 0) && catCode[0].Name == activities[i].CategoryName)
 					{
 						alert = true;

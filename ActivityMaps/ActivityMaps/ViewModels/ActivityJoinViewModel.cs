@@ -378,7 +378,7 @@ namespace ActivityMaps.ViewModels
 				await Application.Current.MainPage.DisplayAlert("Error", "You are not on the lobby", "Ok");
 				return;
 			}
-
+			getFileUserEntry();
 
 		}
 
@@ -481,12 +481,12 @@ namespace ActivityMaps.ViewModels
 			this.IsRunning = true;
 			var userEntry = await App.MobileService.GetTable<User_Entered>().Where(p => !p.deleted && p.Activity_Code_FK2 == selectedActivity.Id  && !p.IsCreator).ToListAsync();
 
-			Participantes = "Numero de Participantes: " + (userEntry.Count + 1);
+			Participantes = "Number of participants " + (userEntry.Count + 1);
 			if (userEntry.Count > 0)
 			{
 				try
 				{
-					var querry = await App.MobileService.GetTable<User_Entered>().Where(entry => !entry.IsCreator && !entry.deleted && entry.Activity_Code_FK2 == selectedActivity.Id && !entry.deleted).ToListAsync();
+					var querry = await App.MobileService.GetTable<User_Entered>().Where(entry => !entry.IsCreator && !entry.deleted && entry.Activity_Code_FK2 == selectedActivity.Id && !entry.deleted && entry.Status == "in").ToListAsync();
 					UserEntry = new ObservableCollection<User_Entered>();
 					var arr = querry.ToArray();
 					for (int idx = 0; idx < arr.Length; idx++)
@@ -661,6 +661,10 @@ namespace ActivityMaps.ViewModels
 				//	}
 
 
+			}
+			else
+			{
+				this.UserList = null;
 			}
 
 			

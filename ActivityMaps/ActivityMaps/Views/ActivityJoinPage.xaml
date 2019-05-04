@@ -70,11 +70,11 @@
                         Grid.Row="0"
                             />
                     </Grid>
-                    <StackLayout Orientation="Horizontal">
+                    <StackLayout>
                     <Label 
  
                     FontAttributes="Bold"
-                    HorizontalOptions="Start"
+                    
                     Text="Description: "
                            TranslationY="15" />
                         <Editor
@@ -82,7 +82,7 @@
                     FontAttributes="Bold"
                     AutoSize="TextChanges"
                             TranslationX="7"
-                    HorizontalOptions="StartAndExpand"
+                    
                     Text="{Binding Description, Mode=TwoWay}"
                     IsReadOnly="True"
                     />
@@ -216,17 +216,12 @@
                             </DataTemplate>
                         </control:HorizontalList.ItemTemplate>
                     </control:HorizontalList>
-                    <ActivityIndicator 
-                    IsRunning="{Binding IsRunning, Mode=TwoWay}"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center"
-                    Color="Navy"
-                    >
-                    </ActivityIndicator>
+                    
                 </StackLayout>
                 
                 <StackLayout Orientation="Horizontal"
-                             HorizontalOptions="Center">
+                             HorizontalOptions="Center"
+                             TranslationY="10">
                     <Button
                             
                             BackgroundColor="Navy"
@@ -254,6 +249,13 @@
                             >
                     </Button>
                 </StackLayout>
+                <ActivityIndicator 
+                    IsRunning="{Binding IsRunning, Mode=TwoWay}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Color="Navy"
+                    >
+                </ActivityIndicator>
             </StackLayout>
             
             
