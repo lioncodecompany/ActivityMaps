@@ -470,8 +470,32 @@ namespace ActivityMaps.ViewModels
 
 
 			};
+            try
+            {
+                //find duplicate
+                var query = await App.MobileService.GetTable<Activity_Location>().Where(
+                    p => p.Nameplace == activity_location.Nameplace
+                    && p.City == activity_location.City
+                    && p.ZipCode == activity_location.ZipCode
+                    ).ToListAsync();
+                if (query.Count == 0)
+                {
+                    await App.MobileService.GetTable<Activity_Location>().InsertAsync(activity_location);
+                }
+                else
+                {
 
-			Activity activity = new Activity()
+                    var location = query?.FirstOrDefault();
+                    activity_location.Id = location.Id;
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+            }
+
+            Activity activity = new Activity()
             {
                 Id = RandomId.RandomString(len),
                 Name = this.ActivityName,
@@ -521,11 +545,11 @@ namespace ActivityMaps.ViewModels
                 UserJoin = userQuery[0].Id,
                 UserCreator = userQuery[0].Id
             };
-           
+
             try
             {
-				await App.MobileService.GetTable<Activity_Location>().InsertAsync(activity_location);
-				await App.MobileService.GetTable<Activity>().InsertAsync(activity);
+
+                await App.MobileService.GetTable<Activity>().InsertAsync(activity);
                 await App.MobileService.GetTable<Activity_History>().InsertAsync(activityHistory);
                 await App.MobileService.GetTable<User_Log>().InsertAsync(userCreating);
                 await App.MobileService.GetTable<User_Entered>().InsertAsync(entry);
