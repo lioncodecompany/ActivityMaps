@@ -463,8 +463,8 @@ namespace ActivityMaps.ViewModels
                             where (act.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
                             ||
                             (cat.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
-                            //||
-                            //(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                            ||
+                            (loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
                             select new Activity_Child
 
                             {
@@ -498,8 +498,8 @@ namespace ActivityMaps.ViewModels
 							where (act.Name.ToUpper().Contains(this.Activitytxt.ToUpper()))
 							&&
 							(cat.Name.ToUpper().StartsWith(this.SelectedFilter.Name.ToUpper()))
-							//||
-							//(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+							||
+							(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
 							select new Activity_Child
 
 							{

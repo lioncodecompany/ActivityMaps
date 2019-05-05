@@ -745,7 +745,7 @@ namespace ActivityMaps.ViewModels
 				}
 				else
 				{
-					UserRating = "Creator Rating: 0.0";
+					UserRating = "Not yet been rated";
 				}
 			}
 			catch (Exception e)
@@ -771,7 +771,7 @@ namespace ActivityMaps.ViewModels
 				}
 				else
 				{
-					LocationRating = "Location Rating: 0.0";
+					LocationRating = "not yet been rated";
 				}
 				var query1 = await App.MobileService.GetTable<Activity_Location>().Where(p => p.Id == this.LocationCode).ToListAsync();
 				if (query1[0].IsSecure)
