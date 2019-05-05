@@ -481,7 +481,7 @@ namespace ActivityMaps.ViewModels
 			this.IsRunning = true;
 			var userEntry = await App.MobileService.GetTable<User_Entered>().Where(p => !p.deleted && p.Activity_Code_FK2 == selectedActivity.Id  && !p.IsCreator).ToListAsync();
 
-			Participantes = "Number of participants " + (userEntry.Count + 1);
+			Participantes = "Number of participants: " + (userEntry.Count + 1);
 			if (userEntry.Count > 0)
 			{
 				try
@@ -772,6 +772,11 @@ namespace ActivityMaps.ViewModels
 				else
 				{
 					LocationRating = "Location Rating: 0.0";
+				}
+				var query1 = await App.MobileService.GetTable<Activity_Location>().Where(p => p.Id == this.LocationCode).ToListAsync();
+				if (query1[0].IsSecure)
+				{
+					LocationRating = "Location Rating: Safe";
 				}
 			}
 			catch (Exception e)
