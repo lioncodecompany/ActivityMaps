@@ -55,9 +55,15 @@ namespace ActivityMaps.Views
             var locationVM = LocationViewModel.GetInstance();
             await locationVM.LoadSafePin();
             var pin = locationVM.CreatorPin;
+            locationVM.Locationtxt = "";
             var location = locationVM.Loc;
             var position = new Position(location.Latitude, location.Longitude);
             MyMap.Pins[0].Position = position;
+
+            if (MovePinAllowed)
+            {
+                MovePinAllowed = false;
+            }
 
             //move Screen
             MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(
@@ -118,6 +124,10 @@ namespace ActivityMaps.Views
             MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(
                 new Position(location.Latitude, location.Longitude), Distance.FromMiles(3)));
 
+            //Default Picker Safe
+            PickerSafe.SelectedIndex = -1;
+ 
+
         }
 
         void MovePin()
@@ -138,6 +148,10 @@ namespace ActivityMaps.Views
             {
                 Console.WriteLine(MyMap.VisibleRegion.Center + "    ****TEST CLICKED*****");
             }
+
+            //Default Picker Safe
+            
+           
         }
 
         private void MyMap_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -145,10 +159,14 @@ namespace ActivityMaps.Views
 
             if (e.PropertyName == "VisibleRegion" && MyMap.VisibleRegion != null && MovePinAllowed)
             {
+                PickerSafe.SelectedIndex = -1;
                 MovePin();
+                
             }
 
         }
+
+
 
         //public void LoadSearchLocation()
         //{

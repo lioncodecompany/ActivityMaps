@@ -15,6 +15,7 @@
                 <!--SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}-->
             </SearchBar>
             <Picker
+                x:Name ="PickerSafe"
             Title="Safe places"
             HorizontalOptions="EndAndExpand"
             WidthRequest="250"

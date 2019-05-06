@@ -124,10 +124,15 @@ namespace ActivityMaps.ViewModels
             {
                 
                SetValue(ref this.selectedSafeLoc, value);
-                this.Loc.Latitude = (double)this.selectedSafeLoc.Latitude;
-                this.Loc.Longitude = (double)this.selectedSafeLoc.Longitude;
-                SafeEvent?.Invoke();
-                //SafePin();
+                if (this.selectedSafeLoc != null)
+                {
+                    this.Loc.Latitude = (double)this.selectedSafeLoc.Latitude;
+                    this.Loc.Longitude = (double)this.selectedSafeLoc.Longitude;
+                    SafeEvent?.Invoke();
+                }
+                
+                    //SafePin();
+                
 
             }
         }
