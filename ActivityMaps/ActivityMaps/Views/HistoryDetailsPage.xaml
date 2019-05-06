@@ -114,7 +114,7 @@
                         HorizontalOptions="StartAndExpand"
                         VerticalOptions="Start"
                         FontAttributes="Bold"
-                        Text="This activity is a service?">
+                        Text="Is this activity a service?">
                     </Label>
 
                     <Switch 
