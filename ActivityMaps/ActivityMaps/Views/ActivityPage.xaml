@@ -125,7 +125,7 @@
                                              
                                             Grid.Row="0"
                                             Grid.Column="0" 
-                                            Text="{Binding Start_Act_Datetime, Mode=TwoWay}"
+                                            Text="{Binding StartActFormat, Mode=TwoWay}"
                                             FontSize="12"
                                             VerticalOptions="CenterAndExpand"/>
                                         <Label

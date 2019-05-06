@@ -42,7 +42,7 @@ namespace ActivityMaps.ViewModels
 		Filter selectedFilter;
 		User_Equipment equipment;
         private bool isActivityFound;
-
+        private string startActFormat;
 
         private List<User> userQuery;
 		private User_Entered entryUser;
@@ -84,13 +84,24 @@ namespace ActivityMaps.ViewModels
 
 			}
 		}
-		public string CategoryName
-		{
-			get { return this.categoryName; }
+
+        public string CategoryName
+        {
+            get { return this.categoryName; }
+            set
+            {
+
+                SetValue(ref this.categoryName, value);
+
+            }
+        }
+        public string StartActFormat
+        {
+			get { return this.startActFormat; }
 			set
 			{
 
-				SetValue(ref this.categoryName, value);
+				SetValue(ref this.startActFormat, value);
 
 			}
 		}
@@ -465,6 +476,7 @@ namespace ActivityMaps.ViewModels
                             (cat.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
                             ||
                             (loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                            orderby act.Start_Act_Datetime ascending
                             select new Activity_Child
 
                             {
@@ -478,6 +490,9 @@ namespace ActivityMaps.ViewModels
                                 Activity_Loc_Id = act.Activity_Loc_Id,
                                 IsService = act.IsService,
                                 Start_Act_Datetime = act.Start_Act_Datetime,
+                                StartActFormat = act.Start_Act_Datetime.Date == DateTime.Now.Date ? "Today " + act.Start_Act_Datetime.ToString("h:mm tt") :
+                                                 act.Start_Act_Datetime.Date == DateTime.Now.AddDays(1).Date ? "Tomorrow " + act.Start_Act_Datetime.ToString("h:mm tt") :
+                                                 DateTime.Now.ToString("ddd, MMM d yyyy h:mm tt"),
                                 End_Act_Datetime = act.End_Act_Datetime,
                                 Color = act.IsService ? "Green" : "Gray",
                                 CountPeople = (from users in users_entered
@@ -500,7 +515,8 @@ namespace ActivityMaps.ViewModels
 							(cat.Name.ToUpper().StartsWith(this.SelectedFilter.Name.ToUpper()))
 							||
 							(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
-							select new Activity_Child
+                            orderby act.Start_Act_Datetime ascending
+                            select new Activity_Child
 
 							{
 								Id = act.Id,
@@ -513,7 +529,10 @@ namespace ActivityMaps.ViewModels
 								Activity_Loc_Id = act.Activity_Loc_Id,
 								IsService = act.IsService,
 								Start_Act_Datetime = act.Start_Act_Datetime,
-								End_Act_Datetime = act.End_Act_Datetime,
+                                StartActFormat = act.Start_Act_Datetime.Date == DateTime.Now.Date ? "Today" : 
+                                                 act.Start_Act_Datetime.Date == DateTime.Now.AddDays(1).Date ? "Tomorrow" :
+                                                 DateTime.Now.ToString("ddd,MMM d yyyy h:mm tt"),
+                                End_Act_Datetime = act.End_Act_Datetime,
 								Color = act.IsService ? "Green" : "Gray",
 								CountPeople = (from users in users_entered
 											   where (users.Activity_Code_FK2.Equals(act.Id))

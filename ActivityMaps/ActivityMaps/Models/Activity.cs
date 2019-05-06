@@ -20,5 +20,6 @@ namespace ActivityMaps.Models
         public string Activity_Loc_Id { get; set; }
 		public string Color{ get; set; }
         public int CountPeople { get; set; }
+        public string StartActFormat { get; set; }
     }
 }
