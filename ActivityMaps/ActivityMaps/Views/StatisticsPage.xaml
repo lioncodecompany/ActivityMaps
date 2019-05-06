@@ -28,7 +28,7 @@
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="0" 
-                        Text="Completed activities: " 
+                        Text="Activities Completed: " 
                         TextColor="Black" 
                         VerticalOptions="Center">
                     </Label>
@@ -156,7 +156,7 @@
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="0" 
-                        Text="Total Created Activities: " 
+                        Text="Total Activities Created: " 
                         TextColor="Black" 
                         VerticalOptions="Center">
                     </Label>
@@ -170,7 +170,7 @@
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="1" 
-                        Text="Activity Most Played: " 
+                        Text="Most Played Activity: " 
                         TextColor="Black" 
                         VerticalOptions="Center"
                        >
@@ -186,7 +186,7 @@
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="2" 
-                        Text="Location Most Visited: " 
+                        Text="Most Visited Location: " 
                         TextColor="Black" 
                         VerticalOptions="Center">
                     </Label>

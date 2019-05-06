@@ -90,7 +90,7 @@
                     <Label 
                         Grid.Column="0" 
                         Grid.Row="4" 
-                        Text="Completed activities: " 
+                        Text="Activities Completed: " 
                         TextColor="Black" 
                         VerticalOptions="Center">
                     </Label>

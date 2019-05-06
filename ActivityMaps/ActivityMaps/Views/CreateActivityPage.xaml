@@ -128,7 +128,7 @@
                     <Label
                         HorizontalOptions="StartAndExpand"
                         VerticalOptions="Start"
-                        Text="This activity will be a service?">
+                        Text="Is this activity a service?">
                     </Label>
 
                     <Switch 
