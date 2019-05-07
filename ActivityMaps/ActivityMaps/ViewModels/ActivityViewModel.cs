@@ -529,8 +529,8 @@ namespace ActivityMaps.ViewModels
 								Activity_Loc_Id = act.Activity_Loc_Id,
 								IsService = act.IsService,
 								Start_Act_Datetime = act.Start_Act_Datetime,
-                                StartActFormat = act.Start_Act_Datetime.Date == DateTime.Now.Date ? "Today" : 
-                                                 act.Start_Act_Datetime.Date == DateTime.Now.AddDays(1).Date ? "Tomorrow" :
+                                StartActFormat = act.Start_Act_Datetime.Date == DateTime.Now.Date ? "Today " + act.Start_Act_Datetime.ToString("h:mm tt") : 
+                                                 act.Start_Act_Datetime.Date == DateTime.Now.AddDays(1).Date ? "Tomorrow " + act.Start_Act_Datetime.ToString("h:mm tt") :
                                                  DateTime.Now.ToString("ddd,MMM d yyyy h:mm tt"),
                                 End_Act_Datetime = act.End_Act_Datetime,
 								Color = act.IsService ? "Green" : "Gray",
