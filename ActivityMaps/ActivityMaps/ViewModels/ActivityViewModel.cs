@@ -513,7 +513,7 @@ namespace ActivityMaps.ViewModels
 							where (act.Name.ToUpper().Contains(this.Activitytxt.ToUpper()))
 							&&
 							(cat.Name.ToUpper().StartsWith(this.SelectedFilter.Name.ToUpper()))
-							||
+							&&
 							(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
                             orderby act.Start_Act_Datetime ascending
                             select new Activity_Child
