@@ -511,11 +511,11 @@ namespace ActivityMaps.ViewModels
 									  in Activities
 							join cat in Categories on act.Activity_Cat_Code equals cat.Id
 							join loc in Locations on act.Activity_Loc_Id equals loc.Id
-							where (act.Name.ToUpper().Contains(this.Activitytxt.ToUpper()))
-							&&
-							(cat.Name.ToUpper().StartsWith(this.SelectedFilter.Name.ToUpper()))
-							&&
-							(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+							where (act.Name.ToUpper().Contains(this.Activitytxt.ToUpper()) &&
+                            (cat.Name.ToUpper().StartsWith(this.SelectedFilter.Name.ToUpper())))
+							||
+							(loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()) &&
+                            (cat.Name.ToUpper().StartsWith(this.SelectedFilter.Name.ToUpper())))
                             orderby act.Start_Act_Datetime ascending
                             select new Activity_Child
 
