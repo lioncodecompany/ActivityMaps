@@ -485,8 +485,9 @@ namespace ActivityMaps.ViewModels
                 else
                 {
 
-                    var location = query?.FirstOrDefault();
+                    var location = query?.FirstOrDefault();                                   
                     activity_location.Id = location.Id;
+
                 }
                
             }

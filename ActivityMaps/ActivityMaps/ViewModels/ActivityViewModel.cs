@@ -370,7 +370,7 @@ namespace ActivityMaps.ViewModels
                 var arr2 = query2.ToArray();
                 for (int idx = 0; idx < arr2.Length; idx++)
                 {
-
+                   
                         Locations.Add(new Activity_Location
                         {
                             Id = arr2[idx].Id,
@@ -404,37 +404,38 @@ namespace ActivityMaps.ViewModels
 				await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
 			}
             //Locations = Activity_LocationData.Locations;
-            try
-            {
+            //try
+            //{
 
-                var query2 = await App.MobileService.GetTable<Activity_Location>().ToListAsync();
+            //    var query2 = await App.MobileService.GetTable<Activity_Location>().ToListAsync();
 
-                Locations = new ObservableCollection<Activity_Location>();
-
-
-                var arr2 = query2.ToArray();
-                for (int idx = 0; idx < arr2.Length; idx++)
-                {
-
-                    Locations.Add(new Activity_Location
-                    {
-                        Id = arr2[idx].Id,
-                        Nameplace = arr2[idx].Nameplace,
-                        City = arr2[idx].City,
-                        State = arr2[idx].State,
-                        Country = arr2[idx].Country,
-                        Latitude = arr2[idx].Latitude,
-                        Longitude = arr2[idx].Longitude
-                    });
-                }
+            //    Locations = new ObservableCollection<Activity_Location>();
 
 
+            //    var arr2 = query2.ToArray();
+            //    for (int idx = 0; idx < arr2.Length; idx++)
+            //    {
 
-            }
-            catch (Exception ex)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
-            }
+            //        await Application.Current.MainPage.DisplayAlert("Error", arr2[idx].Id, "Ok");
+            //        Locations.Add(new Activity_Location
+            //        {
+            //            Id = arr2[idx].Id,
+            //            Nameplace = arr2[idx].Nameplace,
+            //            City = arr2[idx].City,
+            //            State = arr2[idx].State,
+            //            Country = arr2[idx].Country,
+            //            Latitude = arr2[idx].Latitude,
+            //            Longitude = arr2[idx].Longitude
+            //        });
+            //    }
+
+
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
+            //}
 
 
             try
@@ -473,9 +474,9 @@ namespace ActivityMaps.ViewModels
                             join loc in Locations on act.Activity_Loc_Id equals loc.Id
                             where (act.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
                             ||
-                            (cat.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                           (cat.Name.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
                             ||
-                            (loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
+                           (loc.City.ToUpper().StartsWith(this.Activitytxt.ToUpper()))
                             orderby act.Start_Act_Datetime ascending
                             select new Activity_Child
 
