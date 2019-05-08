@@ -493,7 +493,7 @@ namespace ActivityMaps.ViewModels
                                 Start_Act_Datetime = act.Start_Act_Datetime,
                                 StartActFormat = act.Start_Act_Datetime.Date == DateTime.Now.Date ? "Today " + act.Start_Act_Datetime.ToString("h:mm tt") :
                                                  act.Start_Act_Datetime.Date == DateTime.Now.AddDays(1).Date ? "Tomorrow " + act.Start_Act_Datetime.ToString("h:mm tt") :
-                                                 DateTime.Now.ToString("ddd, MMM d yyyy h:mm tt"),
+                                                 act.Start_Act_Datetime.ToString("ddd, MMM d yyyy h:mm tt"),
                                 End_Act_Datetime = act.End_Act_Datetime,
                                 Color = act.IsService ? "Green" : "Gray",
                                 CountPeople = (from users in users_entered
@@ -532,7 +532,7 @@ namespace ActivityMaps.ViewModels
 								Start_Act_Datetime = act.Start_Act_Datetime,
                                 StartActFormat = act.Start_Act_Datetime.Date == DateTime.Now.Date ? "Today " + act.Start_Act_Datetime.ToString("h:mm tt") : 
                                                  act.Start_Act_Datetime.Date == DateTime.Now.AddDays(1).Date ? "Tomorrow " + act.Start_Act_Datetime.ToString("h:mm tt") :
-                                                 DateTime.Now.ToString("ddd,MMM d yyyy h:mm tt"),
+                                                 act.Start_Act_Datetime.ToString("ddd,MMM d yyyy h:mm tt"),
                                 End_Act_Datetime = act.End_Act_Datetime,
 								Color = act.IsService ? "Green" : "Gray",
 								CountPeople = (from users in users_entered
