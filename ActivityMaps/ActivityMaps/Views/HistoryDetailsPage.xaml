@@ -60,19 +60,19 @@
                         Grid.Row="0"
                             />
                     </Grid>
-                    <StackLayout Orientation="Horizontal">
+                    <StackLayout>
                         <Label 
                             TranslationY="15"
                     FontAttributes="Bold"
                     HorizontalOptions="Start"
-                    Text="Description: "
+                    Text="Description "
                             />
                         <Editor
 
                     FontAttributes="Bold"
-                            TranslationX="34"
+                           
                     AutoSize="TextChanges"
-                    HorizontalOptions="Center"
+             
                     Text="{Binding Description, Mode=TwoWay}"
                     IsReadOnly="True"
                     />
@@ -96,10 +96,11 @@
                     Text="Location: "
                      TranslationY="15"/>
 
-                        <Editor
+                        <Entry
                             Grid.Column ="1"
                             Grid.Row="0"
                     IsReadOnly="True"
+                            
                             FontAttributes="Bold"
                     HorizontalOptions="Start"
                     Text="{Binding LocationTown, Mode=TwoWay} "

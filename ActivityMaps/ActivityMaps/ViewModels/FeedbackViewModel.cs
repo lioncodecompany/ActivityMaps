@@ -329,7 +329,7 @@ namespace ActivityMaps.ViewModels
 			{
 
 				await App.MobileService.GetTable<Location_Rating>().InsertAsync(feedback);
-				await Application.Current.MainPage.DisplayAlert("Exito", "El Feedback fue insertado", "Ok");
+				await Application.Current.MainPage.DisplayAlert("Exito", "Done!", "Ok");
 				this.IsLocationVisible = true;
 
 
@@ -433,7 +433,7 @@ namespace ActivityMaps.ViewModels
 			{
 
 				await App.MobileService.GetTable<User_Rating>().InsertAsync(feedback);
-				await Application.Current.MainPage.DisplayAlert("Exito", "El Feedback fue insertado", "Ok");
+				await Application.Current.MainPage.DisplayAlert("Exito", "Done!", "Ok");
 				this.IsUserVisible = true;
 
 
@@ -521,7 +521,7 @@ namespace ActivityMaps.ViewModels
 			{
 				
 				await App.MobileService.GetTable<Feedback>().InsertAsync(feedback);
-				await Application.Current.MainPage.DisplayAlert("Exito", "El Feedback fue insertado", "Ok");
+				await Application.Current.MainPage.DisplayAlert("Exito", "Done!", "Ok");
 				this.IsFeedbackVisible = true;
 				
 			
