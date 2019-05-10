@@ -27,10 +27,17 @@ namespace ActivityMaps.ViewModels
 		private string state;
 		Country selectedCountry;
 		private string zipCode;
+		private bool isRunning;
 
 		#endregion
 
 		#region Propiedades
+
+		public bool IsRunning
+		{
+			get { return this.isRunning; }
+			set { SetValue(ref this.isRunning, value); }
+		}
 
 		public string Name
 		{
@@ -127,13 +134,16 @@ namespace ActivityMaps.ViewModels
 
 		private async void Next()
 		{
+			this.IsRunning = true;
 			CheckConnectionInternet.checkConnectivity();
+
 			if (string.IsNullOrEmpty(this.Name))
 			{
 				await Application.Current.MainPage.DisplayAlert(
 					"Error",
 					"You must enter an Name.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
 
@@ -143,6 +153,7 @@ namespace ActivityMaps.ViewModels
 					"Error",
 					"You must enter an Last Name.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
 
@@ -152,6 +163,7 @@ namespace ActivityMaps.ViewModels
 					"Error",
 					"You must enter an Nickname.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
 			if (this.Nickname.Length < 4)
@@ -160,6 +172,7 @@ namespace ActivityMaps.ViewModels
 					"Error",
 					"The length of Nickname most be greather than 3 letters.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
 
@@ -170,7 +183,9 @@ namespace ActivityMaps.ViewModels
 					"Error",
 					"This nickname has been taken.",
 					"Try Another");
+				this.IsRunning = false;
 				return;
+
 			}
 
 
@@ -180,6 +195,7 @@ namespace ActivityMaps.ViewModels
 					"Error",
 					"You must enter an Phone.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
 			if (this.Phone.Length < 10)
@@ -188,6 +204,7 @@ namespace ActivityMaps.ViewModels
 					"Error",
 					"You must enter a Phone with 10 digits.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
 
@@ -197,6 +214,7 @@ namespace ActivityMaps.ViewModels
 					"Error",
 					"You must enter an Address.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
 
@@ -224,6 +242,7 @@ namespace ActivityMaps.ViewModels
 					"Error",
 					"You must enter an Zip Code.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
 			
@@ -233,6 +252,7 @@ namespace ActivityMaps.ViewModels
 					"Error",
 					"You must select an Gender.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
 			
@@ -243,6 +263,7 @@ namespace ActivityMaps.ViewModels
 					"Error",
 					"You must select an Country.",
 					"Accept");
+				this.IsRunning = false;
 				return;
 			}
 
@@ -297,6 +318,7 @@ namespace ActivityMaps.ViewModels
 
 			MainViewModel.GetInstance().EndRegister = new EndRegisterViewModel(newAddress, newUSer);
 			await Application.Current.MainPage.Navigation.PushAsync(new EndRegisterPage());
+			this.IsRunning = false;
 		}
 		#endregion
 	}
