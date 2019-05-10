@@ -24,7 +24,43 @@ namespace ActivityMaps.Models
 			{
 				Name = "Table Tennis"
 			});
-            Filters.Add(new Filter
+			Filters.Add(new Filter
+			{
+				Name = "Baseball"
+			});
+			Filters.Add(new Filter
+			{
+				Name = "Tennis"
+			});
+			Filters.Add(new Filter
+			{
+				Name = "Football"
+			});
+			Filters.Add(new Filter
+			{
+				Name = "Volleyball"
+			});
+			Filters.Add(new Filter
+			{
+				Name = "Merengue"
+			});
+			Filters.Add(new Filter
+			{
+				Name = "Zumba"
+			});
+			Filters.Add(new Filter
+			{
+				Name = "Event"
+			});
+			Filters.Add(new Filter
+			{
+				Name = "Walk"
+			});
+			Filters.Add(new Filter
+			{
+				Name = "Golf"
+			});
+			Filters.Add(new Filter
             {
                 Name = "NO FILTER"
             });
