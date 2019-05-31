@@ -45,10 +45,12 @@
         </Picker>
         <Label IsVisible="{Binding IsActivityFound,Mode=TwoWay}"
                 Margin="10"
+               BackgroundColor="PapayaWhip"
                TextColor="DimGray"
                 FontAttributes="Bold"
                 FontSize="Medium"
                 HorizontalOptions="StartAndExpand"
+               VerticalOptions="CenterAndExpand"
                 >
         <Label.Text>
         No Activity Created Yet. Please try again later or create a new Activity!!
@@ -162,7 +164,22 @@
 
         <!--ScrollView-->
 
-        <Button
+        <ImageButton
+                Source="plus"
+                Margin="-29"  
+                BackgroundColor="Transparent"
+                WidthRequest="60"
+                HeightRequest="60"
+                IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                Command="{Binding CreateCommand}"
+                VerticalOptions="EndAndExpand"
+                HorizontalOptions="EndAndExpand"
+                TranslationX="-50"
+                TranslationY="-60">
+        </ImageButton>
+
+        <!--<Button
+                Source="plus"
                 Margin="-29"
                 BackgroundColor="#0086dc"
                 BorderRadius="25"
@@ -176,7 +193,7 @@
                 TranslationY="-60"
                 Text="+"
                 TextColor="White">
-        </Button>
+        </Button>-->
 
     </StackLayout>
 </ContentPage>

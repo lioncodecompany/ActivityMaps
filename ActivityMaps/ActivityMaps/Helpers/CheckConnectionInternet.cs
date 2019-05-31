@@ -24,7 +24,7 @@ namespace ActivityMaps.Helpers
 			}
 
 			var isReachable = await CrossConnectivity.Current.IsRemoteReachable(
-				"google.com");
+				"google.com",80,5000);
 			if (!isReachable)
 			{
 				return new Response
