@@ -1,9 +1,9 @@
-﻿using System;
+﻿/*using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
-using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace ActivityMaps.AzureStorage
@@ -80,3 +80,4 @@ namespace ActivityMaps.AzureStorage
         }
     }
 }
+*/

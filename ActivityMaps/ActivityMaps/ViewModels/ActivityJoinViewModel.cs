@@ -468,8 +468,8 @@ namespace ActivityMaps.ViewModels
 			byte[] imageData = null;
 			if (filePath.Count > 0)
 			{
-				imageData = await AzureStorage.AzureStorage.GetFileAsync(ContainerType.Image, filePath[0].Path);
-				Image = ImageSource.FromStream(() => new MemoryStream(imageData));
+				//imageData = await AzureStorage.AzureStorage.GetFileAsync(ContainerType.Image, filePath[0].Path);
+				//Image = ImageSource.FromStream(() => new MemoryStream(imageData));
 			}
 
 			this.IsRunning = false;
@@ -615,8 +615,8 @@ namespace ActivityMaps.ViewModels
 					byte[] imageData = null;
 
 					ImageUser = null;
-					imageData = await AzureStorage.AzureStorage.GetFileAsync(ContainerType.Image, arr2[i].ImageUserPath);
-					this.ImageUser = ImageSource.FromStream(() => new MemoryStream(imageData));
+					//imageData = await AzureStorage.AzureStorage.GetFileAsync(ContainerType.Image, arr2[i].ImageUserPath);
+					//this.ImageUser = ImageSource.FromStream(() => new MemoryStream(imageData));
 
 					UserFoto.Add(new User
 					{ 

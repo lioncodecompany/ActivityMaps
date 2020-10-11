@@ -11,9 +11,9 @@ using Plugin.Media;
 using Plugin.Media.Abstractions;
 using Plugin.Permissions.Abstractions;
 using Plugin.Permissions;
-using Microsoft.WindowsAzure.Storage;
+/*using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.WindowsAzure.Storage.DataMovement;
+using Microsoft.WindowsAzure.Storage.DataMovement;*/
 using System.Threading;
 using System.IO;
 using System.Net.Mail;
@@ -319,7 +319,7 @@ namespace ActivityMaps.ViewModels
 			};
 
 			byteData = AzureStorage.Convert.ToByteArray(source);
-			uploadedFilename = await AzureStorage.AzureStorage.UploadFileAsync(AzureStorage.ContainerType.Image, new MemoryStream(byteData));
+			//uploadedFilename = await AzureStorage.AzureStorage.UploadFileAsync(AzureStorage.ContainerType.Image, new MemoryStream(byteData));
 
 			string[] arr = source.Split('/');
 

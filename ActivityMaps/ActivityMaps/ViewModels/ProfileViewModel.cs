@@ -124,8 +124,8 @@ namespace ActivityMaps.ViewModels
 				byte[] imageData = null;
 
 				Image = null;
-				imageData = await AzureStorage.AzureStorage.GetFileAsync(ContainerType.Image, querry[0].Path);
-				this.Image = ImageSource.FromStream(() => new MemoryStream(imageData));
+				//imageData = await AzureStorage.AzureStorage.GetFileAsync(ContainerType.Image, querry[0].Path);
+				//this.Image = ImageSource.FromStream(() => new MemoryStream(imageData));
 			}
 			catch (Exception ex)
 			{

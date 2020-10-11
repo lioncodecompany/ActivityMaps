@@ -341,13 +341,13 @@ namespace ActivityMaps.ViewModels
             //Permiso para usar el Mapa y GPS
             var LocationStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
 
-            if (LocationStatus != PermissionStatus.Granted)
+            if (LocationStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
             {
                 var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Location });
                 LocationStatus = results[Permission.Location];
             }
 
-            if (LocationStatus != PermissionStatus.Granted)
+            if (LocationStatus != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
             {
                 await Application.Current.MainPage.DisplayAlert("Permissions Denied", "Unable to choose Location.", "OK");
                 
